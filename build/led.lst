@@ -1,0 +1,343 @@
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccgaE3Rr.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"led.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.led_write,"ax",%progbits
+  18              		.align	1
+  19              		.global	led_write
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  24              	led_write:
+  25              	.LVL0:
+  26              	.LFB65:
+  27              		.file 1 "User/led/led.c"
+   1:User/led/led.c **** #include "led.h"
+   2:User/led/led.c **** 
+   3:User/led/led.c **** void led_write(uint8_t pin, uint8_t state)
+   4:User/led/led.c **** {
+  28              		.loc 1 4 1 view -0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		.loc 1 4 1 is_stmt 0 view .LVU1
+  33 0000 08B5     		push	{r3, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 8
+  36              		.cfi_offset 3, -8
+  37              		.cfi_offset 14, -4
+   5:User/led/led.c ****     if (pin > 3 || pin == 0)
+  38              		.loc 1 5 5 is_stmt 1 view .LVU2
+  39              		.loc 1 5 17 is_stmt 0 view .LVU3
+  40 0002 431E     		subs	r3, r0, #1
+  41 0004 DBB2     		uxtb	r3, r3
+  42              		.loc 1 5 8 view .LVU4
+  43 0006 022B     		cmp	r3, #2
+  44 0008 07D8     		bhi	.L1
+   6:User/led/led.c ****     {
+   7:User/led/led.c ****         return;
+   8:User/led/led.c ****     }
+   9:User/led/led.c ****     if(state>1)
+  45              		.loc 1 9 5 is_stmt 1 view .LVU5
+  46              		.loc 1 9 7 is_stmt 0 view .LVU6
+  47 000a 0129     		cmp	r1, #1
+  48 000c 05D8     		bhi	.L1
+  10:User/led/led.c ****     {
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccgaE3Rr.s 			page 2
+
+
+  11:User/led/led.c ****         return;
+  12:User/led/led.c ****     }
+  13:User/led/led.c ****     switch (pin)
+  49              		.loc 1 13 5 is_stmt 1 view .LVU7
+  50 000e 0228     		cmp	r0, #2
+  51 0010 0AD0     		beq	.L3
+  52 0012 0328     		cmp	r0, #3
+  53 0014 0FD0     		beq	.L4
+  54 0016 0128     		cmp	r0, #1
+  55 0018 00D0     		beq	.L6
+  56              	.LVL1:
+  57              	.L1:
+  14:User/led/led.c ****     {
+  15:User/led/led.c ****     case 1:
+  16:User/led/led.c ****         HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin, state);
+  17:User/led/led.c ****         break;
+  18:User/led/led.c ****     case 2:
+  19:User/led/led.c ****         HAL_GPIO_WritePin(LED2_GPIO_Port, LED2_Pin, state);
+  20:User/led/led.c ****         break;
+  21:User/led/led.c ****     case 3:
+  22:User/led/led.c ****         HAL_GPIO_WritePin(LED3_GPIO_Port, LED3_Pin, state);
+  23:User/led/led.c ****         break;
+  24:User/led/led.c ****     default:
+  25:User/led/led.c ****         break;
+  26:User/led/led.c ****     }
+  27:User/led/led.c **** }
+  58              		.loc 1 27 1 is_stmt 0 view .LVU8
+  59 001a 08BD     		pop	{r3, pc}
+  60              	.LVL2:
+  61              	.L6:
+  16:User/led/led.c ****         break;
+  62              		.loc 1 16 9 is_stmt 1 view .LVU9
+  63 001c 0A46     		mov	r2, r1
+  64 001e 0421     		movs	r1, #4
+  65              	.LVL3:
+  16:User/led/led.c ****         break;
+  66              		.loc 1 16 9 is_stmt 0 view .LVU10
+  67 0020 0848     		ldr	r0, .L7
+  68              	.LVL4:
+  16:User/led/led.c ****         break;
+  69              		.loc 1 16 9 view .LVU11
+  70 0022 FFF7FEFF 		bl	HAL_GPIO_WritePin
+  71              	.LVL5:
+  17:User/led/led.c ****     case 2:
+  72              		.loc 1 17 9 is_stmt 1 view .LVU12
+  73 0026 F8E7     		b	.L1
+  74              	.LVL6:
+  75              	.L3:
+  19:User/led/led.c ****         break;
+  76              		.loc 1 19 9 view .LVU13
+  77 0028 0A46     		mov	r2, r1
+  78 002a 4FF48061 		mov	r1, #1024
+  79              	.LVL7:
+  19:User/led/led.c ****         break;
+  80              		.loc 1 19 9 is_stmt 0 view .LVU14
+  81 002e 0548     		ldr	r0, .L7
+  82              	.LVL8:
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccgaE3Rr.s 			page 3
+
+
+  19:User/led/led.c ****         break;
+  83              		.loc 1 19 9 view .LVU15
+  84 0030 FFF7FEFF 		bl	HAL_GPIO_WritePin
+  85              	.LVL9:
+  20:User/led/led.c ****     case 3:
+  86              		.loc 1 20 9 is_stmt 1 view .LVU16
+  87 0034 F1E7     		b	.L1
+  88              	.LVL10:
+  89              	.L4:
+  22:User/led/led.c ****         break;
+  90              		.loc 1 22 9 view .LVU17
+  91 0036 0A46     		mov	r2, r1
+  92 0038 4FF40061 		mov	r1, #2048
+  93              	.LVL11:
+  22:User/led/led.c ****         break;
+  94              		.loc 1 22 9 is_stmt 0 view .LVU18
+  95 003c 0148     		ldr	r0, .L7
+  96              	.LVL12:
+  22:User/led/led.c ****         break;
+  97              		.loc 1 22 9 view .LVU19
+  98 003e FFF7FEFF 		bl	HAL_GPIO_WritePin
+  99              	.LVL13:
+  23:User/led/led.c ****     default:
+ 100              		.loc 1 23 9 is_stmt 1 view .LVU20
+ 101 0042 EAE7     		b	.L1
+ 102              	.L8:
+ 103              		.align	2
+ 104              	.L7:
+ 105 0044 000C0140 		.word	1073810432
+ 106              		.cfi_endproc
+ 107              	.LFE65:
+ 109              		.section	.text.led_toggle,"ax",%progbits
+ 110              		.align	1
+ 111              		.global	led_toggle
+ 112              		.syntax unified
+ 113              		.thumb
+ 114              		.thumb_func
+ 116              	led_toggle:
+ 117              	.LVL14:
+ 118              	.LFB66:
+  28:User/led/led.c **** void led_toggle(uint8_t pin)
+  29:User/led/led.c **** {
+ 119              		.loc 1 29 1 view -0
+ 120              		.cfi_startproc
+ 121              		@ args = 0, pretend = 0, frame = 0
+ 122              		@ frame_needed = 0, uses_anonymous_args = 0
+ 123              		.loc 1 29 1 is_stmt 0 view .LVU22
+ 124 0000 08B5     		push	{r3, lr}
+ 125              	.LCFI1:
+ 126              		.cfi_def_cfa_offset 8
+ 127              		.cfi_offset 3, -8
+ 128              		.cfi_offset 14, -4
+  30:User/led/led.c ****         if (pin > 3 || pin == 0)
+ 129              		.loc 1 30 9 is_stmt 1 view .LVU23
+ 130              		.loc 1 30 21 is_stmt 0 view .LVU24
+ 131 0002 431E     		subs	r3, r0, #1
+ 132 0004 DBB2     		uxtb	r3, r3
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccgaE3Rr.s 			page 4
+
+
+ 133              		.loc 1 30 12 view .LVU25
+ 134 0006 022B     		cmp	r3, #2
+ 135 0008 05D8     		bhi	.L9
+  31:User/led/led.c ****     {
+  32:User/led/led.c ****         return;
+  33:User/led/led.c ****     }
+  34:User/led/led.c ****     switch (pin)
+ 136              		.loc 1 34 5 is_stmt 1 view .LVU26
+ 137 000a 0228     		cmp	r0, #2
+ 138 000c 09D0     		beq	.L11
+ 139 000e 0328     		cmp	r0, #3
+ 140 0010 0DD0     		beq	.L12
+ 141 0012 0128     		cmp	r0, #1
+ 142 0014 00D0     		beq	.L14
+ 143              	.LVL15:
+ 144              	.L9:
+  35:User/led/led.c ****     {
+  36:User/led/led.c ****     case 1:
+  37:User/led/led.c ****         HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
+  38:User/led/led.c ****         break;
+  39:User/led/led.c ****     case 2:
+  40:User/led/led.c ****         HAL_GPIO_TogglePin(LED2_GPIO_Port, LED2_Pin);
+  41:User/led/led.c ****         break;
+  42:User/led/led.c ****     case 3:
+  43:User/led/led.c ****         HAL_GPIO_TogglePin(LED3_GPIO_Port, LED3_Pin);
+  44:User/led/led.c ****         break;
+  45:User/led/led.c ****     default:
+  46:User/led/led.c ****         break;
+  47:User/led/led.c ****     }
+  48:User/led/led.c **** }
+ 145              		.loc 1 48 1 is_stmt 0 view .LVU27
+ 146 0016 08BD     		pop	{r3, pc}
+ 147              	.LVL16:
+ 148              	.L14:
+  37:User/led/led.c ****         break;
+ 149              		.loc 1 37 9 is_stmt 1 view .LVU28
+ 150 0018 0421     		movs	r1, #4
+ 151 001a 0848     		ldr	r0, .L15
+ 152              	.LVL17:
+  37:User/led/led.c ****         break;
+ 153              		.loc 1 37 9 is_stmt 0 view .LVU29
+ 154 001c FFF7FEFF 		bl	HAL_GPIO_TogglePin
+ 155              	.LVL18:
+  38:User/led/led.c ****     case 2:
+ 156              		.loc 1 38 9 is_stmt 1 view .LVU30
+ 157 0020 F9E7     		b	.L9
+ 158              	.LVL19:
+ 159              	.L11:
+  40:User/led/led.c ****         break;
+ 160              		.loc 1 40 9 view .LVU31
+ 161 0022 4FF48061 		mov	r1, #1024
+ 162 0026 0548     		ldr	r0, .L15
+ 163              	.LVL20:
+  40:User/led/led.c ****         break;
+ 164              		.loc 1 40 9 is_stmt 0 view .LVU32
+ 165 0028 FFF7FEFF 		bl	HAL_GPIO_TogglePin
+ 166              	.LVL21:
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccgaE3Rr.s 			page 5
+
+
+  41:User/led/led.c ****     case 3:
+ 167              		.loc 1 41 9 is_stmt 1 view .LVU33
+ 168 002c F3E7     		b	.L9
+ 169              	.LVL22:
+ 170              	.L12:
+  43:User/led/led.c ****         break;
+ 171              		.loc 1 43 9 view .LVU34
+ 172 002e 4FF40061 		mov	r1, #2048
+ 173 0032 0248     		ldr	r0, .L15
+ 174              	.LVL23:
+  43:User/led/led.c ****         break;
+ 175              		.loc 1 43 9 is_stmt 0 view .LVU35
+ 176 0034 FFF7FEFF 		bl	HAL_GPIO_TogglePin
+ 177              	.LVL24:
+  44:User/led/led.c ****     default:
+ 178              		.loc 1 44 9 is_stmt 1 view .LVU36
+ 179 0038 EDE7     		b	.L9
+ 180              	.L16:
+ 181 003a 00BF     		.align	2
+ 182              	.L15:
+ 183 003c 000C0140 		.word	1073810432
+ 184              		.cfi_endproc
+ 185              	.LFE66:
+ 187              		.section	.text.led_init,"ax",%progbits
+ 188              		.align	1
+ 189              		.global	led_init
+ 190              		.syntax unified
+ 191              		.thumb
+ 192              		.thumb_func
+ 194              	led_init:
+ 195              	.LFB67:
+  49:User/led/led.c **** void led_init()
+  50:User/led/led.c **** {
+ 196              		.loc 1 50 1 view -0
+ 197              		.cfi_startproc
+ 198              		@ args = 0, pretend = 0, frame = 0
+ 199              		@ frame_needed = 0, uses_anonymous_args = 0
+ 200 0000 10B5     		push	{r4, lr}
+ 201              	.LCFI2:
+ 202              		.cfi_def_cfa_offset 8
+ 203              		.cfi_offset 4, -8
+ 204              		.cfi_offset 14, -4
+  51:User/led/led.c ****     HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin, GPIO_PIN_RESET);
+ 205              		.loc 1 51 5 view .LVU38
+ 206 0002 094C     		ldr	r4, .L19
+ 207 0004 0022     		movs	r2, #0
+ 208 0006 0421     		movs	r1, #4
+ 209 0008 2046     		mov	r0, r4
+ 210 000a FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 211              	.LVL25:
+  52:User/led/led.c ****     HAL_GPIO_WritePin(LED2_GPIO_Port, LED2_Pin, GPIO_PIN_RESET);
+ 212              		.loc 1 52 5 view .LVU39
+ 213 000e 0022     		movs	r2, #0
+ 214 0010 4FF48061 		mov	r1, #1024
+ 215 0014 2046     		mov	r0, r4
+ 216 0016 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 217              	.LVL26:
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccgaE3Rr.s 			page 6
+
+
+  53:User/led/led.c ****     HAL_GPIO_WritePin(LED3_GPIO_Port, LED3_Pin, GPIO_PIN_RESET);
+ 218              		.loc 1 53 5 view .LVU40
+ 219 001a 0022     		movs	r2, #0
+ 220 001c 4FF40061 		mov	r1, #2048
+ 221 0020 2046     		mov	r0, r4
+ 222 0022 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 223              	.LVL27:
+  54:User/led/led.c **** }
+ 224              		.loc 1 54 1 is_stmt 0 view .LVU41
+ 225 0026 10BD     		pop	{r4, pc}
+ 226              	.L20:
+ 227              		.align	2
+ 228              	.L19:
+ 229 0028 000C0140 		.word	1073810432
+ 230              		.cfi_endproc
+ 231              	.LFE67:
+ 233              		.text
+ 234              	.Letext0:
+ 235              		.file 2 "c:\\tool\\gcc-arm\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 236              		.file 3 "c:\\tool\\gcc-arm\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 237              		.file 4 "Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h"
+ 238              		.file 5 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio.h"
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccgaE3Rr.s 			page 7
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 led.c
+C:\Users\GM\AppData\Local\Temp\ccgaE3Rr.s:18     .text.led_write:00000000 $t
+C:\Users\GM\AppData\Local\Temp\ccgaE3Rr.s:24     .text.led_write:00000000 led_write
+C:\Users\GM\AppData\Local\Temp\ccgaE3Rr.s:105    .text.led_write:00000044 $d
+C:\Users\GM\AppData\Local\Temp\ccgaE3Rr.s:110    .text.led_toggle:00000000 $t
+C:\Users\GM\AppData\Local\Temp\ccgaE3Rr.s:116    .text.led_toggle:00000000 led_toggle
+C:\Users\GM\AppData\Local\Temp\ccgaE3Rr.s:183    .text.led_toggle:0000003c $d
+C:\Users\GM\AppData\Local\Temp\ccgaE3Rr.s:188    .text.led_init:00000000 $t
+C:\Users\GM\AppData\Local\Temp\ccgaE3Rr.s:194    .text.led_init:00000000 led_init
+C:\Users\GM\AppData\Local\Temp\ccgaE3Rr.s:229    .text.led_init:00000028 $d
+
+UNDEFINED SYMBOLS
+HAL_GPIO_WritePin
+HAL_GPIO_TogglePin

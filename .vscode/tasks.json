@@ -1,0 +1,37 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Download",
+            "type": "shell",
+            "command": "openocd",
+            "args": [
+                "-f",
+                "C:/Tool/OpenOCD/share/openocd/scripts/interface/cmsis-dap.cfg",
+                "-f",
+                "C:/Tool/OpenOCD/share/openocd/scripts/target/stm32f1x.cfg",
+                "-c",
+                "program build/${workspaceFolderBasename}.elf verify reset exit"
+            ],
+            "group": "build",
+            "presentation": {
+                // Reveal the output only if unrecognized errors occur.
+                "reveal": "silent"
+            },
+            // Use the standard MS compiler pattern to detect errors, warnings and infos
+            "problemMatcher": "$gcc"
+        },
+        {
+            "type": "cppbuild",
+            "label": "C/C++: gcc.exe 生成活动文件",
+            "command": "make",
+            "args": ["-j12"],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "group": "test"
+        }
+    ]
+}

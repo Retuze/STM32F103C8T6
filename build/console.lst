@@ -1,0 +1,1241 @@
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccgccM9G.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"console.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.rodata.led_proc.str1.4,"aMS",%progbits,1
+  18              		.align	2
+  19              	.LC0:
+  20 0000 2000     		.ascii	" \000"
+  21 0002 0000     		.align	2
+  22              	.LC1:
+  23 0004 61726720 		.ascii	"arg is to many\000"
+  23      69732074 
+  23      6F206D61 
+  23      6E7900
+  24 0013 00       		.align	2
+  25              	.LC2:
+  26 0014 2D6800   		.ascii	"-h\000"
+  27 0017 00       		.align	2
+  28              	.LC3:
+  29 0018 6C656420 		.ascii	"led --help\012Usage: led [on/off]\000"
+  29      2D2D6865 
+  29      6C700A55 
+  29      73616765 
+  29      3A206C65 
+  30 0037 00       		.align	2
+  31              	.LC4:
+  32 0038 6F6E00   		.ascii	"on\000"
+  33 003b 00       		.align	2
+  34              	.LC5:
+  35 003c 6C656420 		.ascii	"led is on\000"
+  35      6973206F 
+  35      6E00
+  36 0046 0000     		.align	2
+  37              	.LC6:
+  38 0048 6F666600 		.ascii	"off\000"
+  39              		.align	2
+  40              	.LC7:
+  41 004c 6C656420 		.ascii	"led is off\000"
+  41      6973206F 
+  41      666600
+  42 0057 00       		.align	2
+  43              	.LC8:
+  44 0058 63616E6E 		.ascii	"cannot access \"%s\"\012\000"
+  44      6F742061 
+  44      63636573 
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccgccM9G.s 			page 2
+
+
+  44      73202225 
+  44      73220A00 
+  45              		.section	.text.led_proc,"ax",%progbits
+  46              		.align	1
+  47              		.global	led_proc
+  48              		.syntax unified
+  49              		.thumb
+  50              		.thumb_func
+  52              	led_proc:
+  53              	.LVL0:
+  54              	.LFB68:
+  55              		.file 1 "User/console/console.c"
+   1:User/console/console.c **** #include "console.h"
+   2:User/console/console.c **** 
+   3:User/console/console.c **** 
+   4:User/console/console.c **** extern fifo_s_t uart1_rx_fifo;
+   5:User/console/console.c **** 
+   6:User/console/console.c **** int int_arg =0;
+   7:User/console/console.c **** char str_arg[128]={0};
+   8:User/console/console.c **** 
+   9:User/console/console.c **** typedef void (*cmd_cb)(char **, char);
+  10:User/console/console.c **** 
+  11:User/console/console.c **** typedef struct
+  12:User/console/console.c **** {
+  13:User/console/console.c ****     char *cmd;
+  14:User/console/console.c ****     cmd_cb cb;
+  15:User/console/console.c **** } ST_CMD;
+  16:User/console/console.c **** 
+  17:User/console/console.c **** void list_proc(char **str, char);
+  18:User/console/console.c **** 
+  19:User/console/console.c **** void led_proc(char **str, char num)
+  20:User/console/console.c **** {
+  56              		.loc 1 20 1 view -0
+  57              		.cfi_startproc
+  58              		@ args = 0, pretend = 0, frame = 128
+  59              		@ frame_needed = 0, uses_anonymous_args = 0
+  60              		.loc 1 20 1 is_stmt 0 view .LVU1
+  61 0000 70B5     		push	{r4, r5, r6, lr}
+  62              	.LCFI0:
+  63              		.cfi_def_cfa_offset 16
+  64              		.cfi_offset 4, -16
+  65              		.cfi_offset 5, -12
+  66              		.cfi_offset 6, -8
+  67              		.cfi_offset 14, -4
+  68 0002 A0B0     		sub	sp, sp, #128
+  69              	.LCFI1:
+  70              		.cfi_def_cfa_offset 144
+  71 0004 0546     		mov	r5, r0
+  72 0006 0E46     		mov	r6, r1
+  21:User/console/console.c ****     char buf[128] = {0};
+  73              		.loc 1 21 5 is_stmt 1 view .LVU2
+  74              		.loc 1 21 10 is_stmt 0 view .LVU3
+  75 0008 0024     		movs	r4, #0
+  76 000a 0094     		str	r4, [sp]
+  77 000c 7C22     		movs	r2, #124
+  78 000e 2146     		mov	r1, r4
+  79              	.LVL1:
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccgccM9G.s 			page 3
+
+
+  80              		.loc 1 21 10 view .LVU4
+  81 0010 01A8     		add	r0, sp, #4
+  82              	.LVL2:
+  83              		.loc 1 21 10 view .LVU5
+  84 0012 FFF7FEFF 		bl	memset
+  85              	.LVL3:
+  22:User/console/console.c ****     for (char i = 0; i < num; i++)
+  86              		.loc 1 22 5 is_stmt 1 view .LVU6
+  87              	.LBB2:
+  88              		.loc 1 22 10 view .LVU7
+  89              		.loc 1 22 5 is_stmt 0 view .LVU8
+  90 0016 02E0     		b	.L2
+  91              	.LVL4:
+  92              	.L3:
+  23:User/console/console.c ****     {
+  24:User/console/console.c ****         strcat(buf, *str);
+  25:User/console/console.c ****         if (i >= num - 1)
+  26:User/console/console.c ****         {
+  27:User/console/console.c ****         }
+  28:User/console/console.c ****         else
+  29:User/console/console.c ****         {
+  30:User/console/console.c ****             strcat(buf, " ");
+  31:User/console/console.c ****         }
+  32:User/console/console.c ****         str++;
+  93              		.loc 1 32 9 is_stmt 1 discriminator 2 view .LVU9
+  94              		.loc 1 32 12 is_stmt 0 discriminator 2 view .LVU10
+  95 0018 0435     		adds	r5, r5, #4
+  96              	.LVL5:
+  22:User/console/console.c ****     for (char i = 0; i < num; i++)
+  97              		.loc 1 22 31 is_stmt 1 discriminator 2 view .LVU11
+  22:User/console/console.c ****     for (char i = 0; i < num; i++)
+  98              		.loc 1 22 32 is_stmt 0 discriminator 2 view .LVU12
+  99 001a 0134     		adds	r4, r4, #1
+ 100              	.LVL6:
+  22:User/console/console.c ****     for (char i = 0; i < num; i++)
+ 101              		.loc 1 22 32 discriminator 2 view .LVU13
+ 102 001c E4B2     		uxtb	r4, r4
+ 103              	.LVL7:
+ 104              	.L2:
+  22:User/console/console.c ****     for (char i = 0; i < num; i++)
+ 105              		.loc 1 22 22 is_stmt 1 discriminator 1 view .LVU14
+  22:User/console/console.c ****     for (char i = 0; i < num; i++)
+ 106              		.loc 1 22 5 is_stmt 0 discriminator 1 view .LVU15
+ 107 001e B442     		cmp	r4, r6
+ 108 0020 0ED2     		bcs	.L12
+  24:User/console/console.c ****         if (i >= num - 1)
+ 109              		.loc 1 24 9 is_stmt 1 view .LVU16
+ 110 0022 2968     		ldr	r1, [r5]
+ 111 0024 6846     		mov	r0, sp
+ 112 0026 FFF7FEFF 		bl	strcat
+ 113              	.LVL8:
+  25:User/console/console.c ****         {
+ 114              		.loc 1 25 9 view .LVU17
+  25:User/console/console.c ****         {
+ 115              		.loc 1 25 22 is_stmt 0 view .LVU18
+ 116 002a 731E     		subs	r3, r6, #1
+  25:User/console/console.c ****         {
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccgccM9G.s 			page 4
+
+
+ 117              		.loc 1 25 12 view .LVU19
+ 118 002c 9C42     		cmp	r4, r3
+ 119 002e F3DA     		bge	.L3
+  30:User/console/console.c ****         }
+ 120              		.loc 1 30 13 is_stmt 1 view .LVU20
+ 121 0030 6846     		mov	r0, sp
+ 122 0032 FFF7FEFF 		bl	strlen
+ 123              	.LVL9:
+ 124 0036 1A4B     		ldr	r3, .L14
+ 125 0038 1B88     		ldrh	r3, [r3]	@ unaligned
+ 126 003a 2DF80030 		strh	r3, [sp, r0]	@ unaligned
+ 127 003e EBE7     		b	.L3
+ 128              	.L12:
+ 129              	.LBE2:
+  33:User/console/console.c ****     }
+  34:User/console/console.c ****     if (num > 2)
+ 130              		.loc 1 34 5 view .LVU21
+ 131              		.loc 1 34 8 is_stmt 0 view .LVU22
+ 132 0040 022E     		cmp	r6, #2
+ 133 0042 09D8     		bhi	.L13
+  35:User/console/console.c ****     {
+  36:User/console/console.c ****         printf("arg is to many\n");
+  37:User/console/console.c ****         return;
+  38:User/console/console.c ****     }
+  39:User/console/console.c ****     if (strstr(buf, "-h"))
+ 134              		.loc 1 39 5 is_stmt 1 view .LVU23
+ 135              		.loc 1 39 9 is_stmt 0 view .LVU24
+ 136 0044 1749     		ldr	r1, .L14+4
+ 137 0046 6846     		mov	r0, sp
+ 138 0048 FFF7FEFF 		bl	strstr
+ 139              	.LVL10:
+ 140              		.loc 1 39 8 view .LVU25
+ 141 004c 40B1     		cbz	r0, .L7
+  40:User/console/console.c ****     {
+  41:User/console/console.c ****         printf("led --help\nUsage: led [on/off]\n");
+ 142              		.loc 1 41 9 is_stmt 1 view .LVU26
+ 143 004e 1648     		ldr	r0, .L14+8
+ 144 0050 FFF7FEFF 		bl	puts
+ 145              	.LVL11:
+ 146              	.L1:
+  42:User/console/console.c ****     }
+  43:User/console/console.c ****     else if (strstr(buf, "on"))
+  44:User/console/console.c ****     {
+  45:User/console/console.c ****         led_write(1, 1);
+  46:User/console/console.c ****         printf("led is on\n");
+  47:User/console/console.c ****     }
+  48:User/console/console.c ****     else if (strstr(buf, "off"))
+  49:User/console/console.c ****     {
+  50:User/console/console.c ****         led_write(1, 0);
+  51:User/console/console.c ****         printf("led is off\n");
+  52:User/console/console.c ****     }
+  53:User/console/console.c ****     else
+  54:User/console/console.c ****     {
+  55:User/console/console.c ****         printf("cannot access \"%s\"\n", buf);
+  56:User/console/console.c ****     }
+  57:User/console/console.c **** }
+ 147              		.loc 1 57 1 is_stmt 0 view .LVU27
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccgccM9G.s 			page 5
+
+
+ 148 0054 20B0     		add	sp, sp, #128
+ 149              	.LCFI2:
+ 150              		.cfi_remember_state
+ 151              		.cfi_def_cfa_offset 16
+ 152              		@ sp needed
+ 153 0056 70BD     		pop	{r4, r5, r6, pc}
+ 154              	.LVL12:
+ 155              	.L13:
+ 156              	.LCFI3:
+ 157              		.cfi_restore_state
+  36:User/console/console.c ****         return;
+ 158              		.loc 1 36 9 is_stmt 1 view .LVU28
+ 159 0058 1448     		ldr	r0, .L14+12
+ 160 005a FFF7FEFF 		bl	puts
+ 161              	.LVL13:
+  37:User/console/console.c ****     }
+ 162              		.loc 1 37 9 view .LVU29
+ 163 005e F9E7     		b	.L1
+ 164              	.L7:
+  43:User/console/console.c ****     {
+ 165              		.loc 1 43 10 view .LVU30
+  43:User/console/console.c ****     {
+ 166              		.loc 1 43 14 is_stmt 0 view .LVU31
+ 167 0060 1349     		ldr	r1, .L14+16
+ 168 0062 6846     		mov	r0, sp
+ 169 0064 FFF7FEFF 		bl	strstr
+ 170              	.LVL14:
+  43:User/console/console.c ****     {
+ 171              		.loc 1 43 13 view .LVU32
+ 172 0068 38B1     		cbz	r0, .L9
+  45:User/console/console.c ****         printf("led is on\n");
+ 173              		.loc 1 45 9 is_stmt 1 view .LVU33
+ 174 006a 0121     		movs	r1, #1
+ 175 006c 0846     		mov	r0, r1
+ 176 006e FFF7FEFF 		bl	led_write
+ 177              	.LVL15:
+  46:User/console/console.c ****     }
+ 178              		.loc 1 46 9 view .LVU34
+ 179 0072 1048     		ldr	r0, .L14+20
+ 180 0074 FFF7FEFF 		bl	puts
+ 181              	.LVL16:
+ 182 0078 ECE7     		b	.L1
+ 183              	.L9:
+  48:User/console/console.c ****     {
+ 184              		.loc 1 48 10 view .LVU35
+  48:User/console/console.c ****     {
+ 185              		.loc 1 48 14 is_stmt 0 view .LVU36
+ 186 007a 0F49     		ldr	r1, .L14+24
+ 187 007c 6846     		mov	r0, sp
+ 188 007e FFF7FEFF 		bl	strstr
+ 189              	.LVL17:
+  48:User/console/console.c ****     {
+ 190              		.loc 1 48 13 view .LVU37
+ 191 0082 38B1     		cbz	r0, .L10
+  50:User/console/console.c ****         printf("led is off\n");
+ 192              		.loc 1 50 9 is_stmt 1 view .LVU38
+ 193 0084 0021     		movs	r1, #0
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccgccM9G.s 			page 6
+
+
+ 194 0086 0120     		movs	r0, #1
+ 195 0088 FFF7FEFF 		bl	led_write
+ 196              	.LVL18:
+  51:User/console/console.c ****     }
+ 197              		.loc 1 51 9 view .LVU39
+ 198 008c 0B48     		ldr	r0, .L14+28
+ 199 008e FFF7FEFF 		bl	puts
+ 200              	.LVL19:
+ 201 0092 DFE7     		b	.L1
+ 202              	.L10:
+  55:User/console/console.c ****     }
+ 203              		.loc 1 55 9 view .LVU40
+ 204 0094 6946     		mov	r1, sp
+ 205 0096 0A48     		ldr	r0, .L14+32
+ 206 0098 FFF7FEFF 		bl	printf
+ 207              	.LVL20:
+ 208 009c DAE7     		b	.L1
+ 209              	.L15:
+ 210 009e 00BF     		.align	2
+ 211              	.L14:
+ 212 00a0 00000000 		.word	.LC0
+ 213 00a4 14000000 		.word	.LC2
+ 214 00a8 18000000 		.word	.LC3
+ 215 00ac 04000000 		.word	.LC1
+ 216 00b0 38000000 		.word	.LC4
+ 217 00b4 3C000000 		.word	.LC5
+ 218 00b8 48000000 		.word	.LC6
+ 219 00bc 4C000000 		.word	.LC7
+ 220 00c0 58000000 		.word	.LC8
+ 221              		.cfi_endproc
+ 222              	.LFE68:
+ 224              		.section	.rodata.pwm_proc.str1.4,"aMS",%progbits,1
+ 225              		.align	2
+ 226              	.LC9:
+ 227 0000 61726720 		.ascii	"arg is to few\000"
+ 227      69732074 
+ 227      6F206665 
+ 227      7700
+ 228 000e 0000     		.align	2
+ 229              	.LC10:
+ 230 0010 66726571 		.ascii	"freq\000"
+ 230      00
+ 231 0015 000000   		.align	2
+ 232              	.LC11:
+ 233 0018 64757479 		.ascii	"duty\000"
+ 233      00
+ 234 001d 000000   		.align	2
+ 235              	.LC12:
+ 236 0020 63616E6E 		.ascii	"cannot access \"config %s\"\012\000"
+ 236      6F742061 
+ 236      63636573 
+ 236      73202263 
+ 236      6F6E6669 
+ 237              		.section	.text.pwm_proc,"ax",%progbits
+ 238              		.align	1
+ 239              		.global	pwm_proc
+ 240              		.syntax unified
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccgccM9G.s 			page 7
+
+
+ 241              		.thumb
+ 242              		.thumb_func
+ 244              	pwm_proc:
+ 245              	.LVL21:
+ 246              	.LFB69:
+  58:User/console/console.c **** void pwm_proc(char **str, char num)
+  59:User/console/console.c **** {
+ 247              		.loc 1 59 1 view -0
+ 248              		.cfi_startproc
+ 249              		@ args = 0, pretend = 0, frame = 0
+ 250              		@ frame_needed = 0, uses_anonymous_args = 0
+ 251              		.loc 1 59 1 is_stmt 0 view .LVU42
+ 252 0000 38B5     		push	{r3, r4, r5, lr}
+ 253              	.LCFI4:
+ 254              		.cfi_def_cfa_offset 16
+ 255              		.cfi_offset 3, -16
+ 256              		.cfi_offset 4, -12
+ 257              		.cfi_offset 5, -8
+ 258              		.cfi_offset 14, -4
+  60:User/console/console.c ****     if(num>3)
+ 259              		.loc 1 60 5 is_stmt 1 view .LVU43
+ 260              		.loc 1 60 7 is_stmt 0 view .LVU44
+ 261 0002 0329     		cmp	r1, #3
+ 262 0004 15D8     		bhi	.L24
+ 263 0006 0446     		mov	r4, r0
+  61:User/console/console.c ****     {
+  62:User/console/console.c ****         printf("arg is to many\n");
+  63:User/console/console.c ****         return;
+  64:User/console/console.c ****     }
+  65:User/console/console.c ****     if(num<2)
+ 264              		.loc 1 65 5 is_stmt 1 view .LVU45
+ 265              		.loc 1 65 7 is_stmt 0 view .LVU46
+ 266 0008 0129     		cmp	r1, #1
+ 267 000a 16D9     		bls	.L25
+  66:User/console/console.c ****     {
+  67:User/console/console.c ****         printf("arg is to few\n");
+  68:User/console/console.c ****         return;
+  69:User/console/console.c ****     }
+  70:User/console/console.c ****     if(strcmp(*(str+1),"freq")==0)
+ 268              		.loc 1 70 5 is_stmt 1 view .LVU47
+ 269              		.loc 1 70 8 is_stmt 0 view .LVU48
+ 270 000c 4568     		ldr	r5, [r0, #4]
+ 271 000e 1749     		ldr	r1, .L28
+ 272              	.LVL22:
+ 273              		.loc 1 70 8 view .LVU49
+ 274 0010 2846     		mov	r0, r5
+ 275              	.LVL23:
+ 276              		.loc 1 70 8 view .LVU50
+ 277 0012 FFF7FEFF 		bl	strcmp
+ 278              	.LVL24:
+ 279              		.loc 1 70 7 view .LVU51
+ 280 0016 A0B1     		cbz	r0, .L26
+  71:User/console/console.c ****     {
+  72:User/console/console.c ****         pwm_freq(atoi(*(str+2)));
+  73:User/console/console.c ****         pwm_help();
+  74:User/console/console.c ****     }
+  75:User/console/console.c ****     else if(strcmp(*(str+1),"duty")==0)
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccgccM9G.s 			page 8
+
+
+ 281              		.loc 1 75 10 is_stmt 1 view .LVU52
+ 282              		.loc 1 75 13 is_stmt 0 view .LVU53
+ 283 0018 1549     		ldr	r1, .L28+4
+ 284 001a 2846     		mov	r0, r5
+ 285 001c FFF7FEFF 		bl	strcmp
+ 286              	.LVL25:
+ 287              		.loc 1 75 12 view .LVU54
+ 288 0020 B8B1     		cbz	r0, .L27
+  76:User/console/console.c ****     {
+  77:User/console/console.c ****         pwm_duty(atoi(*(str+2)));
+  78:User/console/console.c ****         pwm_help();
+  79:User/console/console.c ****     }
+  80:User/console/console.c ****     else if(strcmp(*(str+1),"-h")==0)
+ 289              		.loc 1 80 10 is_stmt 1 view .LVU55
+ 290              		.loc 1 80 13 is_stmt 0 view .LVU56
+ 291 0022 1449     		ldr	r1, .L28+8
+ 292 0024 2846     		mov	r0, r5
+ 293 0026 FFF7FEFF 		bl	strcmp
+ 294              	.LVL26:
+ 295              		.loc 1 80 12 view .LVU57
+ 296 002a D0B9     		cbnz	r0, .L22
+  81:User/console/console.c ****     {
+  82:User/console/console.c ****         pwm_help();
+ 297              		.loc 1 82 9 is_stmt 1 view .LVU58
+ 298 002c FFF7FEFF 		bl	pwm_help
+ 299              	.LVL27:
+ 300 0030 0EE0     		b	.L16
+ 301              	.LVL28:
+ 302              	.L24:
+  62:User/console/console.c ****         return;
+ 303              		.loc 1 62 9 view .LVU59
+ 304 0032 1148     		ldr	r0, .L28+12
+ 305              	.LVL29:
+  62:User/console/console.c ****         return;
+ 306              		.loc 1 62 9 is_stmt 0 view .LVU60
+ 307 0034 FFF7FEFF 		bl	puts
+ 308              	.LVL30:
+  63:User/console/console.c ****     }
+ 309              		.loc 1 63 9 is_stmt 1 view .LVU61
+ 310 0038 0AE0     		b	.L16
+ 311              	.LVL31:
+ 312              	.L25:
+  67:User/console/console.c ****         return;
+ 313              		.loc 1 67 9 view .LVU62
+ 314 003a 1048     		ldr	r0, .L28+16
+ 315              	.LVL32:
+  67:User/console/console.c ****         return;
+ 316              		.loc 1 67 9 is_stmt 0 view .LVU63
+ 317 003c FFF7FEFF 		bl	puts
+ 318              	.LVL33:
+  68:User/console/console.c ****     }
+ 319              		.loc 1 68 9 is_stmt 1 view .LVU64
+ 320 0040 06E0     		b	.L16
+ 321              	.L26:
+  72:User/console/console.c ****         pwm_help();
+ 322              		.loc 1 72 9 view .LVU65
+ 323 0042 A068     		ldr	r0, [r4, #8]
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccgccM9G.s 			page 9
+
+
+ 324 0044 FFF7FEFF 		bl	atoi
+ 325              	.LVL34:
+ 326 0048 FFF7FEFF 		bl	pwm_freq
+ 327              	.LVL35:
+  73:User/console/console.c ****     }
+ 328              		.loc 1 73 9 view .LVU66
+ 329 004c FFF7FEFF 		bl	pwm_help
+ 330              	.LVL36:
+ 331              	.L16:
+  83:User/console/console.c ****     }
+  84:User/console/console.c ****     else
+  85:User/console/console.c ****     {
+  86:User/console/console.c ****         printf("cannot access \"config %s\"\n",*(str+1));
+  87:User/console/console.c ****     }
+  88:User/console/console.c **** 
+  89:User/console/console.c **** }
+ 332              		.loc 1 89 1 is_stmt 0 view .LVU67
+ 333 0050 38BD     		pop	{r3, r4, r5, pc}
+ 334              	.LVL37:
+ 335              	.L27:
+  77:User/console/console.c ****         pwm_help();
+ 336              		.loc 1 77 9 is_stmt 1 view .LVU68
+ 337 0052 A068     		ldr	r0, [r4, #8]
+ 338 0054 FFF7FEFF 		bl	atoi
+ 339              	.LVL38:
+ 340 0058 FFF7FEFF 		bl	pwm_duty
+ 341              	.LVL39:
+  78:User/console/console.c ****     }
+ 342              		.loc 1 78 9 view .LVU69
+ 343 005c FFF7FEFF 		bl	pwm_help
+ 344              	.LVL40:
+ 345 0060 F6E7     		b	.L16
+ 346              	.L22:
+  86:User/console/console.c ****     }
+ 347              		.loc 1 86 9 view .LVU70
+ 348 0062 2946     		mov	r1, r5
+ 349 0064 0648     		ldr	r0, .L28+20
+ 350 0066 FFF7FEFF 		bl	printf
+ 351              	.LVL41:
+ 352 006a F1E7     		b	.L16
+ 353              	.L29:
+ 354              		.align	2
+ 355              	.L28:
+ 356 006c 10000000 		.word	.LC10
+ 357 0070 18000000 		.word	.LC11
+ 358 0074 14000000 		.word	.LC2
+ 359 0078 04000000 		.word	.LC1
+ 360 007c 00000000 		.word	.LC9
+ 361 0080 20000000 		.word	.LC12
+ 362              		.cfi_endproc
+ 363              	.LFE69:
+ 365              		.section	.rodata.config_proc.str1.4,"aMS",%progbits,1
+ 366              		.align	2
+ 367              	.LC13:
+ 368 0000 696E745F 		.ascii	"int_arg\000"
+ 368      61726700 
+ 369              		.align	2
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccgccM9G.s 			page 10
+
+
+ 370              	.LC14:
+ 371 0008 0A636F6E 		.ascii	"\012config int_arg success\012int_arg is :%d\000"
+ 371      66696720 
+ 371      696E745F 
+ 371      61726720 
+ 371      73756363 
+ 372 002f 00       		.align	2
+ 373              	.LC15:
+ 374 0030 7374725F 		.ascii	"str_arg\000"
+ 374      61726700 
+ 375              		.align	2
+ 376              	.LC16:
+ 377 0038 0A636F6E 		.ascii	"\012config str_arg success\012int_arg is :%s\000"
+ 377      66696720 
+ 377      7374725F 
+ 377      61726720 
+ 377      73756363 
+ 378              		.section	.text.config_proc,"ax",%progbits
+ 379              		.align	1
+ 380              		.global	config_proc
+ 381              		.syntax unified
+ 382              		.thumb
+ 383              		.thumb_func
+ 385              	config_proc:
+ 386              	.LVL42:
+ 387              	.LFB70:
+  90:User/console/console.c **** void config_proc(char **str, char num)
+  91:User/console/console.c **** {
+ 388              		.loc 1 91 1 view -0
+ 389              		.cfi_startproc
+ 390              		@ args = 0, pretend = 0, frame = 0
+ 391              		@ frame_needed = 0, uses_anonymous_args = 0
+ 392              		.loc 1 91 1 is_stmt 0 view .LVU72
+ 393 0000 38B5     		push	{r3, r4, r5, lr}
+ 394              	.LCFI5:
+ 395              		.cfi_def_cfa_offset 16
+ 396              		.cfi_offset 3, -16
+ 397              		.cfi_offset 4, -12
+ 398              		.cfi_offset 5, -8
+ 399              		.cfi_offset 14, -4
+  92:User/console/console.c ****     if(num>3)
+ 400              		.loc 1 92 5 is_stmt 1 view .LVU73
+ 401              		.loc 1 92 7 is_stmt 0 view .LVU74
+ 402 0002 0329     		cmp	r1, #3
+ 403 0004 17D8     		bhi	.L37
+ 404 0006 0446     		mov	r4, r0
+  93:User/console/console.c ****     {
+  94:User/console/console.c ****         printf("arg is to many\n");
+  95:User/console/console.c ****         return;
+  96:User/console/console.c ****     }
+  97:User/console/console.c ****     if(num<3)
+ 405              		.loc 1 97 5 is_stmt 1 view .LVU75
+ 406              		.loc 1 97 7 is_stmt 0 view .LVU76
+ 407 0008 0229     		cmp	r1, #2
+ 408 000a 18D9     		bls	.L38
+  98:User/console/console.c ****     {
+  99:User/console/console.c ****         printf("arg is to few\n");
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccgccM9G.s 			page 11
+
+
+ 100:User/console/console.c ****         return;
+ 101:User/console/console.c ****     }
+ 102:User/console/console.c ****     if(strcmp(*(str+1),"int_arg")==0)
+ 409              		.loc 1 102 5 is_stmt 1 view .LVU77
+ 410              		.loc 1 102 8 is_stmt 0 view .LVU78
+ 411 000c 4568     		ldr	r5, [r0, #4]
+ 412 000e 1549     		ldr	r1, .L40
+ 413              	.LVL43:
+ 414              		.loc 1 102 8 view .LVU79
+ 415 0010 2846     		mov	r0, r5
+ 416              	.LVL44:
+ 417              		.loc 1 102 8 view .LVU80
+ 418 0012 FFF7FEFF 		bl	strcmp
+ 419              	.LVL45:
+ 420              		.loc 1 102 7 view .LVU81
+ 421 0016 B0B1     		cbz	r0, .L39
+ 103:User/console/console.c ****     {
+ 104:User/console/console.c ****         int_arg=atoi(*(str+2));
+ 105:User/console/console.c ****         printf("\nconfig int_arg success\nint_arg is :%d",int_arg);
+ 106:User/console/console.c ****     }
+ 107:User/console/console.c ****     else if(strcmp(*(str+1),"str_arg")==0)
+ 422              		.loc 1 107 10 is_stmt 1 view .LVU82
+ 423              		.loc 1 107 13 is_stmt 0 view .LVU83
+ 424 0018 1349     		ldr	r1, .L40+4
+ 425 001a 2846     		mov	r0, r5
+ 426 001c FFF7FEFF 		bl	strcmp
+ 427              	.LVL46:
+ 428              		.loc 1 107 12 view .LVU84
+ 429 0020 D8B9     		cbnz	r0, .L35
+ 108:User/console/console.c ****     {
+ 109:User/console/console.c ****         strcpy(str_arg,*(str+2));
+ 430              		.loc 1 109 9 is_stmt 1 view .LVU85
+ 431 0022 124D     		ldr	r5, .L40+8
+ 432 0024 A168     		ldr	r1, [r4, #8]
+ 433 0026 2846     		mov	r0, r5
+ 434 0028 FFF7FEFF 		bl	strcpy
+ 435              	.LVL47:
+ 110:User/console/console.c ****         printf("\nconfig str_arg success\nint_arg is :%s",str_arg);
+ 436              		.loc 1 110 9 view .LVU86
+ 437 002c 2946     		mov	r1, r5
+ 438 002e 1048     		ldr	r0, .L40+12
+ 439 0030 FFF7FEFF 		bl	printf
+ 440              	.LVL48:
+ 441              	.L30:
+ 111:User/console/console.c ****     }
+ 112:User/console/console.c ****     else
+ 113:User/console/console.c ****     {
+ 114:User/console/console.c ****         printf("cannot access \"config %s\"\n",*(str+1));
+ 115:User/console/console.c ****     }
+ 116:User/console/console.c **** 
+ 117:User/console/console.c **** }
+ 442              		.loc 1 117 1 is_stmt 0 view .LVU87
+ 443 0034 38BD     		pop	{r3, r4, r5, pc}
+ 444              	.LVL49:
+ 445              	.L37:
+  94:User/console/console.c ****         return;
+ 446              		.loc 1 94 9 is_stmt 1 view .LVU88
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccgccM9G.s 			page 12
+
+
+ 447 0036 0F48     		ldr	r0, .L40+16
+ 448              	.LVL50:
+  94:User/console/console.c ****         return;
+ 449              		.loc 1 94 9 is_stmt 0 view .LVU89
+ 450 0038 FFF7FEFF 		bl	puts
+ 451              	.LVL51:
+  95:User/console/console.c ****     }
+ 452              		.loc 1 95 9 is_stmt 1 view .LVU90
+ 453 003c FAE7     		b	.L30
+ 454              	.LVL52:
+ 455              	.L38:
+  99:User/console/console.c ****         return;
+ 456              		.loc 1 99 9 view .LVU91
+ 457 003e 0E48     		ldr	r0, .L40+20
+ 458              	.LVL53:
+  99:User/console/console.c ****         return;
+ 459              		.loc 1 99 9 is_stmt 0 view .LVU92
+ 460 0040 FFF7FEFF 		bl	puts
+ 461              	.LVL54:
+ 100:User/console/console.c ****     }
+ 462              		.loc 1 100 9 is_stmt 1 view .LVU93
+ 463 0044 F6E7     		b	.L30
+ 464              	.L39:
+ 104:User/console/console.c ****         printf("\nconfig int_arg success\nint_arg is :%d",int_arg);
+ 465              		.loc 1 104 9 view .LVU94
+ 104:User/console/console.c ****         printf("\nconfig int_arg success\nint_arg is :%d",int_arg);
+ 466              		.loc 1 104 17 is_stmt 0 view .LVU95
+ 467 0046 A068     		ldr	r0, [r4, #8]
+ 468 0048 FFF7FEFF 		bl	atoi
+ 469              	.LVL55:
+ 470 004c 0146     		mov	r1, r0
+ 104:User/console/console.c ****         printf("\nconfig int_arg success\nint_arg is :%d",int_arg);
+ 471              		.loc 1 104 16 view .LVU96
+ 472 004e 0B4B     		ldr	r3, .L40+24
+ 473 0050 1860     		str	r0, [r3]
+ 105:User/console/console.c ****     }
+ 474              		.loc 1 105 9 is_stmt 1 view .LVU97
+ 475 0052 0B48     		ldr	r0, .L40+28
+ 476 0054 FFF7FEFF 		bl	printf
+ 477              	.LVL56:
+ 478 0058 ECE7     		b	.L30
+ 479              	.L35:
+ 114:User/console/console.c ****     }
+ 480              		.loc 1 114 9 view .LVU98
+ 481 005a 2946     		mov	r1, r5
+ 482 005c 0948     		ldr	r0, .L40+32
+ 483 005e FFF7FEFF 		bl	printf
+ 484              	.LVL57:
+ 485 0062 E7E7     		b	.L30
+ 486              	.L41:
+ 487              		.align	2
+ 488              	.L40:
+ 489 0064 00000000 		.word	.LC13
+ 490 0068 30000000 		.word	.LC15
+ 491 006c 00000000 		.word	.LANCHOR1
+ 492 0070 38000000 		.word	.LC16
+ 493 0074 04000000 		.word	.LC1
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccgccM9G.s 			page 13
+
+
+ 494 0078 00000000 		.word	.LC9
+ 495 007c 00000000 		.word	.LANCHOR0
+ 496 0080 08000000 		.word	.LC14
+ 497 0084 20000000 		.word	.LC12
+ 498              		.cfi_endproc
+ 499              	.LFE70:
+ 501              		.section	.rodata.list_proc.str1.4,"aMS",%progbits,1
+ 502              		.align	2
+ 503              	.LC17:
+ 504 0000 25732000 		.ascii	"%s \000"
+ 505              		.section	.text.list_proc,"ax",%progbits
+ 506              		.align	1
+ 507              		.global	list_proc
+ 508              		.syntax unified
+ 509              		.thumb
+ 510              		.thumb_func
+ 512              	list_proc:
+ 513              	.LVL58:
+ 514              	.LFB71:
+ 118:User/console/console.c **** 
+ 119:User/console/console.c **** ST_CMD cmd_list[] =
+ 120:User/console/console.c ****     {
+ 121:User/console/console.c ****         {"ls", list_proc},
+ 122:User/console/console.c ****         {"led", led_proc},
+ 123:User/console/console.c ****         {"config",config_proc},
+ 124:User/console/console.c ****         {"pwm",pwm_proc},
+ 125:User/console/console.c **** };
+ 126:User/console/console.c **** 
+ 127:User/console/console.c **** void list_proc(char **str, char num)
+ 128:User/console/console.c **** {
+ 515              		.loc 1 128 1 view -0
+ 516              		.cfi_startproc
+ 517              		@ args = 0, pretend = 0, frame = 0
+ 518              		@ frame_needed = 0, uses_anonymous_args = 0
+ 519              		.loc 1 128 1 is_stmt 0 view .LVU100
+ 520 0000 10B5     		push	{r4, lr}
+ 521              	.LCFI6:
+ 522              		.cfi_def_cfa_offset 8
+ 523              		.cfi_offset 4, -8
+ 524              		.cfi_offset 14, -4
+ 129:User/console/console.c ****     int i, size = sizeof(cmd_list) / sizeof(ST_CMD);
+ 525              		.loc 1 129 5 is_stmt 1 view .LVU101
+ 526              	.LVL59:
+ 130:User/console/console.c ****     for (i = 0; i < size; i++)
+ 527              		.loc 1 130 5 view .LVU102
+ 528              		.loc 1 130 12 is_stmt 0 view .LVU103
+ 529 0002 0024     		movs	r4, #0
+ 530              		.loc 1 130 5 view .LVU104
+ 531 0004 06E0     		b	.L43
+ 532              	.LVL60:
+ 533              	.L44:
+ 131:User/console/console.c ****     {
+ 132:User/console/console.c ****         printf("%s ", cmd_list[i].cmd);
+ 534              		.loc 1 132 9 is_stmt 1 discriminator 3 view .LVU105
+ 535 0006 064B     		ldr	r3, .L46
+ 536 0008 53F83410 		ldr	r1, [r3, r4, lsl #3]
+ 537 000c 0548     		ldr	r0, .L46+4
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccgccM9G.s 			page 14
+
+
+ 538 000e FFF7FEFF 		bl	printf
+ 539              	.LVL61:
+ 130:User/console/console.c ****     for (i = 0; i < size; i++)
+ 540              		.loc 1 130 27 discriminator 3 view .LVU106
+ 130:User/console/console.c ****     for (i = 0; i < size; i++)
+ 541              		.loc 1 130 28 is_stmt 0 discriminator 3 view .LVU107
+ 542 0012 0134     		adds	r4, r4, #1
+ 543              	.LVL62:
+ 544              	.L43:
+ 130:User/console/console.c ****     for (i = 0; i < size; i++)
+ 545              		.loc 1 130 17 is_stmt 1 discriminator 1 view .LVU108
+ 130:User/console/console.c ****     for (i = 0; i < size; i++)
+ 546              		.loc 1 130 5 is_stmt 0 discriminator 1 view .LVU109
+ 547 0014 032C     		cmp	r4, #3
+ 548 0016 F6DD     		ble	.L44
+ 133:User/console/console.c ****     }
+ 134:User/console/console.c ****     printf("\n");
+ 549              		.loc 1 134 5 is_stmt 1 view .LVU110
+ 550 0018 0A20     		movs	r0, #10
+ 551 001a FFF7FEFF 		bl	putchar
+ 552              	.LVL63:
+ 135:User/console/console.c ****     // 以下代码调试使用，可以输出分割后的全部参数
+ 136:User/console/console.c ****     // for(i=0;i<num;i++)
+ 137:User/console/console.c ****     // {
+ 138:User/console/console.c ****     //     printf("%s\n",*str);
+ 139:User/console/console.c ****     //     str++;
+ 140:User/console/console.c ****     // }
+ 141:User/console/console.c **** }
+ 553              		.loc 1 141 1 is_stmt 0 view .LVU111
+ 554 001e 10BD     		pop	{r4, pc}
+ 555              	.LVL64:
+ 556              	.L47:
+ 557              		.loc 1 141 1 view .LVU112
+ 558              		.align	2
+ 559              	.L46:
+ 560 0020 00000000 		.word	.LANCHOR2
+ 561 0024 00000000 		.word	.LC17
+ 562              		.cfi_endproc
+ 563              	.LFE71:
+ 565              		.section	.text.split_string,"ax",%progbits
+ 566              		.align	1
+ 567              		.global	split_string
+ 568              		.syntax unified
+ 569              		.thumb
+ 570              		.thumb_func
+ 572              	split_string:
+ 573              	.LVL65:
+ 574              	.LFB73:
+ 142:User/console/console.c **** 
+ 143:User/console/console.c **** void shell_proc()
+ 144:User/console/console.c **** {
+ 145:User/console/console.c ****     char buf[128] = {0};
+ 146:User/console/console.c ****     char *sub_buf[20];
+ 147:User/console/console.c ****     char num = 0;
+ 148:User/console/console.c ****     if (fifo_s_isempty(&uart1_rx_fifo) == 0)
+ 149:User/console/console.c ****     {
+ 150:User/console/console.c ****         fifo_s_gets(&uart1_rx_fifo, buf, fifo_s_used(&uart1_rx_fifo));
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccgccM9G.s 			page 15
+
+
+ 151:User/console/console.c ****         num = split_string(buf, " ", sub_buf, 20);
+ 152:User/console/console.c ****         int i, size = sizeof(cmd_list) / sizeof(ST_CMD);
+ 153:User/console/console.c ****         for (i = 0; i < size; i++)
+ 154:User/console/console.c ****         {
+ 155:User/console/console.c ****             if (strcmp(sub_buf[0], cmd_list[i].cmd) == 0)
+ 156:User/console/console.c ****             {
+ 157:User/console/console.c ****                 cmd_list[i].cb((char **)sub_buf, num);
+ 158:User/console/console.c ****                 break;
+ 159:User/console/console.c ****             }
+ 160:User/console/console.c ****             else if (i >= size - 1)
+ 161:User/console/console.c ****             {
+ 162:User/console/console.c ****                 printf("%s is not an executable command\n", sub_buf[0]);
+ 163:User/console/console.c ****             }
+ 164:User/console/console.c ****         }
+ 165:User/console/console.c ****     }
+ 166:User/console/console.c **** }
+ 167:User/console/console.c **** 
+ 168:User/console/console.c **** char split_string(char *str, const char *delim, char *sub_ptr[], char size)
+ 169:User/console/console.c **** {
+ 575              		.loc 1 169 1 is_stmt 1 view -0
+ 576              		.cfi_startproc
+ 577              		@ args = 0, pretend = 0, frame = 0
+ 578              		@ frame_needed = 0, uses_anonymous_args = 0
+ 579              		.loc 1 169 1 is_stmt 0 view .LVU114
+ 580 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 581              	.LCFI7:
+ 582              		.cfi_def_cfa_offset 24
+ 583              		.cfi_offset 3, -24
+ 584              		.cfi_offset 4, -20
+ 585              		.cfi_offset 5, -16
+ 586              		.cfi_offset 6, -12
+ 587              		.cfi_offset 7, -8
+ 588              		.cfi_offset 14, -4
+ 589 0002 0F46     		mov	r7, r1
+ 590 0004 1646     		mov	r6, r2
+ 591 0006 1D46     		mov	r5, r3
+ 170:User/console/console.c ****     char *token = NULL;
+ 592              		.loc 1 170 5 is_stmt 1 view .LVU115
+ 593              	.LVL66:
+ 171:User/console/console.c ****     unsigned char idx = 0;
+ 594              		.loc 1 171 5 view .LVU116
+ 172:User/console/console.c ****     token = strtok(str, delim);
+ 595              		.loc 1 172 5 view .LVU117
+ 596              		.loc 1 172 13 is_stmt 0 view .LVU118
+ 597 0008 FFF7FEFF 		bl	strtok
+ 598              	.LVL67:
+ 173:User/console/console.c ****     while (token && idx < size)
+ 599              		.loc 1 173 5 is_stmt 1 view .LVU119
+ 171:User/console/console.c ****     unsigned char idx = 0;
+ 600              		.loc 1 171 19 is_stmt 0 view .LVU120
+ 601 000c 4FF0000C 		mov	ip, #0
+ 602              		.loc 1 173 11 view .LVU121
+ 603 0010 09E0     		b	.L49
+ 604              	.LVL68:
+ 605              	.L51:
+ 174:User/console/console.c ****     {
+ 175:User/console/console.c ****         sub_ptr[idx++] = token;
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccgccM9G.s 			page 16
+
+
+ 606              		.loc 1 175 9 is_stmt 1 view .LVU122
+ 607              		.loc 1 175 20 is_stmt 0 view .LVU123
+ 608 0012 0CF10104 		add	r4, ip, #1
+ 609 0016 E4B2     		uxtb	r4, r4
+ 610              	.LVL69:
+ 611              		.loc 1 175 24 view .LVU124
+ 612 0018 46F82C00 		str	r0, [r6, ip, lsl #2]
+ 176:User/console/console.c ****         token = strtok(NULL, delim);
+ 613              		.loc 1 176 9 is_stmt 1 view .LVU125
+ 614              		.loc 1 176 17 is_stmt 0 view .LVU126
+ 615 001c 3946     		mov	r1, r7
+ 616 001e 0020     		movs	r0, #0
+ 617              	.LVL70:
+ 618              		.loc 1 176 17 view .LVU127
+ 619 0020 FFF7FEFF 		bl	strtok
+ 620              	.LVL71:
+ 175:User/console/console.c ****         token = strtok(NULL, delim);
+ 621              		.loc 1 175 20 view .LVU128
+ 622 0024 A446     		mov	ip, r4
+ 623              	.LVL72:
+ 624              	.L49:
+ 173:User/console/console.c ****     {
+ 625              		.loc 1 173 11 is_stmt 1 view .LVU129
+ 626 0026 08B1     		cbz	r0, .L50
+ 173:User/console/console.c ****     {
+ 627              		.loc 1 173 18 is_stmt 0 discriminator 1 view .LVU130
+ 628 0028 AC45     		cmp	ip, r5
+ 629 002a F2D3     		bcc	.L51
+ 630              	.L50:
+ 177:User/console/console.c ****     }
+ 178:User/console/console.c ****     return idx;
+ 631              		.loc 1 178 5 is_stmt 1 view .LVU131
+ 179:User/console/console.c **** }
+ 632              		.loc 1 179 1 is_stmt 0 view .LVU132
+ 633 002c 6046     		mov	r0, ip
+ 634              	.LVL73:
+ 635              		.loc 1 179 1 view .LVU133
+ 636 002e F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 637              		.loc 1 179 1 view .LVU134
+ 638              		.cfi_endproc
+ 639              	.LFE73:
+ 641              		.section	.rodata.shell_proc.str1.4,"aMS",%progbits,1
+ 642              		.align	2
+ 643              	.LC18:
+ 644 0000 25732069 		.ascii	"%s is not an executable command\012\000"
+ 644      73206E6F 
+ 644      7420616E 
+ 644      20657865 
+ 644      63757461 
+ 645              		.section	.text.shell_proc,"ax",%progbits
+ 646              		.align	1
+ 647              		.global	shell_proc
+ 648              		.syntax unified
+ 649              		.thumb
+ 650              		.thumb_func
+ 652              	shell_proc:
+ 653              	.LFB72:
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccgccM9G.s 			page 17
+
+
+ 144:User/console/console.c ****     char buf[128] = {0};
+ 654              		.loc 1 144 1 is_stmt 1 view -0
+ 655              		.cfi_startproc
+ 656              		@ args = 0, pretend = 0, frame = 208
+ 657              		@ frame_needed = 0, uses_anonymous_args = 0
+ 658 0000 70B5     		push	{r4, r5, r6, lr}
+ 659              	.LCFI8:
+ 660              		.cfi_def_cfa_offset 16
+ 661              		.cfi_offset 4, -16
+ 662              		.cfi_offset 5, -12
+ 663              		.cfi_offset 6, -8
+ 664              		.cfi_offset 14, -4
+ 665 0002 B4B0     		sub	sp, sp, #208
+ 666              	.LCFI9:
+ 667              		.cfi_def_cfa_offset 224
+ 145:User/console/console.c ****     char *sub_buf[20];
+ 668              		.loc 1 145 5 view .LVU136
+ 145:User/console/console.c ****     char *sub_buf[20];
+ 669              		.loc 1 145 10 is_stmt 0 view .LVU137
+ 670 0004 0021     		movs	r1, #0
+ 671 0006 1491     		str	r1, [sp, #80]
+ 672 0008 7C22     		movs	r2, #124
+ 673 000a 15A8     		add	r0, sp, #84
+ 674 000c FFF7FEFF 		bl	memset
+ 675              	.LVL74:
+ 146:User/console/console.c ****     char num = 0;
+ 676              		.loc 1 146 5 is_stmt 1 view .LVU138
+ 147:User/console/console.c ****     if (fifo_s_isempty(&uart1_rx_fifo) == 0)
+ 677              		.loc 1 147 5 view .LVU139
+ 148:User/console/console.c ****     {
+ 678              		.loc 1 148 5 view .LVU140
+ 148:User/console/console.c ****     {
+ 679              		.loc 1 148 9 is_stmt 0 view .LVU141
+ 680 0010 1948     		ldr	r0, .L62
+ 681 0012 FFF7FEFF 		bl	fifo_s_isempty
+ 682              	.LVL75:
+ 148:User/console/console.c ****     {
+ 683              		.loc 1 148 8 view .LVU142
+ 684 0016 08B1     		cbz	r0, .L60
+ 685              	.LVL76:
+ 686              	.L53:
+ 166:User/console/console.c **** 
+ 687              		.loc 1 166 1 view .LVU143
+ 688 0018 34B0     		add	sp, sp, #208
+ 689              	.LCFI10:
+ 690              		.cfi_remember_state
+ 691              		.cfi_def_cfa_offset 16
+ 692              		@ sp needed
+ 693 001a 70BD     		pop	{r4, r5, r6, pc}
+ 694              	.LVL77:
+ 695              	.L60:
+ 696              	.LCFI11:
+ 697              		.cfi_restore_state
+ 698              	.LBB3:
+ 150:User/console/console.c ****         num = split_string(buf, " ", sub_buf, 20);
+ 699              		.loc 1 150 9 is_stmt 1 view .LVU144
+ 700 001c 164C     		ldr	r4, .L62
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccgccM9G.s 			page 18
+
+
+ 701 001e 2046     		mov	r0, r4
+ 702 0020 FFF7FEFF 		bl	fifo_s_used
+ 703              	.LVL78:
+ 704 0024 0246     		mov	r2, r0
+ 705 0026 14A9     		add	r1, sp, #80
+ 706 0028 2046     		mov	r0, r4
+ 707 002a FFF7FEFF 		bl	fifo_s_gets
+ 708              	.LVL79:
+ 151:User/console/console.c ****         int i, size = sizeof(cmd_list) / sizeof(ST_CMD);
+ 709              		.loc 1 151 9 view .LVU145
+ 151:User/console/console.c ****         int i, size = sizeof(cmd_list) / sizeof(ST_CMD);
+ 710              		.loc 1 151 15 is_stmt 0 view .LVU146
+ 711 002e 1423     		movs	r3, #20
+ 712 0030 6A46     		mov	r2, sp
+ 713 0032 1249     		ldr	r1, .L62+4
+ 714 0034 14A8     		add	r0, sp, #80
+ 715 0036 FFF7FEFF 		bl	split_string
+ 716              	.LVL80:
+ 717 003a 0646     		mov	r6, r0
+ 718              	.LVL81:
+ 152:User/console/console.c ****         for (i = 0; i < size; i++)
+ 719              		.loc 1 152 9 is_stmt 1 view .LVU147
+ 153:User/console/console.c ****         {
+ 720              		.loc 1 153 9 view .LVU148
+ 153:User/console/console.c ****         {
+ 721              		.loc 1 153 16 is_stmt 0 view .LVU149
+ 722 003c 0024     		movs	r4, #0
+ 153:User/console/console.c ****         {
+ 723              		.loc 1 153 9 view .LVU150
+ 724 003e 08E0     		b	.L55
+ 725              	.LVL82:
+ 726              	.L61:
+ 157:User/console/console.c ****                 break;
+ 727              		.loc 1 157 17 is_stmt 1 view .LVU151
+ 157:User/console/console.c ****                 break;
+ 728              		.loc 1 157 28 is_stmt 0 view .LVU152
+ 729 0040 0F4B     		ldr	r3, .L62+8
+ 730 0042 03EBC404 		add	r4, r3, r4, lsl #3
+ 731              	.LVL83:
+ 157:User/console/console.c ****                 break;
+ 732              		.loc 1 157 28 view .LVU153
+ 733 0046 6368     		ldr	r3, [r4, #4]
+ 157:User/console/console.c ****                 break;
+ 734              		.loc 1 157 17 view .LVU154
+ 735 0048 3146     		mov	r1, r6
+ 736 004a 6846     		mov	r0, sp
+ 737 004c 9847     		blx	r3
+ 738              	.LVL84:
+ 158:User/console/console.c ****             }
+ 739              		.loc 1 158 17 is_stmt 1 view .LVU155
+ 740 004e E3E7     		b	.L53
+ 741              	.LVL85:
+ 742              	.L57:
+ 153:User/console/console.c ****         {
+ 743              		.loc 1 153 31 discriminator 2 view .LVU156
+ 153:User/console/console.c ****         {
+ 744              		.loc 1 153 32 is_stmt 0 discriminator 2 view .LVU157
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccgccM9G.s 			page 19
+
+
+ 745 0050 0134     		adds	r4, r4, #1
+ 746              	.LVL86:
+ 747              	.L55:
+ 153:User/console/console.c ****         {
+ 748              		.loc 1 153 21 is_stmt 1 discriminator 1 view .LVU158
+ 153:User/console/console.c ****         {
+ 749              		.loc 1 153 9 is_stmt 0 discriminator 1 view .LVU159
+ 750 0052 032C     		cmp	r4, #3
+ 751 0054 E0DC     		bgt	.L53
+ 155:User/console/console.c ****             {
+ 752              		.loc 1 155 13 is_stmt 1 view .LVU160
+ 155:User/console/console.c ****             {
+ 753              		.loc 1 155 31 is_stmt 0 view .LVU161
+ 754 0056 009D     		ldr	r5, [sp]
+ 155:User/console/console.c ****             {
+ 755              		.loc 1 155 17 view .LVU162
+ 756 0058 094B     		ldr	r3, .L62+8
+ 757 005a 53F83410 		ldr	r1, [r3, r4, lsl #3]
+ 758 005e 2846     		mov	r0, r5
+ 759 0060 FFF7FEFF 		bl	strcmp
+ 760              	.LVL87:
+ 155:User/console/console.c ****             {
+ 761              		.loc 1 155 16 view .LVU163
+ 762 0064 0028     		cmp	r0, #0
+ 763 0066 EBD0     		beq	.L61
+ 160:User/console/console.c ****             {
+ 764              		.loc 1 160 18 is_stmt 1 view .LVU164
+ 160:User/console/console.c ****             {
+ 765              		.loc 1 160 21 is_stmt 0 view .LVU165
+ 766 0068 022C     		cmp	r4, #2
+ 767 006a F1DD     		ble	.L57
+ 162:User/console/console.c ****             }
+ 768              		.loc 1 162 17 is_stmt 1 view .LVU166
+ 769 006c 2946     		mov	r1, r5
+ 770 006e 0548     		ldr	r0, .L62+12
+ 771 0070 FFF7FEFF 		bl	printf
+ 772              	.LVL88:
+ 773 0074 ECE7     		b	.L57
+ 774              	.L63:
+ 775 0076 00BF     		.align	2
+ 776              	.L62:
+ 777 0078 00000000 		.word	uart1_rx_fifo
+ 778 007c 00000000 		.word	.LC0
+ 779 0080 00000000 		.word	.LANCHOR2
+ 780 0084 00000000 		.word	.LC18
+ 781              	.LBE3:
+ 782              		.cfi_endproc
+ 783              	.LFE72:
+ 785              		.global	cmd_list
+ 786              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 787              		.align	2
+ 788              	.LC19:
+ 789 0000 6C7300   		.ascii	"ls\000"
+ 790 0003 00       		.align	2
+ 791              	.LC20:
+ 792 0004 6C656400 		.ascii	"led\000"
+ 793              		.align	2
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccgccM9G.s 			page 20
+
+
+ 794              	.LC21:
+ 795 0008 636F6E66 		.ascii	"config\000"
+ 795      696700
+ 796 000f 00       		.align	2
+ 797              	.LC22:
+ 798 0010 70776D00 		.ascii	"pwm\000"
+ 799              		.global	str_arg
+ 800              		.global	int_arg
+ 801              		.section	.bss.int_arg,"aw",%nobits
+ 802              		.align	2
+ 803              		.set	.LANCHOR0,. + 0
+ 806              	int_arg:
+ 807 0000 00000000 		.space	4
+ 808              		.section	.bss.str_arg,"aw",%nobits
+ 809              		.align	2
+ 810              		.set	.LANCHOR1,. + 0
+ 813              	str_arg:
+ 814 0000 00000000 		.space	128
+ 814      00000000 
+ 814      00000000 
+ 814      00000000 
+ 814      00000000 
+ 815              		.section	.data.cmd_list,"aw"
+ 816              		.align	2
+ 817              		.set	.LANCHOR2,. + 0
+ 820              	cmd_list:
+ 821 0000 00000000 		.word	.LC19
+ 822 0004 00000000 		.word	list_proc
+ 823 0008 04000000 		.word	.LC20
+ 824 000c 00000000 		.word	led_proc
+ 825 0010 08000000 		.word	.LC21
+ 826 0014 00000000 		.word	config_proc
+ 827 0018 10000000 		.word	.LC22
+ 828 001c 00000000 		.word	pwm_proc
+ 829              		.text
+ 830              	.Letext0:
+ 831              		.file 2 "User/fifo/fifo.h"
+ 832              		.file 3 "c:\\tool\\gcc-arm\\arm-none-eabi\\include\\string.h"
+ 833              		.file 4 "c:\\tool\\gcc-arm\\arm-none-eabi\\include\\stdio.h"
+ 834              		.file 5 "<built-in>"
+ 835              		.file 6 "c:\\tool\\gcc-arm\\arm-none-eabi\\include\\stdlib.h"
+ 836              		.file 7 "User/pwm/pwm.h"
+ 837              		.file 8 "User/led/led.h"
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccgccM9G.s 			page 21
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 console.c
+C:\Users\GM\AppData\Local\Temp\ccgccM9G.s:18     .rodata.led_proc.str1.4:00000000 $d
+C:\Users\GM\AppData\Local\Temp\ccgccM9G.s:46     .text.led_proc:00000000 $t
+C:\Users\GM\AppData\Local\Temp\ccgccM9G.s:52     .text.led_proc:00000000 led_proc
+C:\Users\GM\AppData\Local\Temp\ccgccM9G.s:212    .text.led_proc:000000a0 $d
+C:\Users\GM\AppData\Local\Temp\ccgccM9G.s:225    .rodata.pwm_proc.str1.4:00000000 $d
+C:\Users\GM\AppData\Local\Temp\ccgccM9G.s:238    .text.pwm_proc:00000000 $t
+C:\Users\GM\AppData\Local\Temp\ccgccM9G.s:244    .text.pwm_proc:00000000 pwm_proc
+C:\Users\GM\AppData\Local\Temp\ccgccM9G.s:356    .text.pwm_proc:0000006c $d
+C:\Users\GM\AppData\Local\Temp\ccgccM9G.s:366    .rodata.config_proc.str1.4:00000000 $d
+C:\Users\GM\AppData\Local\Temp\ccgccM9G.s:379    .text.config_proc:00000000 $t
+C:\Users\GM\AppData\Local\Temp\ccgccM9G.s:385    .text.config_proc:00000000 config_proc
+C:\Users\GM\AppData\Local\Temp\ccgccM9G.s:489    .text.config_proc:00000064 $d
+C:\Users\GM\AppData\Local\Temp\ccgccM9G.s:502    .rodata.list_proc.str1.4:00000000 $d
+C:\Users\GM\AppData\Local\Temp\ccgccM9G.s:506    .text.list_proc:00000000 $t
+C:\Users\GM\AppData\Local\Temp\ccgccM9G.s:512    .text.list_proc:00000000 list_proc
+C:\Users\GM\AppData\Local\Temp\ccgccM9G.s:560    .text.list_proc:00000020 $d
+C:\Users\GM\AppData\Local\Temp\ccgccM9G.s:566    .text.split_string:00000000 $t
+C:\Users\GM\AppData\Local\Temp\ccgccM9G.s:572    .text.split_string:00000000 split_string
+C:\Users\GM\AppData\Local\Temp\ccgccM9G.s:642    .rodata.shell_proc.str1.4:00000000 $d
+C:\Users\GM\AppData\Local\Temp\ccgccM9G.s:646    .text.shell_proc:00000000 $t
+C:\Users\GM\AppData\Local\Temp\ccgccM9G.s:652    .text.shell_proc:00000000 shell_proc
+C:\Users\GM\AppData\Local\Temp\ccgccM9G.s:777    .text.shell_proc:00000078 $d
+C:\Users\GM\AppData\Local\Temp\ccgccM9G.s:820    .data.cmd_list:00000000 cmd_list
+C:\Users\GM\AppData\Local\Temp\ccgccM9G.s:787    .rodata.str1.4:00000000 $d
+C:\Users\GM\AppData\Local\Temp\ccgccM9G.s:813    .bss.str_arg:00000000 str_arg
+C:\Users\GM\AppData\Local\Temp\ccgccM9G.s:806    .bss.int_arg:00000000 int_arg
+C:\Users\GM\AppData\Local\Temp\ccgccM9G.s:802    .bss.int_arg:00000000 $d
+C:\Users\GM\AppData\Local\Temp\ccgccM9G.s:809    .bss.str_arg:00000000 $d
+C:\Users\GM\AppData\Local\Temp\ccgccM9G.s:816    .data.cmd_list:00000000 $d
+
+UNDEFINED SYMBOLS
+memset
+strcat
+strlen
+strstr
+puts
+led_write
+printf
+strcmp
+pwm_help
+atoi
+pwm_freq
+pwm_duty
+strcpy
+putchar
+strtok
+fifo_s_isempty
+fifo_s_used
+fifo_s_gets
+uart1_rx_fifo

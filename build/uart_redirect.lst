@@ -1,0 +1,173 @@
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccqLXu1I.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"uart_redirect.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.__io_putchar,"ax",%progbits
+  18              		.align	1
+  19              		.global	__io_putchar
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  24              	__io_putchar:
+  25              	.LVL0:
+  26              	.LFB68:
+  27              		.file 1 "User/uart_redirect/uart_redirect.c"
+   1:User/uart_redirect/uart_redirect.c **** #include "uart_redirect.h"
+   2:User/uart_redirect/uart_redirect.c **** PUTCHAR_PROTOTYPE
+   3:User/uart_redirect/uart_redirect.c **** {
+  28              		.loc 1 3 1 view -0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 8
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		.loc 1 3 1 is_stmt 0 view .LVU1
+  33 0000 00B5     		push	{lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 4
+  36              		.cfi_offset 14, -4
+  37 0002 83B0     		sub	sp, sp, #12
+  38              	.LCFI1:
+  39              		.cfi_def_cfa_offset 16
+  40 0004 0190     		str	r0, [sp, #4]
+   4:User/uart_redirect/uart_redirect.c ****     /* Place your implementation of fputc here */
+   5:User/uart_redirect/uart_redirect.c ****     /* e.g. write a character to the USART3 and Loop until the end of transmission */
+   6:User/uart_redirect/uart_redirect.c ****     HAL_UART_Transmit(&huart1, (uint8_t *)&ch, 1, 0xFFFF);
+  41              		.loc 1 6 5 is_stmt 1 view .LVU2
+  42 0006 4FF6FF73 		movw	r3, #65535
+  43 000a 0122     		movs	r2, #1
+  44 000c 01A9     		add	r1, sp, #4
+  45 000e 0348     		ldr	r0, .L3
+  46              	.LVL1:
+  47              		.loc 1 6 5 is_stmt 0 view .LVU3
+  48 0010 FFF7FEFF 		bl	HAL_UART_Transmit
+  49              	.LVL2:
+   7:User/uart_redirect/uart_redirect.c ****     return ch;
+  50              		.loc 1 7 5 is_stmt 1 view .LVU4
+   8:User/uart_redirect/uart_redirect.c **** }
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccqLXu1I.s 			page 2
+
+
+  51              		.loc 1 8 1 is_stmt 0 view .LVU5
+  52 0014 0198     		ldr	r0, [sp, #4]
+  53 0016 03B0     		add	sp, sp, #12
+  54              	.LCFI2:
+  55              		.cfi_def_cfa_offset 4
+  56              		@ sp needed
+  57 0018 5DF804FB 		ldr	pc, [sp], #4
+  58              	.L4:
+  59              		.align	2
+  60              	.L3:
+  61 001c 00000000 		.word	huart1
+  62              		.cfi_endproc
+  63              	.LFE68:
+  65              		.section	.text._write,"ax",%progbits
+  66              		.align	1
+  67              		.global	_write
+  68              		.syntax unified
+  69              		.thumb
+  70              		.thumb_func
+  72              	_write:
+  73              	.LVL3:
+  74              	.LFB69:
+   9:User/uart_redirect/uart_redirect.c **** int _write(int fd, char *pBuffer, int size)
+  10:User/uart_redirect/uart_redirect.c **** {
+  75              		.loc 1 10 1 is_stmt 1 view -0
+  76              		.cfi_startproc
+  77              		@ args = 0, pretend = 0, frame = 0
+  78              		@ frame_needed = 0, uses_anonymous_args = 0
+  79              		.loc 1 10 1 is_stmt 0 view .LVU7
+  80 0000 70B5     		push	{r4, r5, r6, lr}
+  81              	.LCFI3:
+  82              		.cfi_def_cfa_offset 16
+  83              		.cfi_offset 4, -16
+  84              		.cfi_offset 5, -12
+  85              		.cfi_offset 6, -8
+  86              		.cfi_offset 14, -4
+  87 0002 0C46     		mov	r4, r1
+  88 0004 1646     		mov	r6, r2
+  11:User/uart_redirect/uart_redirect.c ****     for (int i = 0; i < size; i++)
+  89              		.loc 1 11 5 is_stmt 1 view .LVU8
+  90              	.LBB2:
+  91              		.loc 1 11 10 view .LVU9
+  92              	.LVL4:
+  93              		.loc 1 11 14 is_stmt 0 view .LVU10
+  94 0006 0025     		movs	r5, #0
+  95              		.loc 1 11 5 view .LVU11
+  96 0008 04E0     		b	.L6
+  97              	.LVL5:
+  98              	.L7:
+  12:User/uart_redirect/uart_redirect.c ****     {
+  13:User/uart_redirect/uart_redirect.c ****         __io_putchar(*pBuffer++);
+  99              		.loc 1 13 9 is_stmt 1 discriminator 3 view .LVU12
+ 100              		.loc 1 13 9 is_stmt 0 discriminator 3 view .LVU13
+ 101 000a 14F8010B 		ldrb	r0, [r4], #1	@ zero_extendqisi2
+ 102              	.LVL6:
+ 103              		.loc 1 13 9 discriminator 3 view .LVU14
+ 104 000e FFF7FEFF 		bl	__io_putchar
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccqLXu1I.s 			page 3
+
+
+ 105              	.LVL7:
+  11:User/uart_redirect/uart_redirect.c ****     for (int i = 0; i < size; i++)
+ 106              		.loc 1 11 31 is_stmt 1 discriminator 3 view .LVU15
+  11:User/uart_redirect/uart_redirect.c ****     for (int i = 0; i < size; i++)
+ 107              		.loc 1 11 32 is_stmt 0 discriminator 3 view .LVU16
+ 108 0012 0135     		adds	r5, r5, #1
+ 109              	.LVL8:
+ 110              	.L6:
+  11:User/uart_redirect/uart_redirect.c ****     for (int i = 0; i < size; i++)
+ 111              		.loc 1 11 21 is_stmt 1 discriminator 1 view .LVU17
+  11:User/uart_redirect/uart_redirect.c ****     for (int i = 0; i < size; i++)
+ 112              		.loc 1 11 5 is_stmt 0 discriminator 1 view .LVU18
+ 113 0014 B542     		cmp	r5, r6
+ 114 0016 F8DB     		blt	.L7
+  11:User/uart_redirect/uart_redirect.c ****     for (int i = 0; i < size; i++)
+ 115              		.loc 1 11 5 discriminator 1 view .LVU19
+ 116              	.LBE2:
+  14:User/uart_redirect/uart_redirect.c ****     }
+  15:User/uart_redirect/uart_redirect.c ****     return size;
+ 117              		.loc 1 15 5 is_stmt 1 view .LVU20
+  16:User/uart_redirect/uart_redirect.c **** }
+ 118              		.loc 1 16 1 is_stmt 0 view .LVU21
+ 119 0018 3046     		mov	r0, r6
+ 120 001a 70BD     		pop	{r4, r5, r6, pc}
+ 121              		.loc 1 16 1 view .LVU22
+ 122              		.cfi_endproc
+ 123              	.LFE69:
+ 125              		.text
+ 126              	.Letext0:
+ 127              		.file 2 "c:\\tool\\gcc-arm\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 128              		.file 3 "c:\\tool\\gcc-arm\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 129              		.file 4 "Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h"
+ 130              		.file 5 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h"
+ 131              		.file 6 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma.h"
+ 132              		.file 7 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h"
+ 133              		.file 8 "Core/Inc/usart.h"
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccqLXu1I.s 			page 4
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 uart_redirect.c
+C:\Users\GM\AppData\Local\Temp\ccqLXu1I.s:18     .text.__io_putchar:00000000 $t
+C:\Users\GM\AppData\Local\Temp\ccqLXu1I.s:24     .text.__io_putchar:00000000 __io_putchar
+C:\Users\GM\AppData\Local\Temp\ccqLXu1I.s:61     .text.__io_putchar:0000001c $d
+C:\Users\GM\AppData\Local\Temp\ccqLXu1I.s:66     .text._write:00000000 $t
+C:\Users\GM\AppData\Local\Temp\ccqLXu1I.s:72     .text._write:00000000 _write
+
+UNDEFINED SYMBOLS
+HAL_UART_Transmit
+huart1

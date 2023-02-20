@@ -1,0 +1,17 @@
+{
+    "files.associations": {
+        "oled.h": "c",
+        "i2c.h": "c",
+        "soft_spi.h": "c",
+        "m_tim.h": "c",
+        "console.h": "c",
+        "uart_redirect.h": "c",
+        "string.h": "c",
+        "stdio.h": "c",
+        "gpio.h": "c",
+        "oledfont.h": "c",
+        "soft_i2c.h": "c",
+        "codetab.h": "c",
+        "pwm.h": "c"
+    }
+}

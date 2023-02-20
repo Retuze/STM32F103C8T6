@@ -1,0 +1,1592 @@
+ARM GAS  C:\Users\GM\AppData\Local\Temp\cc2QHrVt.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"oled.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.I2C_WriteByte,"ax",%progbits
+  18              		.align	1
+  19              		.global	I2C_WriteByte
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  24              	I2C_WriteByte:
+  25              	.LVL0:
+  26              	.LFB65:
+  27              		.file 1 "User/oled/oled.c"
+   1:User/oled/oled.c **** #include "oled.h"
+   2:User/oled/oled.c **** #include "codetab.h"
+   3:User/oled/oled.c **** 
+   4:User/oled/oled.c **** void I2C_WriteByte(uint8_t addr, uint8_t data)
+   5:User/oled/oled.c **** {
+  28              		.loc 1 5 1 view -0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 8
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		.loc 1 5 1 is_stmt 0 view .LVU1
+  33 0000 00B5     		push	{lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 4
+  36              		.cfi_offset 14, -4
+  37 0002 83B0     		sub	sp, sp, #12
+  38              	.LCFI1:
+  39              		.cfi_def_cfa_offset 16
+   6:User/oled/oled.c ****     uint8_t _data[2] = {addr, data};
+  40              		.loc 1 6 5 is_stmt 1 view .LVU2
+  41              		.loc 1 6 13 is_stmt 0 view .LVU3
+  42 0004 8DF80400 		strb	r0, [sp, #4]
+  43 0008 8DF80510 		strb	r1, [sp, #5]
+   7:User/oled/oled.c ****     WriteDataBySoft_I2C(OLED_ADDRESS, _data, 2);
+  44              		.loc 1 7 5 is_stmt 1 view .LVU4
+  45 000c 0222     		movs	r2, #2
+  46 000e 01A9     		add	r1, sp, #4
+  47              	.LVL1:
+  48              		.loc 1 7 5 is_stmt 0 view .LVU5
+  49 0010 7820     		movs	r0, #120
+  50              	.LVL2:
+  51              		.loc 1 7 5 view .LVU6
+ARM GAS  C:\Users\GM\AppData\Local\Temp\cc2QHrVt.s 			page 2
+
+
+  52 0012 FFF7FEFF 		bl	WriteDataBySoft_I2C
+  53              	.LVL3:
+   8:User/oled/oled.c **** }
+  54              		.loc 1 8 1 view .LVU7
+  55 0016 03B0     		add	sp, sp, #12
+  56              	.LCFI2:
+  57              		.cfi_def_cfa_offset 4
+  58              		@ sp needed
+  59 0018 5DF804FB 		ldr	pc, [sp], #4
+  60              		.cfi_endproc
+  61              	.LFE65:
+  63              		.section	.text.WriteCmd,"ax",%progbits
+  64              		.align	1
+  65              		.global	WriteCmd
+  66              		.syntax unified
+  67              		.thumb
+  68              		.thumb_func
+  70              	WriteCmd:
+  71              	.LVL4:
+  72              	.LFB66:
+   9:User/oled/oled.c **** 
+  10:User/oled/oled.c **** void WriteCmd(uint8_t I2C_Command) //写命令
+  11:User/oled/oled.c **** {
+  73              		.loc 1 11 1 is_stmt 1 view -0
+  74              		.cfi_startproc
+  75              		@ args = 0, pretend = 0, frame = 0
+  76              		@ frame_needed = 0, uses_anonymous_args = 0
+  77              		.loc 1 11 1 is_stmt 0 view .LVU9
+  78 0000 08B5     		push	{r3, lr}
+  79              	.LCFI3:
+  80              		.cfi_def_cfa_offset 8
+  81              		.cfi_offset 3, -8
+  82              		.cfi_offset 14, -4
+  83 0002 0146     		mov	r1, r0
+  12:User/oled/oled.c ****     I2C_WriteByte(0x00, I2C_Command);
+  84              		.loc 1 12 5 is_stmt 1 view .LVU10
+  85 0004 0020     		movs	r0, #0
+  86              	.LVL5:
+  87              		.loc 1 12 5 is_stmt 0 view .LVU11
+  88 0006 FFF7FEFF 		bl	I2C_WriteByte
+  89              	.LVL6:
+  13:User/oled/oled.c **** }
+  90              		.loc 1 13 1 view .LVU12
+  91 000a 08BD     		pop	{r3, pc}
+  92              		.cfi_endproc
+  93              	.LFE66:
+  95              		.section	.text.WriteDat,"ax",%progbits
+  96              		.align	1
+  97              		.global	WriteDat
+  98              		.syntax unified
+  99              		.thumb
+ 100              		.thumb_func
+ 102              	WriteDat:
+ 103              	.LVL7:
+ 104              	.LFB67:
+  14:User/oled/oled.c **** 
+  15:User/oled/oled.c **** void WriteDat(uint8_t I2C_Data) //写数据
+ARM GAS  C:\Users\GM\AppData\Local\Temp\cc2QHrVt.s 			page 3
+
+
+  16:User/oled/oled.c **** {
+ 105              		.loc 1 16 1 is_stmt 1 view -0
+ 106              		.cfi_startproc
+ 107              		@ args = 0, pretend = 0, frame = 0
+ 108              		@ frame_needed = 0, uses_anonymous_args = 0
+ 109              		.loc 1 16 1 is_stmt 0 view .LVU14
+ 110 0000 08B5     		push	{r3, lr}
+ 111              	.LCFI4:
+ 112              		.cfi_def_cfa_offset 8
+ 113              		.cfi_offset 3, -8
+ 114              		.cfi_offset 14, -4
+ 115 0002 0146     		mov	r1, r0
+  17:User/oled/oled.c ****     I2C_WriteByte(0x40, I2C_Data);
+ 116              		.loc 1 17 5 is_stmt 1 view .LVU15
+ 117 0004 4020     		movs	r0, #64
+ 118              	.LVL8:
+ 119              		.loc 1 17 5 is_stmt 0 view .LVU16
+ 120 0006 FFF7FEFF 		bl	I2C_WriteByte
+ 121              	.LVL9:
+  18:User/oled/oled.c **** }
+ 122              		.loc 1 18 1 view .LVU17
+ 123 000a 08BD     		pop	{r3, pc}
+ 124              		.cfi_endproc
+ 125              	.LFE67:
+ 127              		.section	.text.OLED_SetPos,"ax",%progbits
+ 128              		.align	1
+ 129              		.global	OLED_SetPos
+ 130              		.syntax unified
+ 131              		.thumb
+ 132              		.thumb_func
+ 134              	OLED_SetPos:
+ 135              	.LVL10:
+ 136              	.LFB69:
+  19:User/oled/oled.c **** 
+  20:User/oled/oled.c **** void OLED_Init(void)
+  21:User/oled/oled.c **** {
+  22:User/oled/oled.c ****     HAL_Delay(100); //这里的延时很重要
+  23:User/oled/oled.c **** 
+  24:User/oled/oled.c ****     WriteCmd(0xAE); // display off
+  25:User/oled/oled.c ****     WriteCmd(0x20); // Set Memory Addressing Mode
+  26:User/oled/oled.c ****     WriteCmd(0x10); // 00,Horizontal Addressing Mode;01,Vertical Addressing Mode;10,Page Addressing
+  27:User/oled/oled.c ****     WriteCmd(0xb0); // Set Page Start Address for Page Addressing Mode,0-7
+  28:User/oled/oled.c ****     WriteCmd(0xc8); // Set COM Output Scan Direction
+  29:User/oled/oled.c ****     WriteCmd(0x00); //---set low column address
+  30:User/oled/oled.c ****     WriteCmd(0x10); //---set high column address
+  31:User/oled/oled.c ****     WriteCmd(0x40); //--set start line address
+  32:User/oled/oled.c ****     WriteCmd(0x81); //--set contrast control register
+  33:User/oled/oled.c ****     WriteCmd(0xff); //亮度调节 0x00~0xff
+  34:User/oled/oled.c ****     WriteCmd(0xa1); //--set segment re-map 0 to 127
+  35:User/oled/oled.c ****     WriteCmd(0xa6); //--set normal display
+  36:User/oled/oled.c ****     WriteCmd(0xa8); //--set multiplex ratio(1 to 64)
+  37:User/oled/oled.c ****     WriteCmd(0x3F); //
+  38:User/oled/oled.c ****     WriteCmd(0xa4); // 0xa4,Output follows RAM content;0xa5,Output ignores RAM content
+  39:User/oled/oled.c ****     WriteCmd(0xd3); //-set display offset
+  40:User/oled/oled.c ****     WriteCmd(0x00); //-not offset
+  41:User/oled/oled.c ****     WriteCmd(0xd5); //--set display clock divide ratio/oscillator frequency
+  42:User/oled/oled.c ****     WriteCmd(0xf0); //--set divide ratio
+ARM GAS  C:\Users\GM\AppData\Local\Temp\cc2QHrVt.s 			page 4
+
+
+  43:User/oled/oled.c ****     WriteCmd(0xd9); //--set pre-charge period
+  44:User/oled/oled.c ****     WriteCmd(0x22); //
+  45:User/oled/oled.c ****     WriteCmd(0xda); //--set com pins hardware configuration
+  46:User/oled/oled.c ****     WriteCmd(0x12);
+  47:User/oled/oled.c ****     WriteCmd(0xdb); //--set vcomh
+  48:User/oled/oled.c ****     WriteCmd(0x20); // 0x20,0.77xVcc
+  49:User/oled/oled.c ****     WriteCmd(0x8d); //--set DC-DC enable
+  50:User/oled/oled.c ****     WriteCmd(0x14); //
+  51:User/oled/oled.c ****     WriteCmd(0xaf); //--turn on oled panel
+  52:User/oled/oled.c ****     OLED_Clear();
+  53:User/oled/oled.c **** }
+  54:User/oled/oled.c **** 
+  55:User/oled/oled.c **** void OLED_SetPos(uint8_t x, uint8_t y)
+  56:User/oled/oled.c **** {
+ 137              		.loc 1 56 1 is_stmt 1 view -0
+ 138              		.cfi_startproc
+ 139              		@ args = 0, pretend = 0, frame = 0
+ 140              		@ frame_needed = 0, uses_anonymous_args = 0
+ 141              		.loc 1 56 1 is_stmt 0 view .LVU19
+ 142 0000 10B5     		push	{r4, lr}
+ 143              	.LCFI5:
+ 144              		.cfi_def_cfa_offset 8
+ 145              		.cfi_offset 4, -8
+ 146              		.cfi_offset 14, -4
+ 147 0002 0446     		mov	r4, r0
+  57:User/oled/oled.c ****     WriteCmd(0xb0 + y);
+ 148              		.loc 1 57 5 is_stmt 1 view .LVU20
+ 149 0004 A1F15000 		sub	r0, r1, #80
+ 150              	.LVL11:
+ 151              		.loc 1 57 5 is_stmt 0 view .LVU21
+ 152 0008 C0B2     		uxtb	r0, r0
+ 153 000a FFF7FEFF 		bl	WriteCmd
+ 154              	.LVL12:
+  58:User/oled/oled.c ****     WriteCmd(((x & 0xf0) >> 4) | 0x10);
+ 155              		.loc 1 58 5 is_stmt 1 view .LVU22
+ 156              		.loc 1 58 26 is_stmt 0 view .LVU23
+ 157 000e 2009     		lsrs	r0, r4, #4
+ 158              		.loc 1 58 5 view .LVU24
+ 159 0010 40F01000 		orr	r0, r0, #16
+ 160 0014 FFF7FEFF 		bl	WriteCmd
+ 161              	.LVL13:
+  59:User/oled/oled.c ****     WriteCmd((x & 0x0f) | 0x01);
+ 162              		.loc 1 59 5 is_stmt 1 view .LVU25
+ 163              		.loc 1 59 25 is_stmt 0 view .LVU26
+ 164 0018 04F00E00 		and	r0, r4, #14
+ 165              		.loc 1 59 5 view .LVU27
+ 166 001c 40F00100 		orr	r0, r0, #1
+ 167 0020 FFF7FEFF 		bl	WriteCmd
+ 168              	.LVL14:
+  60:User/oled/oled.c **** }
+ 169              		.loc 1 60 1 view .LVU28
+ 170 0024 10BD     		pop	{r4, pc}
+ 171              		.cfi_endproc
+ 172              	.LFE69:
+ 174              		.section	.text.OLED_ShowStr,"ax",%progbits
+ 175              		.align	1
+ 176              		.global	OLED_ShowStr
+ARM GAS  C:\Users\GM\AppData\Local\Temp\cc2QHrVt.s 			page 5
+
+
+ 177              		.syntax unified
+ 178              		.thumb
+ 179              		.thumb_func
+ 181              	OLED_ShowStr:
+ 182              	.LVL15:
+ 183              	.LFB70:
+  61:User/oled/oled.c **** 
+  62:User/oled/oled.c **** // X:0~128,Y:0~7
+  63:User/oled/oled.c **** void OLED_ShowStr(uint8_t x, uint8_t y, char ch[],uint8_t Size)
+  64:User/oled/oled.c **** {
+ 184              		.loc 1 64 1 is_stmt 1 view -0
+ 185              		.cfi_startproc
+ 186              		@ args = 0, pretend = 0, frame = 0
+ 187              		@ frame_needed = 0, uses_anonymous_args = 0
+ 188              		.loc 1 64 1 is_stmt 0 view .LVU30
+ 189 0000 2DE9F843 		push	{r3, r4, r5, r6, r7, r8, r9, lr}
+ 190              	.LCFI6:
+ 191              		.cfi_def_cfa_offset 32
+ 192              		.cfi_offset 3, -32
+ 193              		.cfi_offset 4, -28
+ 194              		.cfi_offset 5, -24
+ 195              		.cfi_offset 6, -20
+ 196              		.cfi_offset 7, -16
+ 197              		.cfi_offset 8, -12
+ 198              		.cfi_offset 9, -8
+ 199              		.cfi_offset 14, -4
+ 200 0004 0646     		mov	r6, r0
+ 201 0006 0F46     		mov	r7, r1
+ 202 0008 9046     		mov	r8, r2
+  65:User/oled/oled.c ****     uint8_t c = 0, i = 0, j = 0;
+ 203              		.loc 1 65 5 is_stmt 1 view .LVU31
+ 204              	.LVL16:
+  66:User/oled/oled.c ****     switch (Size)
+ 205              		.loc 1 66 5 view .LVU32
+ 206 000a 012B     		cmp	r3, #1
+ 207 000c 26D0     		beq	.L23
+ 208 000e 022B     		cmp	r3, #2
+ 209 0010 5AD0     		beq	.L24
+ 210              	.LVL17:
+ 211              	.L9:
+  67:User/oled/oled.c ****     {
+  68:User/oled/oled.c ****     case OLED_FONT6x8:
+  69:User/oled/oled.c ****     {
+  70:User/oled/oled.c ****         while(ch[j] != '\0')
+  71:User/oled/oled.c **** 			{
+  72:User/oled/oled.c **** 				c = ch[j] - 34;
+  73:User/oled/oled.c **** 				if(x > 120)
+  74:User/oled/oled.c **** 				{
+  75:User/oled/oled.c **** 					x = 0;
+  76:User/oled/oled.c **** 					y++;
+  77:User/oled/oled.c **** 				}
+  78:User/oled/oled.c **** 				OLED_SetPos(x,y);
+  79:User/oled/oled.c **** 				for(i=0;i<6;i++)
+  80:User/oled/oled.c **** 					WriteDat(F6x8[c][i]);
+  81:User/oled/oled.c **** 				x += 6;
+  82:User/oled/oled.c **** 				j++;
+  83:User/oled/oled.c **** 			}
+ARM GAS  C:\Users\GM\AppData\Local\Temp\cc2QHrVt.s 			page 6
+
+
+  84:User/oled/oled.c ****     }
+  85:User/oled/oled.c ****     break;
+  86:User/oled/oled.c ****     case OLED_FONT8x16:
+  87:User/oled/oled.c ****     {
+  88:User/oled/oled.c ****         while(ch[j] != '\0')
+  89:User/oled/oled.c **** 			{
+  90:User/oled/oled.c **** 				c = ch[j] - 32;
+  91:User/oled/oled.c **** 				if(x > 128)
+  92:User/oled/oled.c **** 				{
+  93:User/oled/oled.c **** 					x = 0;
+  94:User/oled/oled.c **** 					y++;
+  95:User/oled/oled.c **** 				}
+  96:User/oled/oled.c **** 				OLED_SetPos(x,y);
+  97:User/oled/oled.c **** 				for(i=0;i<8;i++)
+  98:User/oled/oled.c **** 					WriteDat(F8X16[c*16+i]);
+  99:User/oled/oled.c **** 				OLED_SetPos(x,y+1);
+ 100:User/oled/oled.c **** 				for(i=0;i<8;i++)
+ 101:User/oled/oled.c **** 					WriteDat(F8X16[c*16+i+8]);
+ 102:User/oled/oled.c **** 				x += 8;
+ 103:User/oled/oled.c **** 				j++;
+ 104:User/oled/oled.c **** 			}
+ 105:User/oled/oled.c ****     }
+ 106:User/oled/oled.c ****     break;
+ 107:User/oled/oled.c ****     }
+ 108:User/oled/oled.c **** }
+ 212              		.loc 1 108 1 is_stmt 0 view .LVU33
+ 213 0012 BDE8F883 		pop	{r3, r4, r5, r6, r7, r8, r9, pc}
+ 214              	.LVL18:
+ 215              	.L15:
+  80:User/oled/oled.c **** 				x += 6;
+ 216              		.loc 1 80 6 is_stmt 1 discriminator 3 view .LVU34
+ 217 0016 05EB4503 		add	r3, r5, r5, lsl #1
+ 218 001a 2D4A     		ldr	r2, .L26
+ 219 001c 02EB4303 		add	r3, r2, r3, lsl #1
+ 220 0020 185D     		ldrb	r0, [r3, r4]	@ zero_extendqisi2
+ 221 0022 FFF7FEFF 		bl	WriteDat
+ 222              	.LVL19:
+  79:User/oled/oled.c **** 					WriteDat(F6x8[c][i]);
+ 223              		.loc 1 79 17 discriminator 3 view .LVU35
+  79:User/oled/oled.c **** 					WriteDat(F6x8[c][i]);
+ 224              		.loc 1 79 18 is_stmt 0 discriminator 3 view .LVU36
+ 225 0026 0134     		adds	r4, r4, #1
+ 226              	.LVL20:
+  79:User/oled/oled.c **** 					WriteDat(F6x8[c][i]);
+ 227              		.loc 1 79 18 discriminator 3 view .LVU37
+ 228 0028 E4B2     		uxtb	r4, r4
+ 229              	.LVL21:
+ 230              	.L14:
+  79:User/oled/oled.c **** 					WriteDat(F6x8[c][i]);
+ 231              		.loc 1 79 13 is_stmt 1 discriminator 1 view .LVU38
+  79:User/oled/oled.c **** 					WriteDat(F6x8[c][i]);
+ 232              		.loc 1 79 5 is_stmt 0 discriminator 1 view .LVU39
+ 233 002a 052C     		cmp	r4, #5
+ 234 002c F3D9     		bls	.L15
+  81:User/oled/oled.c **** 				j++;
+ 235              		.loc 1 81 5 is_stmt 1 view .LVU40
+  81:User/oled/oled.c **** 				j++;
+ARM GAS  C:\Users\GM\AppData\Local\Temp\cc2QHrVt.s 			page 7
+
+
+ 236              		.loc 1 81 7 is_stmt 0 view .LVU41
+ 237 002e 0636     		adds	r6, r6, #6
+ 238              	.LVL22:
+  81:User/oled/oled.c **** 				j++;
+ 239              		.loc 1 81 7 view .LVU42
+ 240 0030 F6B2     		uxtb	r6, r6
+ 241              	.LVL23:
+  82:User/oled/oled.c **** 			}
+ 242              		.loc 1 82 5 is_stmt 1 view .LVU43
+  82:User/oled/oled.c **** 			}
+ 243              		.loc 1 82 6 is_stmt 0 view .LVU44
+ 244 0032 09F10109 		add	r9, r9, #1
+ 245              	.LVL24:
+  82:User/oled/oled.c **** 			}
+ 246              		.loc 1 82 6 view .LVU45
+ 247 0036 5FFA89F9 		uxtb	r9, r9
+ 248              	.LVL25:
+ 249              	.L10:
+  70:User/oled/oled.c **** 			{
+ 250              		.loc 1 70 14 is_stmt 1 view .LVU46
+  70:User/oled/oled.c **** 			{
+ 251              		.loc 1 70 17 is_stmt 0 view .LVU47
+ 252 003a 18F80950 		ldrb	r5, [r8, r9]	@ zero_extendqisi2
+  70:User/oled/oled.c **** 			{
+ 253              		.loc 1 70 14 view .LVU48
+ 254 003e 002D     		cmp	r5, #0
+ 255 0040 E7D0     		beq	.L9
+  72:User/oled/oled.c **** 				if(x > 120)
+ 256              		.loc 1 72 5 is_stmt 1 view .LVU49
+  72:User/oled/oled.c **** 				if(x > 120)
+ 257              		.loc 1 72 7 is_stmt 0 view .LVU50
+ 258 0042 223D     		subs	r5, r5, #34
+ 259 0044 EDB2     		uxtb	r5, r5
+ 260              	.LVL26:
+  73:User/oled/oled.c **** 				{
+ 261              		.loc 1 73 5 is_stmt 1 view .LVU51
+  73:User/oled/oled.c **** 				{
+ 262              		.loc 1 73 7 is_stmt 0 view .LVU52
+ 263 0046 782E     		cmp	r6, #120
+ 264 0048 02D9     		bls	.L13
+  75:User/oled/oled.c **** 					y++;
+ 265              		.loc 1 75 6 is_stmt 1 view .LVU53
+ 266              	.LVL27:
+  76:User/oled/oled.c **** 				}
+ 267              		.loc 1 76 6 view .LVU54
+  76:User/oled/oled.c **** 				}
+ 268              		.loc 1 76 7 is_stmt 0 view .LVU55
+ 269 004a 0137     		adds	r7, r7, #1
+ 270              	.LVL28:
+  76:User/oled/oled.c **** 				}
+ 271              		.loc 1 76 7 view .LVU56
+ 272 004c FFB2     		uxtb	r7, r7
+ 273              	.LVL29:
+  75:User/oled/oled.c **** 					y++;
+ 274              		.loc 1 75 8 view .LVU57
+ 275 004e 0026     		movs	r6, #0
+ 276              	.LVL30:
+ARM GAS  C:\Users\GM\AppData\Local\Temp\cc2QHrVt.s 			page 8
+
+
+ 277              	.L13:
+  78:User/oled/oled.c **** 				for(i=0;i<6;i++)
+ 278              		.loc 1 78 5 is_stmt 1 view .LVU58
+ 279 0050 3946     		mov	r1, r7
+ 280 0052 3046     		mov	r0, r6
+ 281 0054 FFF7FEFF 		bl	OLED_SetPos
+ 282              	.LVL31:
+  79:User/oled/oled.c **** 					WriteDat(F6x8[c][i]);
+ 283              		.loc 1 79 5 view .LVU59
+  79:User/oled/oled.c **** 					WriteDat(F6x8[c][i]);
+ 284              		.loc 1 79 10 is_stmt 0 view .LVU60
+ 285 0058 0024     		movs	r4, #0
+  79:User/oled/oled.c **** 					WriteDat(F6x8[c][i]);
+ 286              		.loc 1 79 5 view .LVU61
+ 287 005a E6E7     		b	.L14
+ 288              	.LVL32:
+ 289              	.L23:
+  66:User/oled/oled.c ****     {
+ 290              		.loc 1 66 5 view .LVU62
+ 291 005c 4FF00009 		mov	r9, #0
+ 292 0060 EBE7     		b	.L10
+ 293              	.LVL33:
+ 294              	.L19:
+  98:User/oled/oled.c **** 				OLED_SetPos(x,y+1);
+ 295              		.loc 1 98 6 is_stmt 1 discriminator 3 view .LVU63
+  98:User/oled/oled.c **** 				OLED_SetPos(x,y+1);
+ 296              		.loc 1 98 25 is_stmt 0 discriminator 3 view .LVU64
+ 297 0062 04EB0513 		add	r3, r4, r5, lsl #4
+  98:User/oled/oled.c **** 				OLED_SetPos(x,y+1);
+ 298              		.loc 1 98 6 discriminator 3 view .LVU65
+ 299 0066 1B4A     		ldr	r2, .L26+4
+ 300 0068 D05C     		ldrb	r0, [r2, r3]	@ zero_extendqisi2
+ 301 006a FFF7FEFF 		bl	WriteDat
+ 302              	.LVL34:
+  97:User/oled/oled.c **** 					WriteDat(F8X16[c*16+i]);
+ 303              		.loc 1 97 17 is_stmt 1 discriminator 3 view .LVU66
+  97:User/oled/oled.c **** 					WriteDat(F8X16[c*16+i]);
+ 304              		.loc 1 97 18 is_stmt 0 discriminator 3 view .LVU67
+ 305 006e 0134     		adds	r4, r4, #1
+ 306              	.LVL35:
+  97:User/oled/oled.c **** 					WriteDat(F8X16[c*16+i]);
+ 307              		.loc 1 97 18 discriminator 3 view .LVU68
+ 308 0070 E4B2     		uxtb	r4, r4
+ 309              	.LVL36:
+ 310              	.L18:
+  97:User/oled/oled.c **** 					WriteDat(F8X16[c*16+i]);
+ 311              		.loc 1 97 13 is_stmt 1 discriminator 1 view .LVU69
+  97:User/oled/oled.c **** 					WriteDat(F8X16[c*16+i]);
+ 312              		.loc 1 97 5 is_stmt 0 discriminator 1 view .LVU70
+ 313 0072 072C     		cmp	r4, #7
+ 314 0074 F5D9     		bls	.L19
+  99:User/oled/oled.c **** 				for(i=0;i<8;i++)
+ 315              		.loc 1 99 5 is_stmt 1 view .LVU71
+ 316 0076 791C     		adds	r1, r7, #1
+ 317 0078 C9B2     		uxtb	r1, r1
+ 318 007a 3046     		mov	r0, r6
+ 319 007c FFF7FEFF 		bl	OLED_SetPos
+ARM GAS  C:\Users\GM\AppData\Local\Temp\cc2QHrVt.s 			page 9
+
+
+ 320              	.LVL37:
+ 100:User/oled/oled.c **** 					WriteDat(F8X16[c*16+i+8]);
+ 321              		.loc 1 100 5 view .LVU72
+ 100:User/oled/oled.c **** 					WriteDat(F8X16[c*16+i+8]);
+ 322              		.loc 1 100 10 is_stmt 0 view .LVU73
+ 323 0080 0024     		movs	r4, #0
+ 100:User/oled/oled.c **** 					WriteDat(F8X16[c*16+i+8]);
+ 324              		.loc 1 100 5 view .LVU74
+ 325 0082 08E0     		b	.L20
+ 326              	.LVL38:
+ 327              	.L21:
+ 101:User/oled/oled.c **** 				x += 8;
+ 328              		.loc 1 101 6 is_stmt 1 discriminator 3 view .LVU75
+ 101:User/oled/oled.c **** 				x += 8;
+ 329              		.loc 1 101 25 is_stmt 0 discriminator 3 view .LVU76
+ 330 0084 04EB0513 		add	r3, r4, r5, lsl #4
+ 101:User/oled/oled.c **** 				x += 8;
+ 331              		.loc 1 101 27 discriminator 3 view .LVU77
+ 332 0088 0833     		adds	r3, r3, #8
+ 101:User/oled/oled.c **** 				x += 8;
+ 333              		.loc 1 101 6 discriminator 3 view .LVU78
+ 334 008a 124A     		ldr	r2, .L26+4
+ 335 008c D05C     		ldrb	r0, [r2, r3]	@ zero_extendqisi2
+ 336 008e FFF7FEFF 		bl	WriteDat
+ 337              	.LVL39:
+ 100:User/oled/oled.c **** 					WriteDat(F8X16[c*16+i+8]);
+ 338              		.loc 1 100 17 is_stmt 1 discriminator 3 view .LVU79
+ 100:User/oled/oled.c **** 					WriteDat(F8X16[c*16+i+8]);
+ 339              		.loc 1 100 18 is_stmt 0 discriminator 3 view .LVU80
+ 340 0092 0134     		adds	r4, r4, #1
+ 341              	.LVL40:
+ 100:User/oled/oled.c **** 					WriteDat(F8X16[c*16+i+8]);
+ 342              		.loc 1 100 18 discriminator 3 view .LVU81
+ 343 0094 E4B2     		uxtb	r4, r4
+ 344              	.LVL41:
+ 345              	.L20:
+ 100:User/oled/oled.c **** 					WriteDat(F8X16[c*16+i+8]);
+ 346              		.loc 1 100 13 is_stmt 1 discriminator 1 view .LVU82
+ 100:User/oled/oled.c **** 					WriteDat(F8X16[c*16+i+8]);
+ 347              		.loc 1 100 5 is_stmt 0 discriminator 1 view .LVU83
+ 348 0096 072C     		cmp	r4, #7
+ 349 0098 F4D9     		bls	.L21
+ 102:User/oled/oled.c **** 				j++;
+ 350              		.loc 1 102 5 is_stmt 1 view .LVU84
+ 102:User/oled/oled.c **** 				j++;
+ 351              		.loc 1 102 7 is_stmt 0 view .LVU85
+ 352 009a 0836     		adds	r6, r6, #8
+ 353              	.LVL42:
+ 102:User/oled/oled.c **** 				j++;
+ 354              		.loc 1 102 7 view .LVU86
+ 355 009c F6B2     		uxtb	r6, r6
+ 356              	.LVL43:
+ 103:User/oled/oled.c **** 			}
+ 357              		.loc 1 103 5 is_stmt 1 view .LVU87
+ 103:User/oled/oled.c **** 			}
+ 358              		.loc 1 103 6 is_stmt 0 view .LVU88
+ 359 009e 09F10109 		add	r9, r9, #1
+ARM GAS  C:\Users\GM\AppData\Local\Temp\cc2QHrVt.s 			page 10
+
+
+ 360              	.LVL44:
+ 103:User/oled/oled.c **** 			}
+ 361              		.loc 1 103 6 view .LVU89
+ 362 00a2 5FFA89F9 		uxtb	r9, r9
+ 363              	.LVL45:
+ 364              	.L11:
+  88:User/oled/oled.c **** 			{
+ 365              		.loc 1 88 14 is_stmt 1 view .LVU90
+  88:User/oled/oled.c **** 			{
+ 366              		.loc 1 88 17 is_stmt 0 view .LVU91
+ 367 00a6 18F80950 		ldrb	r5, [r8, r9]	@ zero_extendqisi2
+  88:User/oled/oled.c **** 			{
+ 368              		.loc 1 88 14 view .LVU92
+ 369 00aa 002D     		cmp	r5, #0
+ 370 00ac B1D0     		beq	.L9
+  90:User/oled/oled.c **** 				if(x > 128)
+ 371              		.loc 1 90 5 is_stmt 1 view .LVU93
+  90:User/oled/oled.c **** 				if(x > 128)
+ 372              		.loc 1 90 7 is_stmt 0 view .LVU94
+ 373 00ae 203D     		subs	r5, r5, #32
+ 374 00b0 EDB2     		uxtb	r5, r5
+ 375              	.LVL46:
+  91:User/oled/oled.c **** 				{
+ 376              		.loc 1 91 5 is_stmt 1 view .LVU95
+  91:User/oled/oled.c **** 				{
+ 377              		.loc 1 91 7 is_stmt 0 view .LVU96
+ 378 00b2 802E     		cmp	r6, #128
+ 379 00b4 02D9     		bls	.L17
+  93:User/oled/oled.c **** 					y++;
+ 380              		.loc 1 93 6 is_stmt 1 view .LVU97
+ 381              	.LVL47:
+  94:User/oled/oled.c **** 				}
+ 382              		.loc 1 94 6 view .LVU98
+  94:User/oled/oled.c **** 				}
+ 383              		.loc 1 94 7 is_stmt 0 view .LVU99
+ 384 00b6 0137     		adds	r7, r7, #1
+ 385              	.LVL48:
+  94:User/oled/oled.c **** 				}
+ 386              		.loc 1 94 7 view .LVU100
+ 387 00b8 FFB2     		uxtb	r7, r7
+ 388              	.LVL49:
+  93:User/oled/oled.c **** 					y++;
+ 389              		.loc 1 93 8 view .LVU101
+ 390 00ba 0026     		movs	r6, #0
+ 391              	.LVL50:
+ 392              	.L17:
+  96:User/oled/oled.c **** 				for(i=0;i<8;i++)
+ 393              		.loc 1 96 5 is_stmt 1 view .LVU102
+ 394 00bc 3946     		mov	r1, r7
+ 395 00be 3046     		mov	r0, r6
+ 396 00c0 FFF7FEFF 		bl	OLED_SetPos
+ 397              	.LVL51:
+  97:User/oled/oled.c **** 					WriteDat(F8X16[c*16+i]);
+ 398              		.loc 1 97 5 view .LVU103
+  97:User/oled/oled.c **** 					WriteDat(F8X16[c*16+i]);
+ 399              		.loc 1 97 10 is_stmt 0 view .LVU104
+ 400 00c4 0024     		movs	r4, #0
+ARM GAS  C:\Users\GM\AppData\Local\Temp\cc2QHrVt.s 			page 11
+
+
+  97:User/oled/oled.c **** 					WriteDat(F8X16[c*16+i]);
+ 401              		.loc 1 97 5 view .LVU105
+ 402 00c6 D4E7     		b	.L18
+ 403              	.LVL52:
+ 404              	.L24:
+  66:User/oled/oled.c ****     {
+ 405              		.loc 1 66 5 view .LVU106
+ 406 00c8 4FF00009 		mov	r9, #0
+ 407 00cc EBE7     		b	.L11
+ 408              	.L27:
+ 409 00ce 00BF     		.align	2
+ 410              	.L26:
+ 411 00d0 00000000 		.word	.LANCHOR0
+ 412 00d4 00000000 		.word	.LANCHOR1
+ 413              		.cfi_endproc
+ 414              	.LFE70:
+ 416              		.section	.text.OLED_Clear,"ax",%progbits
+ 417              		.align	1
+ 418              		.global	OLED_Clear
+ 419              		.syntax unified
+ 420              		.thumb
+ 421              		.thumb_func
+ 423              	OLED_Clear:
+ 424              	.LFB71:
+ 109:User/oled/oled.c **** void OLED_Clear(void)
+ 110:User/oled/oled.c **** {
+ 425              		.loc 1 110 1 is_stmt 1 view -0
+ 426              		.cfi_startproc
+ 427              		@ args = 0, pretend = 0, frame = 0
+ 428              		@ frame_needed = 0, uses_anonymous_args = 0
+ 429 0000 38B5     		push	{r3, r4, r5, lr}
+ 430              	.LCFI7:
+ 431              		.cfi_def_cfa_offset 16
+ 432              		.cfi_offset 3, -16
+ 433              		.cfi_offset 4, -12
+ 434              		.cfi_offset 5, -8
+ 435              		.cfi_offset 14, -4
+ 111:User/oled/oled.c **** 	uint8_t i,n;
+ 436              		.loc 1 111 2 view .LVU108
+ 112:User/oled/oled.c **** 	for(i=0;i<8;i++)
+ 437              		.loc 1 112 2 view .LVU109
+ 438              	.LVL53:
+ 439              		.loc 1 112 7 is_stmt 0 view .LVU110
+ 440 0002 0025     		movs	r5, #0
+ 441              		.loc 1 112 2 view .LVU111
+ 442 0004 09E0     		b	.L29
+ 443              	.LVL54:
+ 444              	.L31:
+ 113:User/oled/oled.c **** 	{
+ 114:User/oled/oled.c **** 		WriteCmd(0xb0+i);
+ 115:User/oled/oled.c **** 		WriteCmd (0x00);
+ 116:User/oled/oled.c **** 		WriteCmd (0x10);
+ 117:User/oled/oled.c **** 		for(n=0;n<128;n++)
+ 118:User/oled/oled.c **** 			WriteDat(0);
+ 445              		.loc 1 118 4 is_stmt 1 discriminator 3 view .LVU112
+ 446 0006 0020     		movs	r0, #0
+ 447 0008 FFF7FEFF 		bl	WriteDat
+ARM GAS  C:\Users\GM\AppData\Local\Temp\cc2QHrVt.s 			page 12
+
+
+ 448              	.LVL55:
+ 117:User/oled/oled.c **** 			WriteDat(0);
+ 449              		.loc 1 117 17 discriminator 3 view .LVU113
+ 117:User/oled/oled.c **** 			WriteDat(0);
+ 450              		.loc 1 117 18 is_stmt 0 discriminator 3 view .LVU114
+ 451 000c 0134     		adds	r4, r4, #1
+ 452              	.LVL56:
+ 117:User/oled/oled.c **** 			WriteDat(0);
+ 453              		.loc 1 117 18 discriminator 3 view .LVU115
+ 454 000e E4B2     		uxtb	r4, r4
+ 455              	.LVL57:
+ 456              	.L30:
+ 117:User/oled/oled.c **** 			WriteDat(0);
+ 457              		.loc 1 117 11 is_stmt 1 discriminator 1 view .LVU116
+ 117:User/oled/oled.c **** 			WriteDat(0);
+ 458              		.loc 1 117 3 is_stmt 0 discriminator 1 view .LVU117
+ 459 0010 14F0800F 		tst	r4, #128
+ 460 0014 F7D0     		beq	.L31
+ 112:User/oled/oled.c **** 	for(i=0;i<8;i++)
+ 461              		.loc 1 112 14 is_stmt 1 discriminator 2 view .LVU118
+ 112:User/oled/oled.c **** 	for(i=0;i<8;i++)
+ 462              		.loc 1 112 15 is_stmt 0 discriminator 2 view .LVU119
+ 463 0016 0135     		adds	r5, r5, #1
+ 464              	.LVL58:
+ 112:User/oled/oled.c **** 	for(i=0;i<8;i++)
+ 465              		.loc 1 112 15 discriminator 2 view .LVU120
+ 466 0018 EDB2     		uxtb	r5, r5
+ 467              	.LVL59:
+ 468              	.L29:
+ 112:User/oled/oled.c **** 	for(i=0;i<8;i++)
+ 469              		.loc 1 112 10 is_stmt 1 discriminator 1 view .LVU121
+ 112:User/oled/oled.c **** 	for(i=0;i<8;i++)
+ 470              		.loc 1 112 2 is_stmt 0 discriminator 1 view .LVU122
+ 471 001a 072D     		cmp	r5, #7
+ 472 001c 0CD8     		bhi	.L34
+ 114:User/oled/oled.c **** 		WriteCmd (0x00);
+ 473              		.loc 1 114 3 is_stmt 1 view .LVU123
+ 474 001e A5F15000 		sub	r0, r5, #80
+ 475 0022 C0B2     		uxtb	r0, r0
+ 476 0024 FFF7FEFF 		bl	WriteCmd
+ 477              	.LVL60:
+ 115:User/oled/oled.c **** 		WriteCmd (0x10);
+ 478              		.loc 1 115 3 view .LVU124
+ 479 0028 0020     		movs	r0, #0
+ 480 002a FFF7FEFF 		bl	WriteCmd
+ 481              	.LVL61:
+ 116:User/oled/oled.c **** 		for(n=0;n<128;n++)
+ 482              		.loc 1 116 3 view .LVU125
+ 483 002e 1020     		movs	r0, #16
+ 484 0030 FFF7FEFF 		bl	WriteCmd
+ 485              	.LVL62:
+ 117:User/oled/oled.c **** 			WriteDat(0);
+ 486              		.loc 1 117 3 view .LVU126
+ 117:User/oled/oled.c **** 			WriteDat(0);
+ 487              		.loc 1 117 8 is_stmt 0 view .LVU127
+ 488 0034 0024     		movs	r4, #0
+ 117:User/oled/oled.c **** 			WriteDat(0);
+ARM GAS  C:\Users\GM\AppData\Local\Temp\cc2QHrVt.s 			page 13
+
+
+ 489              		.loc 1 117 3 view .LVU128
+ 490 0036 EBE7     		b	.L30
+ 491              	.LVL63:
+ 492              	.L34:
+ 119:User/oled/oled.c **** 	}
+ 120:User/oled/oled.c **** }
+ 493              		.loc 1 120 1 view .LVU129
+ 494 0038 38BD     		pop	{r3, r4, r5, pc}
+ 495              		.loc 1 120 1 view .LVU130
+ 496              		.cfi_endproc
+ 497              	.LFE71:
+ 499              		.section	.text.OLED_Init,"ax",%progbits
+ 500              		.align	1
+ 501              		.global	OLED_Init
+ 502              		.syntax unified
+ 503              		.thumb
+ 504              		.thumb_func
+ 506              	OLED_Init:
+ 507              	.LFB68:
+  21:User/oled/oled.c ****     HAL_Delay(100); //这里的延时很重要
+ 508              		.loc 1 21 1 is_stmt 1 view -0
+ 509              		.cfi_startproc
+ 510              		@ args = 0, pretend = 0, frame = 0
+ 511              		@ frame_needed = 0, uses_anonymous_args = 0
+ 512 0000 08B5     		push	{r3, lr}
+ 513              	.LCFI8:
+ 514              		.cfi_def_cfa_offset 8
+ 515              		.cfi_offset 3, -8
+ 516              		.cfi_offset 14, -4
+  22:User/oled/oled.c **** 
+ 517              		.loc 1 22 5 view .LVU132
+ 518 0002 6420     		movs	r0, #100
+ 519 0004 FFF7FEFF 		bl	HAL_Delay
+ 520              	.LVL64:
+  24:User/oled/oled.c ****     WriteCmd(0x20); // Set Memory Addressing Mode
+ 521              		.loc 1 24 5 view .LVU133
+ 522 0008 AE20     		movs	r0, #174
+ 523 000a FFF7FEFF 		bl	WriteCmd
+ 524              	.LVL65:
+  25:User/oled/oled.c ****     WriteCmd(0x10); // 00,Horizontal Addressing Mode;01,Vertical Addressing Mode;10,Page Addressing
+ 525              		.loc 1 25 5 view .LVU134
+ 526 000e 2020     		movs	r0, #32
+ 527 0010 FFF7FEFF 		bl	WriteCmd
+ 528              	.LVL66:
+  26:User/oled/oled.c ****     WriteCmd(0xb0); // Set Page Start Address for Page Addressing Mode,0-7
+ 529              		.loc 1 26 5 view .LVU135
+ 530 0014 1020     		movs	r0, #16
+ 531 0016 FFF7FEFF 		bl	WriteCmd
+ 532              	.LVL67:
+  27:User/oled/oled.c ****     WriteCmd(0xc8); // Set COM Output Scan Direction
+ 533              		.loc 1 27 5 view .LVU136
+ 534 001a B020     		movs	r0, #176
+ 535 001c FFF7FEFF 		bl	WriteCmd
+ 536              	.LVL68:
+  28:User/oled/oled.c ****     WriteCmd(0x00); //---set low column address
+ 537              		.loc 1 28 5 view .LVU137
+ 538 0020 C820     		movs	r0, #200
+ARM GAS  C:\Users\GM\AppData\Local\Temp\cc2QHrVt.s 			page 14
+
+
+ 539 0022 FFF7FEFF 		bl	WriteCmd
+ 540              	.LVL69:
+  29:User/oled/oled.c ****     WriteCmd(0x10); //---set high column address
+ 541              		.loc 1 29 5 view .LVU138
+ 542 0026 0020     		movs	r0, #0
+ 543 0028 FFF7FEFF 		bl	WriteCmd
+ 544              	.LVL70:
+  30:User/oled/oled.c ****     WriteCmd(0x40); //--set start line address
+ 545              		.loc 1 30 5 view .LVU139
+ 546 002c 1020     		movs	r0, #16
+ 547 002e FFF7FEFF 		bl	WriteCmd
+ 548              	.LVL71:
+  31:User/oled/oled.c ****     WriteCmd(0x81); //--set contrast control register
+ 549              		.loc 1 31 5 view .LVU140
+ 550 0032 4020     		movs	r0, #64
+ 551 0034 FFF7FEFF 		bl	WriteCmd
+ 552              	.LVL72:
+  32:User/oled/oled.c ****     WriteCmd(0xff); //亮度调节 0x00~0xff
+ 553              		.loc 1 32 5 view .LVU141
+ 554 0038 8120     		movs	r0, #129
+ 555 003a FFF7FEFF 		bl	WriteCmd
+ 556              	.LVL73:
+  33:User/oled/oled.c ****     WriteCmd(0xa1); //--set segment re-map 0 to 127
+ 557              		.loc 1 33 5 view .LVU142
+ 558 003e FF20     		movs	r0, #255
+ 559 0040 FFF7FEFF 		bl	WriteCmd
+ 560              	.LVL74:
+  34:User/oled/oled.c ****     WriteCmd(0xa6); //--set normal display
+ 561              		.loc 1 34 5 view .LVU143
+ 562 0044 A120     		movs	r0, #161
+ 563 0046 FFF7FEFF 		bl	WriteCmd
+ 564              	.LVL75:
+  35:User/oled/oled.c ****     WriteCmd(0xa8); //--set multiplex ratio(1 to 64)
+ 565              		.loc 1 35 5 view .LVU144
+ 566 004a A620     		movs	r0, #166
+ 567 004c FFF7FEFF 		bl	WriteCmd
+ 568              	.LVL76:
+  36:User/oled/oled.c ****     WriteCmd(0x3F); //
+ 569              		.loc 1 36 5 view .LVU145
+ 570 0050 A820     		movs	r0, #168
+ 571 0052 FFF7FEFF 		bl	WriteCmd
+ 572              	.LVL77:
+  37:User/oled/oled.c ****     WriteCmd(0xa4); // 0xa4,Output follows RAM content;0xa5,Output ignores RAM content
+ 573              		.loc 1 37 5 view .LVU146
+ 574 0056 3F20     		movs	r0, #63
+ 575 0058 FFF7FEFF 		bl	WriteCmd
+ 576              	.LVL78:
+  38:User/oled/oled.c ****     WriteCmd(0xd3); //-set display offset
+ 577              		.loc 1 38 5 view .LVU147
+ 578 005c A420     		movs	r0, #164
+ 579 005e FFF7FEFF 		bl	WriteCmd
+ 580              	.LVL79:
+  39:User/oled/oled.c ****     WriteCmd(0x00); //-not offset
+ 581              		.loc 1 39 5 view .LVU148
+ 582 0062 D320     		movs	r0, #211
+ 583 0064 FFF7FEFF 		bl	WriteCmd
+ 584              	.LVL80:
+ARM GAS  C:\Users\GM\AppData\Local\Temp\cc2QHrVt.s 			page 15
+
+
+  40:User/oled/oled.c ****     WriteCmd(0xd5); //--set display clock divide ratio/oscillator frequency
+ 585              		.loc 1 40 5 view .LVU149
+ 586 0068 0020     		movs	r0, #0
+ 587 006a FFF7FEFF 		bl	WriteCmd
+ 588              	.LVL81:
+  41:User/oled/oled.c ****     WriteCmd(0xf0); //--set divide ratio
+ 589              		.loc 1 41 5 view .LVU150
+ 590 006e D520     		movs	r0, #213
+ 591 0070 FFF7FEFF 		bl	WriteCmd
+ 592              	.LVL82:
+  42:User/oled/oled.c ****     WriteCmd(0xd9); //--set pre-charge period
+ 593              		.loc 1 42 5 view .LVU151
+ 594 0074 F020     		movs	r0, #240
+ 595 0076 FFF7FEFF 		bl	WriteCmd
+ 596              	.LVL83:
+  43:User/oled/oled.c ****     WriteCmd(0x22); //
+ 597              		.loc 1 43 5 view .LVU152
+ 598 007a D920     		movs	r0, #217
+ 599 007c FFF7FEFF 		bl	WriteCmd
+ 600              	.LVL84:
+  44:User/oled/oled.c ****     WriteCmd(0xda); //--set com pins hardware configuration
+ 601              		.loc 1 44 5 view .LVU153
+ 602 0080 2220     		movs	r0, #34
+ 603 0082 FFF7FEFF 		bl	WriteCmd
+ 604              	.LVL85:
+  45:User/oled/oled.c ****     WriteCmd(0x12);
+ 605              		.loc 1 45 5 view .LVU154
+ 606 0086 DA20     		movs	r0, #218
+ 607 0088 FFF7FEFF 		bl	WriteCmd
+ 608              	.LVL86:
+  46:User/oled/oled.c ****     WriteCmd(0xdb); //--set vcomh
+ 609              		.loc 1 46 5 view .LVU155
+ 610 008c 1220     		movs	r0, #18
+ 611 008e FFF7FEFF 		bl	WriteCmd
+ 612              	.LVL87:
+  47:User/oled/oled.c ****     WriteCmd(0x20); // 0x20,0.77xVcc
+ 613              		.loc 1 47 5 view .LVU156
+ 614 0092 DB20     		movs	r0, #219
+ 615 0094 FFF7FEFF 		bl	WriteCmd
+ 616              	.LVL88:
+  48:User/oled/oled.c ****     WriteCmd(0x8d); //--set DC-DC enable
+ 617              		.loc 1 48 5 view .LVU157
+ 618 0098 2020     		movs	r0, #32
+ 619 009a FFF7FEFF 		bl	WriteCmd
+ 620              	.LVL89:
+  49:User/oled/oled.c ****     WriteCmd(0x14); //
+ 621              		.loc 1 49 5 view .LVU158
+ 622 009e 8D20     		movs	r0, #141
+ 623 00a0 FFF7FEFF 		bl	WriteCmd
+ 624              	.LVL90:
+  50:User/oled/oled.c ****     WriteCmd(0xaf); //--turn on oled panel
+ 625              		.loc 1 50 5 view .LVU159
+ 626 00a4 1420     		movs	r0, #20
+ 627 00a6 FFF7FEFF 		bl	WriteCmd
+ 628              	.LVL91:
+  51:User/oled/oled.c ****     OLED_Clear();
+ 629              		.loc 1 51 5 view .LVU160
+ARM GAS  C:\Users\GM\AppData\Local\Temp\cc2QHrVt.s 			page 16
+
+
+ 630 00aa AF20     		movs	r0, #175
+ 631 00ac FFF7FEFF 		bl	WriteCmd
+ 632              	.LVL92:
+  52:User/oled/oled.c **** }
+ 633              		.loc 1 52 5 view .LVU161
+ 634 00b0 FFF7FEFF 		bl	OLED_Clear
+ 635              	.LVL93:
+  53:User/oled/oled.c **** 
+ 636              		.loc 1 53 1 is_stmt 0 view .LVU162
+ 637 00b4 08BD     		pop	{r3, pc}
+ 638              		.cfi_endproc
+ 639              	.LFE68:
+ 641              		.global	F8X16
+ 642              		.global	F6x8
+ 643              		.section	.rodata.F6x8,"a"
+ 644              		.align	2
+ 645              		.set	.LANCHOR0,. + 0
+ 648              	F6x8:
+ 649 0000 00000000 		.ascii	"\000\000\000\000\000\000"
+ 649      0000
+ 650 0006 0000002F 		.ascii	"\000\000\000/\000\000"
+ 650      0000
+ 651 000c 00000700 		.ascii	"\000\000\007\000\007\000"
+ 651      0700
+ 652 0012 00147F14 		.ascii	"\000\024\177\024\177\024"
+ 652      7F14
+ 653 0018 00242A7F 		.ascii	"\000$*\177*\022"
+ 653      2A12
+ 654 001e 00626408 		.ascii	"\000bd\010\023#"
+ 654      1323
+ 655 0024 00364955 		.ascii	"\0006IU\"P"
+ 655      2250
+ 656 002a 00000503 		.ascii	"\000\000\005\003\000\000"
+ 656      0000
+ 657 0030 00001C22 		.ascii	"\000\000\034\"A\000"
+ 657      4100
+ 658 0036 00004122 		.ascii	"\000\000A\"\034\000"
+ 658      1C00
+ 659 003c 0014083E 		.ascii	"\000\024\010>\010\024"
+ 659      0814
+ 660 0042 0008083E 		.ascii	"\000\010\010>\010\010"
+ 660      0808
+ 661 0048 000000A0 		.ascii	"\000\000\000\240`\000"
+ 661      6000
+ 662 004e 00080808 		.ascii	"\000\010\010\010\010\010"
+ 662      0808
+ 663 0054 00006060 		.ascii	"\000\000``\000\000"
+ 663      0000
+ 664 005a 00201008 		.ascii	"\000 \020\010\004\002"
+ 664      0402
+ 665 0060 003E5149 		.ascii	"\000>QIE>"
+ 665      453E
+ 666 0066 0000427F 		.ascii	"\000\000B\177@\000"
+ 666      4000
+ 667 006c 00426151 		.ascii	"\000BaQIF"
+ 667      4946
+ 668 0072 00214145 		.ascii	"\000!AEK1"
+ARM GAS  C:\Users\GM\AppData\Local\Temp\cc2QHrVt.s 			page 17
+
+
+ 668      4B31
+ 669 0078 00181412 		.ascii	"\000\030\024\022\177\020"
+ 669      7F10
+ 670 007e 00274545 		.ascii	"\000'EEE9"
+ 670      4539
+ 671 0084 003C4A49 		.ascii	"\000<JII0"
+ 671      4930
+ 672 008a 00017109 		.ascii	"\000\001q\011\005\003"
+ 672      0503
+ 673 0090 00364949 		.ascii	"\0006III6"
+ 673      4936
+ 674 0096 00064949 		.ascii	"\000\006II)\036"
+ 674      291E
+ 675 009c 00003636 		.ascii	"\000\00066\000\000"
+ 675      0000
+ 676 00a2 00005636 		.ascii	"\000\000V6\000\000"
+ 676      0000
+ 677 00a8 00081422 		.ascii	"\000\010\024\"A\000"
+ 677      4100
+ 678 00ae 00141414 		.ascii	"\000\024\024\024\024\024"
+ 678      1414
+ 679 00b4 00004122 		.ascii	"\000\000A\"\024\010"
+ 679      1408
+ 680 00ba 00020151 		.ascii	"\000\002\001Q\011\006"
+ 680      0906
+ 681 00c0 00324959 		.ascii	"\0002IYQ>"
+ 681      513E
+ 682 00c6 007C1211 		.ascii	"\000|\022\021\022|"
+ 682      127C
+ 683 00cc 003E4141 		.ascii	"\000>AAA\""
+ 683      4122
+ 684 00d2 007F4141 		.ascii	"\000\177AA\"\034"
+ 684      221C
+ 685 00d8 007F4949 		.ascii	"\000\177IIIA"
+ 685      4941
+ 686 00de 007F0909 		.ascii	"\000\177\011\011\011\001"
+ 686      0901
+ 687 00e4 003E4149 		.ascii	"\000>AIIz"
+ 687      497A
+ 688 00ea 007F0808 		.ascii	"\000\177\010\010\010\177"
+ 688      087F
+ 689 00f0 00204041 		.ascii	"\000 @A?\001"
+ 689      3F01
+ 690 00f6 007F0814 		.ascii	"\000\177\010\024\"A"
+ 690      2241
+ 691 00fc 007F4040 		.ascii	"\000\177@@@@"
+ 691      4040
+ 692 0102 007F020C 		.ascii	"\000\177\002\014\002\177"
+ 692      027F
+ 693 0108 007F0408 		.ascii	"\000\177\004\010\020\177"
+ 693      107F
+ 694 010e 003E4141 		.ascii	"\000>AAA>"
+ 694      413E
+ 695 0114 007F0909 		.ascii	"\000\177\011\011\011\006"
+ 695      0906
+ 696 011a 003E4151 		.ascii	"\000>AQ!^"
+ 696      215E
+ARM GAS  C:\Users\GM\AppData\Local\Temp\cc2QHrVt.s 			page 18
+
+
+ 697 0120 007F0919 		.ascii	"\000\177\011\031)F"
+ 697      2946
+ 698 0126 00464949 		.ascii	"\000FIII1"
+ 698      4931
+ 699 012c 0001017F 		.ascii	"\000\001\001\177\001\001"
+ 699      0101
+ 700 0132 003F4040 		.ascii	"\000?@@@?"
+ 700      403F
+ 701 0138 001F2040 		.ascii	"\000\037 @ \037"
+ 701      201F
+ 702 013e 003F4038 		.ascii	"\000?@8@?"
+ 702      403F
+ 703 0144 00631408 		.ascii	"\000c\024\010\024c"
+ 703      1463
+ 704 014a 00070870 		.ascii	"\000\007\010p\010\007"
+ 704      0807
+ 705 0150 00615149 		.ascii	"\000aQIEC"
+ 705      4543
+ 706 0156 00007F41 		.ascii	"\000\000\177AA\000"
+ 706      4100
+ 707 015c 00552A55 		.ascii	"\000U*U*U"
+ 707      2A55
+ 708 0162 00004141 		.ascii	"\000\000AA\177\000"
+ 708      7F00
+ 709 0168 00040201 		.ascii	"\000\004\002\001\002\004"
+ 709      0204
+ 710 016e 00404040 		.ascii	"\000@@@@@"
+ 710      4040
+ 711 0174 00000102 		.ascii	"\000\000\001\002\004\000"
+ 711      0400
+ 712 017a 00205454 		.ascii	"\000 TTTx"
+ 712      5478
+ 713 0180 007F4844 		.ascii	"\000\177HDD8"
+ 713      4438
+ 714 0186 00384444 		.ascii	"\0008DDD "
+ 714      4420
+ 715 018c 00384444 		.ascii	"\0008DDH\177"
+ 715      487F
+ 716 0192 00385454 		.ascii	"\0008TTT\030"
+ 716      5418
+ 717 0198 00087E09 		.ascii	"\000\010~\011\001\002"
+ 717      0102
+ 718 019e 0018A4A4 		.ascii	"\000\030\244\244\244|"
+ 718      A47C
+ 719 01a4 007F0804 		.ascii	"\000\177\010\004\004x"
+ 719      0478
+ 720 01aa 0000447D 		.ascii	"\000\000D}@\000"
+ 720      4000
+ 721 01b0 00408084 		.ascii	"\000@\200\204}\000"
+ 721      7D00
+ 722 01b6 007F1028 		.ascii	"\000\177\020(D\000"
+ 722      4400
+ 723 01bc 0000417F 		.ascii	"\000\000A\177@\000"
+ 723      4000
+ 724 01c2 007C0418 		.ascii	"\000|\004\030\004x"
+ 724      0478
+ 725 01c8 007C0804 		.ascii	"\000|\010\004\004x"
+ARM GAS  C:\Users\GM\AppData\Local\Temp\cc2QHrVt.s 			page 19
+
+
+ 725      0478
+ 726 01ce 00384444 		.ascii	"\0008DDD8"
+ 726      4438
+ 727 01d4 00FC2424 		.ascii	"\000\374$$$\030"
+ 727      2418
+ 728 01da 00182424 		.ascii	"\000\030$$\030\374"
+ 728      18FC
+ 729 01e0 007C0804 		.ascii	"\000|\010\004\004\010"
+ 729      0408
+ 730 01e6 00485454 		.ascii	"\000HTTT "
+ 730      5420
+ 731 01ec 00043F44 		.ascii	"\000\004?D@ "
+ 731      4020
+ 732 01f2 003C4040 		.ascii	"\000<@@ |"
+ 732      207C
+ 733 01f8 001C2040 		.ascii	"\000\034 @ \034"
+ 733      201C
+ 734 01fe 003C4030 		.ascii	"\000<@0@<"
+ 734      403C
+ 735 0204 00442810 		.ascii	"\000D(\020(D"
+ 735      2844
+ 736 020a 001CA0A0 		.ascii	"\000\034\240\240\240|"
+ 736      A07C
+ 737 0210 00446454 		.ascii	"\000DdTLD"
+ 737      4C44
+ 738 0216 14141414 		.ascii	"\024\024\024\024\024\024"
+ 738      1414
+ 739              		.section	.rodata.F8X16,"a"
+ 740              		.align	2
+ 741              		.set	.LANCHOR1,. + 0
+ 744              	F8X16:
+ 745 0000 00000000 		.ascii	"\000\000\000\000\000\000\000\000\000\000\000\000\000"
+ 745      00000000 
+ 745      00000000 
+ 745      00
+ 746 000d 00000000 		.ascii	"\000\000\000\000\000\000\370\000\000\000\000\000\000"
+ 746      0000F800 
+ 746      00000000 
+ 746      00
+ 747 001a 00333000 		.ascii	"\00030\000\000\000\000\020\014\006\020\014\006\000\000"
+ 747      00000010 
+ 747      0C06100C 
+ 747      060000
+ 748 0029 00000000 		.ascii	"\000\000\000\000\000\000\000@\300x@\300x@\000\004?\004"
+ 748      00000040 
+ 748      C07840C0 
+ 748      78400004 
+ 748      3F04
+ 749 003b 043F0404 		.ascii	"\004?\004\004\000\000p\210\374\0100\000\000\000\030"
+ 749      00007088 
+ 749      FC083000 
+ 749      000018
+ 750 004a 20FF211E 		.ascii	" \377!\036\000\000\360\010\360\000\340\030\000\000\000"
+ 750      0000F008 
+ 750      F000E018 
+ 750      000000
+ 751 0059 211C031E 		.ascii	"!\034\003\036!\036\000\000\360\010\210p\000\000\000"
+ARM GAS  C:\Users\GM\AppData\Local\Temp\cc2QHrVt.s 			page 20
+
+
+ 751      211E0000 
+ 751      F0088870 
+ 751      000000
+ 752 0068 1E212324 		.ascii	"\036!#$\031'!\020\020\026\016\000\000\000\000\000\000"
+ 752      19272110 
+ 752      10160E00 
+ 752      00000000 
+ 752      00
+ 753 0079 00000000 		.ascii	"\000\000\000\000\000\000\000\000\000\000\340\030\004"
+ 753      00000000 
+ 753      0000E018 
+ 753      04
+ 754 0086 02000000 		.ascii	"\002\000\000\000\000\007\030 @\000\000\002\004\030\340"
+ 754      00071820 
+ 754      40000002 
+ 754      0418E0
+ 755 0095 00000000 		.ascii	"\000\000\000\000@ \030\007\000\000\000@@\200\360\200"
+ 755      40201807 
+ 755      00000040 
+ 755      4080F080 
+ 756 00a5 40400002 		.ascii	"@@\000\002\002\001\017\001\002\002\000\000\000\000\360"
+ 756      02010F01 
+ 756      02020000 
+ 756      0000F0
+ 757 00b4 00000000 		.ascii	"\000\000\000\000\001\001\001\037\001\001\001\000\000"
+ 757      0101011F 
+ 757      01010100 
+ 757      00
+ 758 00c1 00000000 		.ascii	"\000\000\000\000\000\000\000\200\260p\000\000\000\000"
+ 758      00000080 
+ 758      B0700000 
+ 758      0000
+ 759 00cf 00000000 		.ascii	"\000\000\000\000\000\000\000\000\000\000\001\001\001"
+ 759      00000000 
+ 759      00000101 
+ 759      01
+ 760 00dc 01010101 		.ascii	"\001\001\001\001\000\000\000\000\000\000\000\000\000"
+ 760      00000000 
+ 760      00000000 
+ 760      00
+ 761 00e9 30300000 		.ascii	"00\000\000\000\000\000\000\000\000\000\200`\030\004"
+ 761      00000000 
+ 761      00000080 
+ 761      601804
+ 762 00f8 00601806 		.ascii	"\000`\030\006\001\000\000\000\000\340\020\010\010\020"
+ 762      01000000 
+ 762      00E01008 
+ 762      0810
+ 763 0106 E000000F 		.ascii	"\340\000\000\017\020  \020\017\000\000\020\020\370\000"
+ 763      10202010 
+ 763      0F000010 
+ 763      10F800
+ 764 0115 00000000 		.ascii	"\000\000\000\000  ?  \000\000\000p\010\010\010\210p"
+ 764      20203F20 
+ 764      20000000 
+ 764      70080808 
+ 764      8870
+ARM GAS  C:\Users\GM\AppData\Local\Temp\cc2QHrVt.s 			page 21
+
+
+ 765 0127 00003028 		.ascii	"\000\0000($\"!0\000\0000\010\210\210H0\000\000\030 "
+ 765      24222130 
+ 765      00003008 
+ 765      88884830 
+ 765      00001820 
+ 766 013b 2020110E 		.ascii	"  \021\016\000\000\000\300 \020\370\000\000\000\007"
+ 766      000000C0 
+ 766      2010F800 
+ 766      000007
+ 767 014a 0424243F 		.ascii	"\004$$?$\000\000\370\010\210\210\010\010\000\000\031"
+ 767      240000F8 
+ 767      08888808 
+ 767      08000019 
+ 768 015a 21202011 		.ascii	"!  \021\016\000\000\340\020\210\210\030\000\000\000"
+ 768      0E0000E0 
+ 768      10888818 
+ 768      000000
+ 769 0169 0F112020 		.ascii	"\017\021  \021\016\000\0008\010\010\3108\010\000\000"
+ 769      110E0000 
+ 769      380808C8 
+ 769      38080000 
+ 770 0179 00003F00 		.ascii	"\000\000?\000\000\000\000\000p\210\010\010\210p\000"
+ 770      00000000 
+ 770      70880808 
+ 770      887000
+ 771 0188 001C2221 		.ascii	"\000\034\"!!\"\034\000\000\340\020\010\010\020\340\000"
+ 771      21221C00 
+ 771      00E01008 
+ 771      0810E000 
+ 772 0198 00003122 		.ascii	"\000\0001\"\"\021\017\000\000\000\000\300\300\000\000"
+ 772      22110F00 
+ 772      000000C0 
+ 772      C00000
+ 773 01a7 00000000 		.ascii	"\000\000\000\00000\000\000\000\000\000\000\200\000\000"
+ 773      30300000 
+ 773      00000000 
+ 773      800000
+ 774 01b6 00000000 		.ascii	"\000\000\000\000\200`\000\000\000\000\000\000\200@ "
+ 774      80600000 
+ 774      00000000 
+ 774      804020
+ 775 01c5 10080000 		.ascii	"\020\010\000\000\001\002\004\010\020 \000@@@@@@@\000"
+ 775      01020408 
+ 775      10200040 
+ 775      40404040 
+ 775      404000
+ 776 01d8 04040404 		.ascii	"\004\004\004\004\004\004\004\000\000\010\020 @\200\000"
+ 776      04040400 
+ 776      00081020 
+ 776      408000
+ 777 01e7 00002010 		.ascii	"\000\000 \020\010\004\002\001\000\000pH\010\010\010"
+ 777      08040201 
+ 777      00007048 
+ 777      080808
+ 778 01f6 F0000000 		.ascii	"\360\000\000\000\00006\001\000\000\3000\310(\350\020"
+ 778      00303601 
+ 778      0000C030 
+ARM GAS  C:\Users\GM\AppData\Local\Temp\cc2QHrVt.s 			page 22
+
+
+ 778      C828E810 
+ 779 0206 E0000718 		.ascii	"\340\000\007\030'$#\024\013\000\000\000\3008\340\000"
+ 779      27242314 
+ 779      0B000000 
+ 779      C038E000 
+ 780 0216 0000203C 		.ascii	"\000\000 <#\002\002'8 \010\370\210\210\210p\000\000"
+ 780      23020227 
+ 780      382008F8 
+ 780      88888870 
+ 780      0000
+ 781 0228 203F2020 		.ascii	" ?   \021\016\000\3000\010\010\010\0108\000\007\030"
+ 781      20110E00 
+ 781      C0300808 
+ 781      08083800 
+ 781      0718
+ 782 023a 20202010 		.ascii	"   \020\010\000\010\370\010\010\010\020\340\000 ?  "
+ 782      080008F8 
+ 782      08080810 
+ 782      E000203F 
+ 782      2020
+ 783 024c 20100F00 		.ascii	" \020\017\000\010\370\210\210\350\010\020\000 ?  # "
+ 783      08F88888 
+ 783      E8081000 
+ 783      203F2020 
+ 783      2320
+ 784 025e 180008F8 		.ascii	"\030\000\010\370\210\210\350\010\020\000 ? \000\003"
+ 784      8888E808 
+ 784      1000203F 
+ 784      200003
+ 785 026d 000000C0 		.ascii	"\000\000\000\3000\010\010\0108\000\000\007\030  \"\036"
+ 785      30080808 
+ 785      38000007 
+ 785      18202022 
+ 785      1E
+ 786 027e 020008F8 		.ascii	"\002\000\010\370\010\000\000\010\370\010 ?!\001\001"
+ 786      08000008 
+ 786      F808203F 
+ 786      210101
+ 787 028d 213F2000 		.ascii	"!? \000\010\010\370\010\010\000\000\000  ?  \000\000"
+ 787      0808F808 
+ 787      08000000 
+ 787      20203F20 
+ 787      200000
+ 788 02a0 00000808 		.ascii	"\000\000\010\010\370\010\010\000\300\200\200\200\177"
+ 788      F8080800 
+ 788      C0808080 
+ 788      7F
+ 789 02ad 00000008 		.ascii	"\000\000\000\010\370\210\300(\030\010\000 ? \001&8 "
+ 789      F888C028 
+ 789      18080020 
+ 789      3F200126 
+ 789      3820
+ 790 02bf 0008F808 		.ascii	"\000\010\370\010\000\000\000\000\000 ?    0\000\010"
+ 790      00000000 
+ 790      00203F20 
+ 790      20202030 
+ 790      0008
+ARM GAS  C:\Users\GM\AppData\Local\Temp\cc2QHrVt.s 			page 23
+
+
+ 791 02d1 F8F800F8 		.ascii	"\370\370\000\370\370\010\000 ?\000?\000? \000\010\370"
+ 791      F8080020 
+ 791      3F003F00 
+ 791      3F200008 
+ 791      F8
+ 792 02e2 30C00008 		.ascii	"0\300\000\010\370\010 ? \000\007\030?\000\340\020\010"
+ 792      F808203F 
+ 792      20000718 
+ 792      3F00E010 
+ 792      08
+ 793 02f3 080810E0 		.ascii	"\010\010\020\340\000\017\020   \020\017\000\010\370"
+ 793      000F1020 
+ 793      2020100F 
+ 793      0008F8
+ 794 0302 08080808 		.ascii	"\010\010\010\010\360\000 ?!\001\001\001\000\000\340"
+ 794      F000203F 
+ 794      21010101 
+ 794      0000E0
+ 795 0311 10080808 		.ascii	"\020\010\010\010\020\340\000\017\030$$8PO\000\010\370"
+ 795      10E0000F 
+ 795      18242438 
+ 795      504F0008 
+ 795      F8
+ 796 0322 88888888 		.ascii	"\210\210\210\210p\000 ? \000\003\0140 \000p\210\010"
+ 796      7000203F 
+ 796      2000030C 
+ 796      30200070 
+ 796      8808
+ 797 0334 08083800 		.ascii	"\010\0108\000\0008 !!\"\034\000\030\010\010\370\010"
+ 797      00382021 
+ 797      21221C00 
+ 797      180808F8 
+ 797      08
+ 798 0345 08180000 		.ascii	"\010\030\000\000\000 ? \000\000\000\010\370\010\000"
+ 798      00203F20 
+ 798      00000008 
+ 798      F80800
+ 799 0354 0008F808 		.ascii	"\000\010\370\010\000\037    \037\000\010x\210\000\000"
+ 799      001F2020 
+ 799      20201F00 
+ 799      08788800 
+ 799      00
+ 800 0365 C8380800 		.ascii	"\3108\010\000\000\0078\016\001\000\000\370\010\000\370"
+ 800      0007380E 
+ 800      010000F8 
+ 800      0800F8
+ 801 0374 0008F800 		.ascii	"\000\010\370\000\003<\007\000\007<\003\000\010\030h"
+ 801      033C0700 
+ 801      073C0300 
+ 801      081868
+ 802 0383 80806818 		.ascii	"\200\200h\030\010 0,\003\003,0 \0108\310\000\3108\010"
+ 802      0820302C 
+ 802      03032C30 
+ 802      200838C8 
+ 802      00C83808 
+ 803 0397 00000020 		.ascii	"\000\000\000 ? \000\000\000\020\010\010\010\3108\010"
+ 803      3F200000 
+ARM GAS  C:\Users\GM\AppData\Local\Temp\cc2QHrVt.s 			page 24
+
+
+ 803      00100808 
+ 803      08C83808 
+ 804 03a7 00203826 		.ascii	"\000 8&!  \030\000\000\000\000\376\002\002\002\000\000"
+ 804      21202018 
+ 804      00000000 
+ 804      FE020202 
+ 804      0000
+ 805 03b9 00007F40 		.ascii	"\000\000\177@@@\000\000\0140\300\000\000\000\000\000"
+ 805      40400000 
+ 805      0C30C000 
+ 805      00000000 
+ 806 03c9 00000106 		.ascii	"\000\000\001\0068\300\000\000\002\002\002\376\000\000"
+ 806      38C00000 
+ 806      020202FE 
+ 806      0000
+ 807 03d7 00004040 		.ascii	"\000\000@@@\177\000\000\000\000\000\004\002\002\002"
+ 807      407F0000 
+ 807      00000004 
+ 807      020202
+ 808 03e6 04000000 		.ascii	"\004\000\000\000\000\000\000\000\000\000\000\000\000"
+ 808      00000000 
+ 808      00000000 
+ 808      00
+ 809 03f3 00000000 		.ascii	"\000\000\000\000\000\200\200\200\200\200\200\200\200"
+ 809      00808080 
+ 809      80808080 
+ 809      80
+ 810 0400 00020204 		.ascii	"\000\002\002\004\000\000\000\000\000\000\000\000\000"
+ 810      00000000 
+ 810      00000000 
+ 810      00
+ 811 040d 00000000 		.ascii	"\000\000\000\000\000\200\200\200\200\000\000\000\031"
+ 811      00808080 
+ 811      80000000 
+ 811      19
+ 812 041a 24222222 		.ascii	"$\"\"\"? \010\370\000\200\200\000\000\000\000?\021 "
+ 812      3F2008F8 
+ 812      00808000 
+ 812      0000003F 
+ 812      1120
+ 813 042c 20110E00 		.ascii	" \021\016\000\000\000\000\200\200\200\000\000\000\016"
+ 813      00000080 
+ 813      80800000 
+ 813      000E
+ 814 043a 11202020 		.ascii	"\021   \021\000\000\000\000\200\200\210\370\000\000"
+ 814      11000000 
+ 814      00808088 
+ 814      F80000
+ 815 0449 0E112020 		.ascii	"\016\021  \020? \000\000\200\200\200\200\000\000\000"
+ 815      103F2000 
+ 815      00808080 
+ 815      80000000 
+ 816 0459 1F222222 		.ascii	"\037\"\"\"\"\023\000\000\200\200\360\210\210\210\030"
+ 816      22130000 
+ 816      8080F088 
+ 816      888818
+ 817 0468 0020203F 		.ascii	"\000  ?  \000\000\000\000\200\200\200\200\200\000\000"
+ARM GAS  C:\Users\GM\AppData\Local\Temp\cc2QHrVt.s 			page 25
+
+
+ 817      20200000 
+ 817      00008080 
+ 817      80808000 
+ 817      00
+ 818 0479 6B949494 		.ascii	"k\224\224\224\223`\000\010\370\000\200\200\200\000\000"
+ 818      93600008 
+ 818      F8008080 
+ 818      800000
+ 819 0488 203F2100 		.ascii	" ?!\000\000 ? \000\200\230\230\000\000\000\000\000 "
+ 819      00203F20 
+ 819      00809898 
+ 819      00000000 
+ 819      0020
+ 820 049a 203F2020 		.ascii	" ?  \000\000\000\000\000\200\230\230\000\000\000\300"
+ 820      00000000 
+ 820      00809898 
+ 820      000000C0 
+ 821 04aa 8080807F 		.ascii	"\200\200\200\177\000\000\010\370\000\000\200\200\200"
+ 821      000008F8 
+ 821      00008080 
+ 821      80
+ 822 04b7 00203F24 		.ascii	"\000 ?$\002-0 \000\000\010\010\370\000\000\000\000\000"
+ 822      022D3020 
+ 822      00000808 
+ 822      F8000000 
+ 822      0000
+ 823 04c9 20203F20 		.ascii	"  ?  \000\000\200\200\200\200\200\200\200\000 ? \000"
+ 823      20000080 
+ 823      80808080 
+ 823      80800020 
+ 823      3F2000
+ 824 04dc 3F20003F 		.ascii	"? \000?\200\200\000\200\200\200\000\000 ?!\000\000 "
+ 824      80800080 
+ 824      80800000 
+ 824      203F2100 
+ 824      0020
+ 825 04ee 3F200000 		.ascii	"? \000\000\200\200\200\200\000\000\000\037    \037\000"
+ 825      80808080 
+ 825      0000001F 
+ 825      20202020 
+ 825      1F00
+ 826 0500 80800080 		.ascii	"\200\200\000\200\200\000\000\000\200\377\241  \021\016"
+ 826      80000000 
+ 826      80FFA120 
+ 826      20110E
+ 827 050f 00000000 		.ascii	"\000\000\000\000\200\200\200\200\000\000\016\021  \240"
+ 827      80808080 
+ 827      00000E11 
+ 827      2020A0
+ 828 051e FF808080 		.ascii	"\377\200\200\200\200\000\200\200\200\000  ?! \000\001"
+ 828      80008080 
+ 828      80002020 
+ 828      3F212000 
+ 828      01
+ 829 052f 00000080 		.ascii	"\000\000\000\200\200\200\200\200\000\0003$$$$\031\000"
+ 829      80808080 
+ 829      00003324 
+ARM GAS  C:\Users\GM\AppData\Local\Temp\cc2QHrVt.s 			page 26
+
+
+ 829      24242419 
+ 829      00
+ 830 0540 008080E0 		.ascii	"\000\200\200\340\200\200\000\000\000\000\000\037  \000"
+ 830      80800000 
+ 830      0000001F 
+ 830      202000
+ 831 054f 00808000 		.ascii	"\000\200\200\000\000\000\200\200\000\000\037   \020"
+ 831      00008080 
+ 831      00001F20 
+ 831      202010
+ 832 055e 3F208080 		.ascii	"? \200\200\200\000\000\200\200\200\000\001\0160\010"
+ 832      80000080 
+ 832      80800001 
+ 832      0E3008
+ 833 056d 06010080 		.ascii	"\006\001\000\200\200\000\200\000\200\200\200\0170\014"
+ 833      80008000 
+ 833      8080800F 
+ 833      300C
+ 834 057b 030C300F 		.ascii	"\003\0140\017\000\000\200\200\000\200\200\200\000\000"
+ 834      00008080 
+ 834      00808080 
+ 834      0000
+ 835 0589 20312E0E 		.ascii	" 1.\0161 \000\200\200\200\000\000\200\200\200\200\201"
+ 835      31200080 
+ 835      80800000 
+ 835      80808080 
+ 835      81
+ 836 059a 8E701806 		.ascii	"\216p\030\006\001\000\000\200\200\200\200\200\200\000"
+ 836      01000080 
+ 836      80808080 
+ 836      8000
+ 837 05a8 0021302C 		.ascii	"\000!0,\"!0\000\000\000\000\000\200|\002\002\000\000"
+ 837      22213000 
+ 837      00000000 
+ 837      807C0202 
+ 837      0000
+ 838 05ba 0000003F 		.ascii	"\000\000\000?@@\000\000\000\000\377\000\000\000\000"
+ 838      40400000 
+ 838      0000FF00 
+ 838      000000
+ 839 05c9 000000FF 		.ascii	"\000\000\000\377\000\000\000\000\002\002|\200\000\000"
+ 839      00000000 
+ 839      02027C80 
+ 839      0000
+ 840 05d7 00004040 		.ascii	"\000\000@@?\000\000\000\000\000\006\001\001\002\002"
+ 840      3F000000 
+ 840      00000601 
+ 840      010202
+ 841 05e6 04040000 		.ascii	"\004\004\000\000\000\000\000\000\000\000"
+ 841      00000000 
+ 841      0000
+ 842              		.text
+ 843              	.Letext0:
+ 844              		.file 2 "c:\\tool\\gcc-arm\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 845              		.file 3 "c:\\tool\\gcc-arm\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 846              		.file 4 "User/oled/codetab.h"
+ 847              		.file 5 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h"
+ARM GAS  C:\Users\GM\AppData\Local\Temp\cc2QHrVt.s 			page 27
+
+
+ 848              		.file 6 "User/soft_i2c/soft_i2c.h"
+ARM GAS  C:\Users\GM\AppData\Local\Temp\cc2QHrVt.s 			page 28
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 oled.c
+C:\Users\GM\AppData\Local\Temp\cc2QHrVt.s:18     .text.I2C_WriteByte:00000000 $t
+C:\Users\GM\AppData\Local\Temp\cc2QHrVt.s:24     .text.I2C_WriteByte:00000000 I2C_WriteByte
+C:\Users\GM\AppData\Local\Temp\cc2QHrVt.s:64     .text.WriteCmd:00000000 $t
+C:\Users\GM\AppData\Local\Temp\cc2QHrVt.s:70     .text.WriteCmd:00000000 WriteCmd
+C:\Users\GM\AppData\Local\Temp\cc2QHrVt.s:96     .text.WriteDat:00000000 $t
+C:\Users\GM\AppData\Local\Temp\cc2QHrVt.s:102    .text.WriteDat:00000000 WriteDat
+C:\Users\GM\AppData\Local\Temp\cc2QHrVt.s:128    .text.OLED_SetPos:00000000 $t
+C:\Users\GM\AppData\Local\Temp\cc2QHrVt.s:134    .text.OLED_SetPos:00000000 OLED_SetPos
+C:\Users\GM\AppData\Local\Temp\cc2QHrVt.s:175    .text.OLED_ShowStr:00000000 $t
+C:\Users\GM\AppData\Local\Temp\cc2QHrVt.s:181    .text.OLED_ShowStr:00000000 OLED_ShowStr
+C:\Users\GM\AppData\Local\Temp\cc2QHrVt.s:411    .text.OLED_ShowStr:000000d0 $d
+C:\Users\GM\AppData\Local\Temp\cc2QHrVt.s:417    .text.OLED_Clear:00000000 $t
+C:\Users\GM\AppData\Local\Temp\cc2QHrVt.s:423    .text.OLED_Clear:00000000 OLED_Clear
+C:\Users\GM\AppData\Local\Temp\cc2QHrVt.s:500    .text.OLED_Init:00000000 $t
+C:\Users\GM\AppData\Local\Temp\cc2QHrVt.s:506    .text.OLED_Init:00000000 OLED_Init
+C:\Users\GM\AppData\Local\Temp\cc2QHrVt.s:744    .rodata.F8X16:00000000 F8X16
+C:\Users\GM\AppData\Local\Temp\cc2QHrVt.s:648    .rodata.F6x8:00000000 F6x8
+C:\Users\GM\AppData\Local\Temp\cc2QHrVt.s:644    .rodata.F6x8:00000000 $d
+C:\Users\GM\AppData\Local\Temp\cc2QHrVt.s:740    .rodata.F8X16:00000000 $d
+
+UNDEFINED SYMBOLS
+WriteDataBySoft_I2C
+HAL_Delay

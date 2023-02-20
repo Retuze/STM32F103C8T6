@@ -1,0 +1,251 @@
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccZDX5Uj.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"m_tim.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.HAL_TIM_PeriodElapsedCallback,"ax",%progbits
+  18              		.align	1
+  19              		.global	HAL_TIM_PeriodElapsedCallback
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  24              	HAL_TIM_PeriodElapsedCallback:
+  25              	.LVL0:
+  26              	.LFB65:
+  27              		.file 1 "User/delay_us/m_tim.c"
+   1:User/delay_us/m_tim.c **** #include "m_tim.h"
+   2:User/delay_us/m_tim.c **** 
+   3:User/delay_us/m_tim.c **** static uint32_t tick = 0;
+   4:User/delay_us/m_tim.c **** 
+   5:User/delay_us/m_tim.c **** void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+   6:User/delay_us/m_tim.c **** {
+  28              		.loc 1 6 1 view -0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+   7:User/delay_us/m_tim.c ****     if (htim == &htim1)
+  33              		.loc 1 7 5 view .LVU1
+  34              		.loc 1 7 8 is_stmt 0 view .LVU2
+  35 0000 044B     		ldr	r3, .L4
+  36 0002 8342     		cmp	r3, r0
+  37 0004 00D0     		beq	.L3
+  38              	.L1:
+   8:User/delay_us/m_tim.c ****     {
+   9:User/delay_us/m_tim.c ****         tick++;
+  10:User/delay_us/m_tim.c ****     }
+  11:User/delay_us/m_tim.c **** }
+  39              		.loc 1 11 1 view .LVU3
+  40 0006 7047     		bx	lr
+  41              	.L3:
+   9:User/delay_us/m_tim.c ****     }
+  42              		.loc 1 9 9 is_stmt 1 view .LVU4
+   9:User/delay_us/m_tim.c ****     }
+  43              		.loc 1 9 13 is_stmt 0 view .LVU5
+  44 0008 034A     		ldr	r2, .L4+4
+  45 000a 1368     		ldr	r3, [r2]
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccZDX5Uj.s 			page 2
+
+
+  46 000c 0133     		adds	r3, r3, #1
+  47 000e 1360     		str	r3, [r2]
+  48              		.loc 1 11 1 view .LVU6
+  49 0010 F9E7     		b	.L1
+  50              	.L5:
+  51 0012 00BF     		.align	2
+  52              	.L4:
+  53 0014 00000000 		.word	htim1
+  54 0018 00000000 		.word	.LANCHOR0
+  55              		.cfi_endproc
+  56              	.LFE65:
+  58              		.section	.text.HAL_GetTick_us,"ax",%progbits
+  59              		.align	1
+  60              		.global	HAL_GetTick_us
+  61              		.syntax unified
+  62              		.thumb
+  63              		.thumb_func
+  65              	HAL_GetTick_us:
+  66              	.LFB66:
+  12:User/delay_us/m_tim.c **** 
+  13:User/delay_us/m_tim.c **** uint32_t HAL_GetTick_us()
+  14:User/delay_us/m_tim.c **** {
+  67              		.loc 1 14 1 is_stmt 1 view -0
+  68              		.cfi_startproc
+  69              		@ args = 0, pretend = 0, frame = 0
+  70              		@ frame_needed = 0, uses_anonymous_args = 0
+  71              		@ link register save eliminated.
+  15:User/delay_us/m_tim.c ****     return __HAL_TIM_GET_COUNTER(&htim1);
+  72              		.loc 1 15 5 view .LVU8
+  73              		.loc 1 15 12 is_stmt 0 view .LVU9
+  74 0000 014B     		ldr	r3, .L7
+  75 0002 1B68     		ldr	r3, [r3]
+  76 0004 586A     		ldr	r0, [r3, #36]
+  16:User/delay_us/m_tim.c **** }
+  77              		.loc 1 16 1 view .LVU10
+  78 0006 7047     		bx	lr
+  79              	.L8:
+  80              		.align	2
+  81              	.L7:
+  82 0008 00000000 		.word	htim1
+  83              		.cfi_endproc
+  84              	.LFE66:
+  86              		.section	.text.HAL_Delay_us,"ax",%progbits
+  87              		.align	1
+  88              		.global	HAL_Delay_us
+  89              		.syntax unified
+  90              		.thumb
+  91              		.thumb_func
+  93              	HAL_Delay_us:
+  94              	.LVL1:
+  95              	.LFB67:
+  17:User/delay_us/m_tim.c **** 
+  18:User/delay_us/m_tim.c **** void HAL_Delay_us(uint32_t us)
+  19:User/delay_us/m_tim.c **** {
+  96              		.loc 1 19 1 is_stmt 1 view -0
+  97              		.cfi_startproc
+  98              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccZDX5Uj.s 			page 3
+
+
+  99              		@ frame_needed = 0, uses_anonymous_args = 0
+ 100              		.loc 1 19 1 is_stmt 0 view .LVU12
+ 101 0000 38B5     		push	{r3, r4, r5, lr}
+ 102              	.LCFI0:
+ 103              		.cfi_def_cfa_offset 16
+ 104              		.cfi_offset 3, -16
+ 105              		.cfi_offset 4, -12
+ 106              		.cfi_offset 5, -8
+ 107              		.cfi_offset 14, -4
+ 108 0002 0446     		mov	r4, r0
+  20:User/delay_us/m_tim.c ****     uint32_t tickstart = HAL_GetTick_us();
+ 109              		.loc 1 20 5 is_stmt 1 view .LVU13
+ 110              		.loc 1 20 26 is_stmt 0 view .LVU14
+ 111 0004 FFF7FEFF 		bl	HAL_GetTick_us
+ 112              	.LVL2:
+ 113              		.loc 1 20 26 view .LVU15
+ 114 0008 0546     		mov	r5, r0
+ 115              	.LVL3:
+  21:User/delay_us/m_tim.c ****     if(us<0xFFFF)
+ 116              		.loc 1 21 5 is_stmt 1 view .LVU16
+ 117              		.loc 1 21 7 is_stmt 0 view .LVU17
+ 118 000a 4FF6FE73 		movw	r3, #65534
+ 119 000e 9C42     		cmp	r4, r3
+ 120 0010 00D8     		bhi	.L11
+  22:User/delay_us/m_tim.c ****     {
+  23:User/delay_us/m_tim.c ****         us++;
+ 121              		.loc 1 23 9 is_stmt 1 view .LVU18
+ 122              		.loc 1 23 11 is_stmt 0 view .LVU19
+ 123 0012 0134     		adds	r4, r4, #1
+ 124              	.LVL4:
+ 125              	.L11:
+  24:User/delay_us/m_tim.c ****     }
+  25:User/delay_us/m_tim.c ****     while ((HAL_GetTick_us() - tickstart) < us)
+  26:User/delay_us/m_tim.c ****     {
+  27:User/delay_us/m_tim.c ****     }
+ 126              		.loc 1 27 5 is_stmt 1 discriminator 1 view .LVU20
+  25:User/delay_us/m_tim.c ****     {
+ 127              		.loc 1 25 11 discriminator 1 view .LVU21
+  25:User/delay_us/m_tim.c ****     {
+ 128              		.loc 1 25 13 is_stmt 0 discriminator 1 view .LVU22
+ 129 0014 FFF7FEFF 		bl	HAL_GetTick_us
+ 130              	.LVL5:
+  25:User/delay_us/m_tim.c ****     {
+ 131              		.loc 1 25 30 discriminator 1 view .LVU23
+ 132 0018 401B     		subs	r0, r0, r5
+  25:User/delay_us/m_tim.c ****     {
+ 133              		.loc 1 25 11 discriminator 1 view .LVU24
+ 134 001a A042     		cmp	r0, r4
+ 135 001c FAD3     		bcc	.L11
+  28:User/delay_us/m_tim.c **** }
+ 136              		.loc 1 28 1 view .LVU25
+ 137 001e 38BD     		pop	{r3, r4, r5, pc}
+ 138              		.loc 1 28 1 view .LVU26
+ 139              		.cfi_endproc
+ 140              	.LFE67:
+ 142              		.section	.text.HAL_Delay_us_init,"ax",%progbits
+ 143              		.align	1
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccZDX5Uj.s 			page 4
+
+
+ 144              		.global	HAL_Delay_us_init
+ 145              		.syntax unified
+ 146              		.thumb
+ 147              		.thumb_func
+ 149              	HAL_Delay_us_init:
+ 150              	.LFB68:
+  29:User/delay_us/m_tim.c **** 
+  30:User/delay_us/m_tim.c **** void HAL_Delay_us_init()
+  31:User/delay_us/m_tim.c **** {
+ 151              		.loc 1 31 1 is_stmt 1 view -0
+ 152              		.cfi_startproc
+ 153              		@ args = 0, pretend = 0, frame = 0
+ 154              		@ frame_needed = 0, uses_anonymous_args = 0
+ 155 0000 08B5     		push	{r3, lr}
+ 156              	.LCFI1:
+ 157              		.cfi_def_cfa_offset 8
+ 158              		.cfi_offset 3, -8
+ 159              		.cfi_offset 14, -4
+  32:User/delay_us/m_tim.c ****     HAL_TIM_Base_Start_IT(&htim1);
+ 160              		.loc 1 32 5 view .LVU28
+ 161 0002 0248     		ldr	r0, .L15
+ 162 0004 FFF7FEFF 		bl	HAL_TIM_Base_Start_IT
+ 163              	.LVL6:
+  33:User/delay_us/m_tim.c **** }
+ 164              		.loc 1 33 1 is_stmt 0 view .LVU29
+ 165 0008 08BD     		pop	{r3, pc}
+ 166              	.L16:
+ 167 000a 00BF     		.align	2
+ 168              	.L15:
+ 169 000c 00000000 		.word	htim1
+ 170              		.cfi_endproc
+ 171              	.LFE68:
+ 173              		.section	.bss.tick,"aw",%nobits
+ 174              		.align	2
+ 175              		.set	.LANCHOR0,. + 0
+ 178              	tick:
+ 179 0000 00000000 		.space	4
+ 180              		.text
+ 181              	.Letext0:
+ 182              		.file 2 "c:\\tool\\gcc-arm\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 183              		.file 3 "c:\\tool\\gcc-arm\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 184              		.file 4 "Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h"
+ 185              		.file 5 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h"
+ 186              		.file 6 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma.h"
+ 187              		.file 7 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h"
+ 188              		.file 8 "Core/Inc/tim.h"
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccZDX5Uj.s 			page 5
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 m_tim.c
+C:\Users\GM\AppData\Local\Temp\ccZDX5Uj.s:18     .text.HAL_TIM_PeriodElapsedCallback:00000000 $t
+C:\Users\GM\AppData\Local\Temp\ccZDX5Uj.s:24     .text.HAL_TIM_PeriodElapsedCallback:00000000 HAL_TIM_PeriodElapsedCallback
+C:\Users\GM\AppData\Local\Temp\ccZDX5Uj.s:53     .text.HAL_TIM_PeriodElapsedCallback:00000014 $d
+C:\Users\GM\AppData\Local\Temp\ccZDX5Uj.s:59     .text.HAL_GetTick_us:00000000 $t
+C:\Users\GM\AppData\Local\Temp\ccZDX5Uj.s:65     .text.HAL_GetTick_us:00000000 HAL_GetTick_us
+C:\Users\GM\AppData\Local\Temp\ccZDX5Uj.s:82     .text.HAL_GetTick_us:00000008 $d
+C:\Users\GM\AppData\Local\Temp\ccZDX5Uj.s:87     .text.HAL_Delay_us:00000000 $t
+C:\Users\GM\AppData\Local\Temp\ccZDX5Uj.s:93     .text.HAL_Delay_us:00000000 HAL_Delay_us
+C:\Users\GM\AppData\Local\Temp\ccZDX5Uj.s:143    .text.HAL_Delay_us_init:00000000 $t
+C:\Users\GM\AppData\Local\Temp\ccZDX5Uj.s:149    .text.HAL_Delay_us_init:00000000 HAL_Delay_us_init
+C:\Users\GM\AppData\Local\Temp\ccZDX5Uj.s:169    .text.HAL_Delay_us_init:0000000c $d
+C:\Users\GM\AppData\Local\Temp\ccZDX5Uj.s:174    .bss.tick:00000000 $d
+C:\Users\GM\AppData\Local\Temp\ccZDX5Uj.s:178    .bss.tick:00000000 tick
+
+UNDEFINED SYMBOLS
+htim1
+HAL_TIM_Base_Start_IT

@@ -1,0 +1,224 @@
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccACdIBv.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"soft_i2c_stm32.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.SetSCLPin,"ax",%progbits
+  18              		.align	1
+  19              		.global	SetSCLPin
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  24              	SetSCLPin:
+  25              	.LVL0:
+  26              	.LFB65:
+  27              		.file 1 "User/soft_i2c/soft_i2c_stm32.c"
+   1:User/soft_i2c/soft_i2c_stm32.c **** #include "soft_i2c_stm32.h"
+   2:User/soft_i2c/soft_i2c_stm32.c **** 
+   3:User/soft_i2c/soft_i2c_stm32.c **** //设置SCL引脚
+   4:User/soft_i2c/soft_i2c_stm32.c **** void SetSCLPin(Soft_I2CPinValue op)
+   5:User/soft_i2c/soft_i2c_stm32.c **** {
+  28              		.loc 1 5 1 view -0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		.loc 1 5 1 is_stmt 0 view .LVU1
+  33 0000 08B5     		push	{r3, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 8
+  36              		.cfi_offset 3, -8
+  37              		.cfi_offset 14, -4
+   6:User/soft_i2c/soft_i2c_stm32.c ****     if (op == IIC_SET)
+  38              		.loc 1 6 5 is_stmt 1 view .LVU2
+  39              		.loc 1 6 8 is_stmt 0 view .LVU3
+  40 0002 0128     		cmp	r0, #1
+  41 0004 06D0     		beq	.L5
+   7:User/soft_i2c/soft_i2c_stm32.c ****     {
+   8:User/soft_i2c/soft_i2c_stm32.c ****         HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_SET);
+   9:User/soft_i2c/soft_i2c_stm32.c ****     }
+  10:User/soft_i2c/soft_i2c_stm32.c ****     else
+  11:User/soft_i2c/soft_i2c_stm32.c ****     {
+  12:User/soft_i2c/soft_i2c_stm32.c ****         HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_RESET);
+  42              		.loc 1 12 9 is_stmt 1 view .LVU4
+  43 0006 0022     		movs	r2, #0
+  44 0008 4FF48071 		mov	r1, #256
+  45 000c 0548     		ldr	r0, .L6
+  46              	.LVL1:
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccACdIBv.s 			page 2
+
+
+  47              		.loc 1 12 9 is_stmt 0 view .LVU5
+  48 000e FFF7FEFF 		bl	HAL_GPIO_WritePin
+  49              	.LVL2:
+  50              	.L1:
+  13:User/soft_i2c/soft_i2c_stm32.c ****     }
+  14:User/soft_i2c/soft_i2c_stm32.c **** }
+  51              		.loc 1 14 1 view .LVU6
+  52 0012 08BD     		pop	{r3, pc}
+  53              	.LVL3:
+  54              	.L5:
+   8:User/soft_i2c/soft_i2c_stm32.c ****     }
+  55              		.loc 1 8 9 is_stmt 1 view .LVU7
+  56 0014 0122     		movs	r2, #1
+  57 0016 4FF48071 		mov	r1, #256
+  58 001a 0248     		ldr	r0, .L6
+  59              	.LVL4:
+   8:User/soft_i2c/soft_i2c_stm32.c ****     }
+  60              		.loc 1 8 9 is_stmt 0 view .LVU8
+  61 001c FFF7FEFF 		bl	HAL_GPIO_WritePin
+  62              	.LVL5:
+  63 0020 F7E7     		b	.L1
+  64              	.L7:
+  65 0022 00BF     		.align	2
+  66              	.L6:
+  67 0024 000C0140 		.word	1073810432
+  68              		.cfi_endproc
+  69              	.LFE65:
+  71              		.section	.text.SetSDAPin,"ax",%progbits
+  72              		.align	1
+  73              		.global	SetSDAPin
+  74              		.syntax unified
+  75              		.thumb
+  76              		.thumb_func
+  78              	SetSDAPin:
+  79              	.LVL6:
+  80              	.LFB66:
+  15:User/soft_i2c/soft_i2c_stm32.c **** 
+  16:User/soft_i2c/soft_i2c_stm32.c **** //设置SDA引脚
+  17:User/soft_i2c/soft_i2c_stm32.c **** void SetSDAPin(Soft_I2CPinValue op)
+  18:User/soft_i2c/soft_i2c_stm32.c **** {
+  81              		.loc 1 18 1 is_stmt 1 view -0
+  82              		.cfi_startproc
+  83              		@ args = 0, pretend = 0, frame = 0
+  84              		@ frame_needed = 0, uses_anonymous_args = 0
+  85              		.loc 1 18 1 is_stmt 0 view .LVU10
+  86 0000 08B5     		push	{r3, lr}
+  87              	.LCFI1:
+  88              		.cfi_def_cfa_offset 8
+  89              		.cfi_offset 3, -8
+  90              		.cfi_offset 14, -4
+  19:User/soft_i2c/soft_i2c_stm32.c ****     if (op == IIC_SET)
+  91              		.loc 1 19 5 is_stmt 1 view .LVU11
+  92              		.loc 1 19 8 is_stmt 0 view .LVU12
+  93 0002 0128     		cmp	r0, #1
+  94 0004 06D0     		beq	.L12
+  20:User/soft_i2c/soft_i2c_stm32.c ****     {
+  21:User/soft_i2c/soft_i2c_stm32.c ****         HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_SET);
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccACdIBv.s 			page 3
+
+
+  22:User/soft_i2c/soft_i2c_stm32.c ****     }
+  23:User/soft_i2c/soft_i2c_stm32.c ****     else
+  24:User/soft_i2c/soft_i2c_stm32.c ****     {
+  25:User/soft_i2c/soft_i2c_stm32.c ****         HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_RESET);
+  95              		.loc 1 25 9 is_stmt 1 view .LVU13
+  96 0006 0022     		movs	r2, #0
+  97 0008 4FF40071 		mov	r1, #512
+  98 000c 0548     		ldr	r0, .L13
+  99              	.LVL7:
+ 100              		.loc 1 25 9 is_stmt 0 view .LVU14
+ 101 000e FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 102              	.LVL8:
+ 103              	.L8:
+  26:User/soft_i2c/soft_i2c_stm32.c ****     }
+  27:User/soft_i2c/soft_i2c_stm32.c **** }
+ 104              		.loc 1 27 1 view .LVU15
+ 105 0012 08BD     		pop	{r3, pc}
+ 106              	.LVL9:
+ 107              	.L12:
+  21:User/soft_i2c/soft_i2c_stm32.c ****     }
+ 108              		.loc 1 21 9 is_stmt 1 view .LVU16
+ 109 0014 0122     		movs	r2, #1
+ 110 0016 4FF40071 		mov	r1, #512
+ 111 001a 0248     		ldr	r0, .L13
+ 112              	.LVL10:
+  21:User/soft_i2c/soft_i2c_stm32.c ****     }
+ 113              		.loc 1 21 9 is_stmt 0 view .LVU17
+ 114 001c FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 115              	.LVL11:
+ 116 0020 F7E7     		b	.L8
+ 117              	.L14:
+ 118 0022 00BF     		.align	2
+ 119              	.L13:
+ 120 0024 000C0140 		.word	1073810432
+ 121              		.cfi_endproc
+ 122              	.LFE66:
+ 124              		.section	.text.ReadSDAPin,"ax",%progbits
+ 125              		.align	1
+ 126              		.global	ReadSDAPin
+ 127              		.syntax unified
+ 128              		.thumb
+ 129              		.thumb_func
+ 131              	ReadSDAPin:
+ 132              	.LFB67:
+  28:User/soft_i2c/soft_i2c_stm32.c **** 
+  29:User/soft_i2c/soft_i2c_stm32.c **** //读取SDA引脚
+  30:User/soft_i2c/soft_i2c_stm32.c **** uint8_t ReadSDAPin(void)
+  31:User/soft_i2c/soft_i2c_stm32.c **** {
+ 133              		.loc 1 31 1 is_stmt 1 view -0
+ 134              		.cfi_startproc
+ 135              		@ args = 0, pretend = 0, frame = 0
+ 136              		@ frame_needed = 0, uses_anonymous_args = 0
+ 137 0000 08B5     		push	{r3, lr}
+ 138              	.LCFI2:
+ 139              		.cfi_def_cfa_offset 8
+ 140              		.cfi_offset 3, -8
+ 141              		.cfi_offset 14, -4
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccACdIBv.s 			page 4
+
+
+  32:User/soft_i2c/soft_i2c_stm32.c ****     return (uint8_t)HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_9);
+ 142              		.loc 1 32 5 view .LVU19
+ 143              		.loc 1 32 21 is_stmt 0 view .LVU20
+ 144 0002 4FF40071 		mov	r1, #512
+ 145 0006 0248     		ldr	r0, .L17
+ 146 0008 FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 147              	.LVL12:
+  33:User/soft_i2c/soft_i2c_stm32.c **** }
+ 148              		.loc 1 33 1 view .LVU21
+ 149 000c 08BD     		pop	{r3, pc}
+ 150              	.L18:
+ 151 000e 00BF     		.align	2
+ 152              	.L17:
+ 153 0010 000C0140 		.word	1073810432
+ 154              		.cfi_endproc
+ 155              	.LFE67:
+ 157              		.text
+ 158              	.Letext0:
+ 159              		.file 2 "c:\\tool\\gcc-arm\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 160              		.file 3 "c:\\tool\\gcc-arm\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 161              		.file 4 "Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h"
+ 162              		.file 5 "User/soft_i2c/soft_i2c.h"
+ 163              		.file 6 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio.h"
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccACdIBv.s 			page 5
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 soft_i2c_stm32.c
+C:\Users\GM\AppData\Local\Temp\ccACdIBv.s:18     .text.SetSCLPin:00000000 $t
+C:\Users\GM\AppData\Local\Temp\ccACdIBv.s:24     .text.SetSCLPin:00000000 SetSCLPin
+C:\Users\GM\AppData\Local\Temp\ccACdIBv.s:67     .text.SetSCLPin:00000024 $d
+C:\Users\GM\AppData\Local\Temp\ccACdIBv.s:72     .text.SetSDAPin:00000000 $t
+C:\Users\GM\AppData\Local\Temp\ccACdIBv.s:78     .text.SetSDAPin:00000000 SetSDAPin
+C:\Users\GM\AppData\Local\Temp\ccACdIBv.s:120    .text.SetSDAPin:00000024 $d
+C:\Users\GM\AppData\Local\Temp\ccACdIBv.s:125    .text.ReadSDAPin:00000000 $t
+C:\Users\GM\AppData\Local\Temp\ccACdIBv.s:131    .text.ReadSDAPin:00000000 ReadSDAPin
+C:\Users\GM\AppData\Local\Temp\ccACdIBv.s:153    .text.ReadSDAPin:00000010 $d
+
+UNDEFINED SYMBOLS
+HAL_GPIO_WritePin
+HAL_GPIO_ReadPin

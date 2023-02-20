@@ -1,0 +1,420 @@
+ARM GAS  C:\Users\GM\AppData\Local\Temp\cc2JGKys.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"pwm.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.pwm_init,"ax",%progbits
+  18              		.align	1
+  19              		.global	pwm_init
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  24              	pwm_init:
+  25              	.LFB68:
+  26              		.file 1 "User/pwm/pwm.c"
+   1:User/pwm/pwm.c **** #include "pwm.h"
+   2:User/pwm/pwm.c **** 
+   3:User/pwm/pwm.c **** const int tim_freq = 72000000;
+   4:User/pwm/pwm.c **** 
+   5:User/pwm/pwm.c **** typedef struct pwm_t
+   6:User/pwm/pwm.c **** {
+   7:User/pwm/pwm.c ****     int freq;
+   8:User/pwm/pwm.c ****     int duty;
+   9:User/pwm/pwm.c **** } pwm_t;
+  10:User/pwm/pwm.c **** 
+  11:User/pwm/pwm.c **** static pwm_t pwm;
+  12:User/pwm/pwm.c **** 
+  13:User/pwm/pwm.c **** void pwm_init()
+  14:User/pwm/pwm.c **** {
+  27              		.loc 1 14 1 view -0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31 0000 08B5     		push	{r3, lr}
+  32              	.LCFI0:
+  33              		.cfi_def_cfa_offset 8
+  34              		.cfi_offset 3, -8
+  35              		.cfi_offset 14, -4
+  15:User/pwm/pwm.c ****     pwm.freq = 100;
+  36              		.loc 1 15 5 view .LVU1
+  37              		.loc 1 15 14 is_stmt 0 view .LVU2
+  38 0002 0A4B     		ldr	r3, .L3
+  39 0004 6422     		movs	r2, #100
+  40 0006 1A60     		str	r2, [r3]
+  16:User/pwm/pwm.c ****     pwm.duty = 50;
+  41              		.loc 1 16 5 is_stmt 1 view .LVU3
+  42              		.loc 1 16 14 is_stmt 0 view .LVU4
+ARM GAS  C:\Users\GM\AppData\Local\Temp\cc2JGKys.s 			page 2
+
+
+  43 0008 3222     		movs	r2, #50
+  44 000a 5A60     		str	r2, [r3, #4]
+  17:User/pwm/pwm.c **** 
+  18:User/pwm/pwm.c ****     TIM2->PSC = 10;
+  45              		.loc 1 18 5 is_stmt 1 view .LVU5
+  46              		.loc 1 18 15 is_stmt 0 view .LVU6
+  47 000c 4FF08043 		mov	r3, #1073741824
+  48 0010 0A22     		movs	r2, #10
+  49 0012 9A62     		str	r2, [r3, #40]
+  19:User/pwm/pwm.c ****     TIM2->ARR = 65453;
+  50              		.loc 1 19 5 is_stmt 1 view .LVU7
+  51              		.loc 1 19 15 is_stmt 0 view .LVU8
+  52 0014 4FF6AD72 		movw	r2, #65453
+  53 0018 DA62     		str	r2, [r3, #44]
+  20:User/pwm/pwm.c ****     TIM2->CCR1 = 32726;
+  54              		.loc 1 20 5 is_stmt 1 view .LVU9
+  55              		.loc 1 20 16 is_stmt 0 view .LVU10
+  56 001a 47F6D672 		movw	r2, #32726
+  57 001e 5A63     		str	r2, [r3, #52]
+  21:User/pwm/pwm.c ****     HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
+  58              		.loc 1 21 5 is_stmt 1 view .LVU11
+  59 0020 0021     		movs	r1, #0
+  60 0022 0348     		ldr	r0, .L3+4
+  61 0024 FFF7FEFF 		bl	HAL_TIM_PWM_Start
+  62              	.LVL0:
+  22:User/pwm/pwm.c **** }
+  63              		.loc 1 22 1 is_stmt 0 view .LVU12
+  64 0028 08BD     		pop	{r3, pc}
+  65              	.L4:
+  66 002a 00BF     		.align	2
+  67              	.L3:
+  68 002c 00000000 		.word	.LANCHOR0
+  69 0030 00000000 		.word	htim2
+  70              		.cfi_endproc
+  71              	.LFE68:
+  73              		.section	.text.pwm_freq,"ax",%progbits
+  74              		.align	1
+  75              		.global	pwm_freq
+  76              		.syntax unified
+  77              		.thumb
+  78              		.thumb_func
+  80              	pwm_freq:
+  81              	.LVL1:
+  82              	.LFB69:
+  23:User/pwm/pwm.c **** 
+  24:User/pwm/pwm.c **** void pwm_freq(int freq)
+  25:User/pwm/pwm.c **** {
+  83              		.loc 1 25 1 is_stmt 1 view -0
+  84              		.cfi_startproc
+  85              		@ args = 0, pretend = 0, frame = 0
+  86              		@ frame_needed = 0, uses_anonymous_args = 0
+  87              		@ link register save eliminated.
+  26:User/pwm/pwm.c ****     pwm.freq = freq;
+  88              		.loc 1 26 5 view .LVU14
+  89              		.loc 1 26 14 is_stmt 0 view .LVU15
+  90 0000 0F4B     		ldr	r3, .L8
+  91 0002 1860     		str	r0, [r3]
+ARM GAS  C:\Users\GM\AppData\Local\Temp\cc2JGKys.s 			page 3
+
+
+  27:User/pwm/pwm.c ****     int tmp = tim_freq / freq;
+  92              		.loc 1 27 5 is_stmt 1 view .LVU16
+  93              		.loc 1 27 9 is_stmt 0 view .LVU17
+  94 0004 0F4B     		ldr	r3, .L8+4
+  95 0006 93FBF0F0 		sdiv	r0, r3, r0
+  96              	.LVL2:
+  28:User/pwm/pwm.c ****     int arr = 0;
+  97              		.loc 1 28 5 is_stmt 1 view .LVU18
+  29:User/pwm/pwm.c ****     int psc = 0;
+  98              		.loc 1 29 5 view .LVU19
+  30:User/pwm/pwm.c ****     while (tmp > 65535)
+  99              		.loc 1 30 5 view .LVU20
+  27:User/pwm/pwm.c ****     int arr = 0;
+ 100              		.loc 1 27 9 is_stmt 0 view .LVU21
+ 101 000a 0346     		mov	r3, r0
+  29:User/pwm/pwm.c ****     int psc = 0;
+ 102              		.loc 1 29 9 view .LVU22
+ 103 000c 0022     		movs	r2, #0
+ 104              		.loc 1 30 11 view .LVU23
+ 105 000e 03E0     		b	.L6
+ 106              	.LVL3:
+ 107              	.L7:
+  31:User/pwm/pwm.c ****     {
+  32:User/pwm/pwm.c ****         psc++;
+ 108              		.loc 1 32 9 is_stmt 1 view .LVU24
+  33:User/pwm/pwm.c ****         tmp = tim_freq / freq / (psc + 1);
+ 109              		.loc 1 33 9 view .LVU25
+ 110              		.loc 1 33 38 is_stmt 0 view .LVU26
+ 111 0010 931C     		adds	r3, r2, #2
+ 112              	.LVL4:
+ 113              		.loc 1 33 13 view .LVU27
+ 114 0012 90FBF3F3 		sdiv	r3, r0, r3
+ 115              	.LVL5:
+  32:User/pwm/pwm.c ****         tmp = tim_freq / freq / (psc + 1);
+ 116              		.loc 1 32 12 view .LVU28
+ 117 0016 0132     		adds	r2, r2, #1
+ 118              	.LVL6:
+ 119              	.L6:
+  30:User/pwm/pwm.c ****     {
+ 120              		.loc 1 30 11 is_stmt 1 view .LVU29
+ 121 0018 B3F5803F 		cmp	r3, #65536
+ 122 001c F8DA     		bge	.L7
+  34:User/pwm/pwm.c ****     }
+  35:User/pwm/pwm.c ****     arr = tmp - 1;
+ 123              		.loc 1 35 5 view .LVU30
+ 124              		.loc 1 35 9 is_stmt 0 view .LVU31
+ 125 001e 581E     		subs	r0, r3, #1
+ 126              	.LVL7:
+  36:User/pwm/pwm.c ****     TIM2->PSC = psc;
+ 127              		.loc 1 36 5 is_stmt 1 view .LVU32
+ 128              		.loc 1 36 15 is_stmt 0 view .LVU33
+ 129 0020 4FF08041 		mov	r1, #1073741824
+ 130 0024 8A62     		str	r2, [r1, #40]
+ 131              	.LVL8:
+  37:User/pwm/pwm.c ****     TIM2->ARR = arr;
+ 132              		.loc 1 37 5 is_stmt 1 view .LVU34
+ 133              		.loc 1 37 15 is_stmt 0 view .LVU35
+ARM GAS  C:\Users\GM\AppData\Local\Temp\cc2JGKys.s 			page 4
+
+
+ 134 0026 C862     		str	r0, [r1, #44]
+  38:User/pwm/pwm.c ****     TIM2->CCR1 = pwm.duty*(arr+1)/100;
+ 135              		.loc 1 38 5 is_stmt 1 view .LVU36
+ 136              		.loc 1 38 21 is_stmt 0 view .LVU37
+ 137 0028 054A     		ldr	r2, .L8
+ 138              	.LVL9:
+ 139              		.loc 1 38 21 view .LVU38
+ 140 002a 5268     		ldr	r2, [r2, #4]
+ 141              		.loc 1 38 26 view .LVU39
+ 142 002c 02FB03F3 		mul	r3, r2, r3
+ 143              	.LVL10:
+ 144              		.loc 1 38 34 view .LVU40
+ 145 0030 054A     		ldr	r2, .L8+8
+ 146 0032 82FB0302 		smull	r0, r2, r2, r3
+ 147              	.LVL11:
+ 148              		.loc 1 38 34 view .LVU41
+ 149 0036 DB17     		asrs	r3, r3, #31
+ 150 0038 C3EB6213 		rsb	r3, r3, r2, asr #5
+ 151              		.loc 1 38 16 view .LVU42
+ 152 003c 4B63     		str	r3, [r1, #52]
+ 153              	.LVL12:
+  39:User/pwm/pwm.c **** }
+ 154              		.loc 1 39 1 view .LVU43
+ 155 003e 7047     		bx	lr
+ 156              	.L9:
+ 157              		.align	2
+ 158              	.L8:
+ 159 0040 00000000 		.word	.LANCHOR0
+ 160 0044 00A24A04 		.word	72000000
+ 161 0048 1F85EB51 		.word	1374389535
+ 162              		.cfi_endproc
+ 163              	.LFE69:
+ 165              		.section	.text.pwm_duty,"ax",%progbits
+ 166              		.align	1
+ 167              		.global	pwm_duty
+ 168              		.syntax unified
+ 169              		.thumb
+ 170              		.thumb_func
+ 172              	pwm_duty:
+ 173              	.LVL13:
+ 174              	.LFB70:
+  40:User/pwm/pwm.c **** 
+  41:User/pwm/pwm.c **** void pwm_duty(int duty)
+  42:User/pwm/pwm.c **** {
+ 175              		.loc 1 42 1 is_stmt 1 view -0
+ 176              		.cfi_startproc
+ 177              		@ args = 0, pretend = 0, frame = 0
+ 178              		@ frame_needed = 0, uses_anonymous_args = 0
+ 179              		@ link register save eliminated.
+  43:User/pwm/pwm.c ****     pwm.duty = duty;
+ 180              		.loc 1 43 5 view .LVU45
+ 181              		.loc 1 43 14 is_stmt 0 view .LVU46
+ 182 0000 074B     		ldr	r3, .L11
+ 183 0002 5860     		str	r0, [r3, #4]
+  44:User/pwm/pwm.c ****     int tmp=TIM2->ARR;
+ 184              		.loc 1 44 5 is_stmt 1 view .LVU47
+ 185              		.loc 1 44 17 is_stmt 0 view .LVU48
+ARM GAS  C:\Users\GM\AppData\Local\Temp\cc2JGKys.s 			page 5
+
+
+ 186 0004 4FF08042 		mov	r2, #1073741824
+ 187 0008 D36A     		ldr	r3, [r2, #44]
+ 188              	.LVL14:
+  45:User/pwm/pwm.c ****     int tmp2=(tmp+1)*duty/100;
+ 189              		.loc 1 45 5 is_stmt 1 view .LVU49
+ 190              		.loc 1 45 21 is_stmt 0 view .LVU50
+ 191 000a 03FB0000 		mla	r0, r3, r0, r0
+ 192              	.LVL15:
+ 193              		.loc 1 45 9 view .LVU51
+ 194 000e 054B     		ldr	r3, .L11+4
+ 195              	.LVL16:
+ 196              		.loc 1 45 9 view .LVU52
+ 197 0010 83FB0013 		smull	r1, r3, r3, r0
+ 198 0014 C017     		asrs	r0, r0, #31
+ 199 0016 C0EB6310 		rsb	r0, r0, r3, asr #5
+ 200              	.LVL17:
+  46:User/pwm/pwm.c ****     TIM2->CCR1=tmp2;
+ 201              		.loc 1 46 5 is_stmt 1 view .LVU53
+ 202              		.loc 1 46 15 is_stmt 0 view .LVU54
+ 203 001a 5063     		str	r0, [r2, #52]
+  47:User/pwm/pwm.c **** }
+ 204              		.loc 1 47 1 view .LVU55
+ 205 001c 7047     		bx	lr
+ 206              	.L12:
+ 207 001e 00BF     		.align	2
+ 208              	.L11:
+ 209 0020 00000000 		.word	.LANCHOR0
+ 210 0024 1F85EB51 		.word	1374389535
+ 211              		.cfi_endproc
+ 212              	.LFE70:
+ 214              		.section	.rodata.pwm_help.str1.4,"aMS",%progbits,1
+ 215              		.align	2
+ 216              	.LC0:
+ 217 0000 70776D28 		.ascii	"pwm(freq=%d,duty=%d)\012\000"
+ 217      66726571 
+ 217      3D25642C 
+ 217      64757479 
+ 217      3D256429 
+ 218 0016 0000     		.align	2
+ 219              	.LC1:
+ 220 0018 70776D5F 		.ascii	"pwm_t(freq=%d,duty=%d)\012\000"
+ 220      74286672 
+ 220      65713D25 
+ 220      642C6475 
+ 220      74793D25 
+ 221              		.section	.text.pwm_help,"ax",%progbits
+ 222              		.align	1
+ 223              		.global	pwm_help
+ 224              		.syntax unified
+ 225              		.thumb
+ 226              		.thumb_func
+ 228              	pwm_help:
+ 229              	.LFB71:
+  48:User/pwm/pwm.c **** 
+  49:User/pwm/pwm.c **** void pwm_help()
+  50:User/pwm/pwm.c **** {
+ 230              		.loc 1 50 1 is_stmt 1 view -0
+ARM GAS  C:\Users\GM\AppData\Local\Temp\cc2JGKys.s 			page 6
+
+
+ 231              		.cfi_startproc
+ 232              		@ args = 0, pretend = 0, frame = 0
+ 233              		@ frame_needed = 0, uses_anonymous_args = 0
+ 234 0000 08B5     		push	{r3, lr}
+ 235              	.LCFI1:
+ 236              		.cfi_def_cfa_offset 8
+ 237              		.cfi_offset 3, -8
+ 238              		.cfi_offset 14, -4
+  51:User/pwm/pwm.c ****     printf("pwm(freq=%d,duty=%d)\n", pwm.freq, pwm.duty);
+ 239              		.loc 1 51 5 view .LVU57
+ 240 0002 0F4B     		ldr	r3, .L15
+ 241 0004 5A68     		ldr	r2, [r3, #4]
+ 242 0006 1968     		ldr	r1, [r3]
+ 243 0008 0E48     		ldr	r0, .L15+4
+ 244 000a FFF7FEFF 		bl	printf
+ 245              	.LVL18:
+  52:User/pwm/pwm.c ****     int temp=72000000/(TIM2->PSC+1)/(TIM2->ARR+1);
+ 246              		.loc 1 52 5 view .LVU58
+ 247              		.loc 1 52 28 is_stmt 0 view .LVU59
+ 248 000e 4FF08043 		mov	r3, #1073741824
+ 249 0012 996A     		ldr	r1, [r3, #40]
+ 250              		.loc 1 52 33 view .LVU60
+ 251 0014 0131     		adds	r1, r1, #1
+ 252              		.loc 1 52 22 view .LVU61
+ 253 0016 0C48     		ldr	r0, .L15+8
+ 254 0018 B0FBF1F0 		udiv	r0, r0, r1
+ 255              		.loc 1 52 42 view .LVU62
+ 256 001c D96A     		ldr	r1, [r3, #44]
+ 257              		.loc 1 52 47 view .LVU63
+ 258 001e 0131     		adds	r1, r1, #1
+ 259              	.LVL19:
+  53:User/pwm/pwm.c ****     int temp2=TIM2->CCR1*100/(TIM2->ARR+1);
+ 260              		.loc 1 53 5 is_stmt 1 view .LVU64
+ 261              		.loc 1 53 19 is_stmt 0 view .LVU65
+ 262 0020 5A6B     		ldr	r2, [r3, #52]
+ 263              		.loc 1 53 25 view .LVU66
+ 264 0022 4FF0640C 		mov	ip, #100
+ 265 0026 0CFB02F2 		mul	r2, ip, r2
+ 266              		.loc 1 53 35 view .LVU67
+ 267 002a DB6A     		ldr	r3, [r3, #44]
+ 268              		.loc 1 53 40 view .LVU68
+ 269 002c 0133     		adds	r3, r3, #1
+ 270              	.LVL20:
+  54:User/pwm/pwm.c ****     printf("pwm_t(freq=%d,duty=%d)\n", temp,temp2);
+ 271              		.loc 1 54 5 is_stmt 1 view .LVU69
+ 272 002e B2FBF3F2 		udiv	r2, r2, r3
+ 273              	.LVL21:
+ 274              		.loc 1 54 5 is_stmt 0 view .LVU70
+ 275 0032 B0FBF1F1 		udiv	r1, r0, r1
+ 276              	.LVL22:
+ 277              		.loc 1 54 5 view .LVU71
+ 278 0036 0548     		ldr	r0, .L15+12
+ 279 0038 FFF7FEFF 		bl	printf
+ 280              	.LVL23:
+  55:User/pwm/pwm.c **** }
+ 281              		.loc 1 55 1 view .LVU72
+ 282 003c 08BD     		pop	{r3, pc}
+ARM GAS  C:\Users\GM\AppData\Local\Temp\cc2JGKys.s 			page 7
+
+
+ 283              	.L16:
+ 284 003e 00BF     		.align	2
+ 285              	.L15:
+ 286 0040 00000000 		.word	.LANCHOR0
+ 287 0044 00000000 		.word	.LC0
+ 288 0048 00A24A04 		.word	72000000
+ 289 004c 18000000 		.word	.LC1
+ 290              		.cfi_endproc
+ 291              	.LFE71:
+ 293              		.global	tim_freq
+ 294              		.section	.bss.pwm,"aw",%nobits
+ 295              		.align	2
+ 296              		.set	.LANCHOR0,. + 0
+ 299              	pwm:
+ 300 0000 00000000 		.space	8
+ 300      00000000 
+ 301              		.section	.rodata.tim_freq,"a"
+ 302              		.align	2
+ 305              	tim_freq:
+ 306 0000 00A24A04 		.word	72000000
+ 307              		.text
+ 308              	.Letext0:
+ 309              		.file 2 "c:\\tool\\gcc-arm\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 310              		.file 3 "c:\\tool\\gcc-arm\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 311              		.file 4 "Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h"
+ 312              		.file 5 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h"
+ 313              		.file 6 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma.h"
+ 314              		.file 7 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h"
+ 315              		.file 8 "Core/Inc/tim.h"
+ 316              		.file 9 "c:\\tool\\gcc-arm\\arm-none-eabi\\include\\stdio.h"
+ARM GAS  C:\Users\GM\AppData\Local\Temp\cc2JGKys.s 			page 8
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 pwm.c
+C:\Users\GM\AppData\Local\Temp\cc2JGKys.s:18     .text.pwm_init:00000000 $t
+C:\Users\GM\AppData\Local\Temp\cc2JGKys.s:24     .text.pwm_init:00000000 pwm_init
+C:\Users\GM\AppData\Local\Temp\cc2JGKys.s:68     .text.pwm_init:0000002c $d
+C:\Users\GM\AppData\Local\Temp\cc2JGKys.s:74     .text.pwm_freq:00000000 $t
+C:\Users\GM\AppData\Local\Temp\cc2JGKys.s:80     .text.pwm_freq:00000000 pwm_freq
+C:\Users\GM\AppData\Local\Temp\cc2JGKys.s:159    .text.pwm_freq:00000040 $d
+C:\Users\GM\AppData\Local\Temp\cc2JGKys.s:166    .text.pwm_duty:00000000 $t
+C:\Users\GM\AppData\Local\Temp\cc2JGKys.s:172    .text.pwm_duty:00000000 pwm_duty
+C:\Users\GM\AppData\Local\Temp\cc2JGKys.s:209    .text.pwm_duty:00000020 $d
+C:\Users\GM\AppData\Local\Temp\cc2JGKys.s:215    .rodata.pwm_help.str1.4:00000000 $d
+C:\Users\GM\AppData\Local\Temp\cc2JGKys.s:222    .text.pwm_help:00000000 $t
+C:\Users\GM\AppData\Local\Temp\cc2JGKys.s:228    .text.pwm_help:00000000 pwm_help
+C:\Users\GM\AppData\Local\Temp\cc2JGKys.s:286    .text.pwm_help:00000040 $d
+C:\Users\GM\AppData\Local\Temp\cc2JGKys.s:305    .rodata.tim_freq:00000000 tim_freq
+C:\Users\GM\AppData\Local\Temp\cc2JGKys.s:295    .bss.pwm:00000000 $d
+C:\Users\GM\AppData\Local\Temp\cc2JGKys.s:299    .bss.pwm:00000000 pwm
+C:\Users\GM\AppData\Local\Temp\cc2JGKys.s:302    .rodata.tim_freq:00000000 $d
+
+UNDEFINED SYMBOLS
+HAL_TIM_PWM_Start
+htim2
+printf

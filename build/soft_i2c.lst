@@ -1,0 +1,1208 @@
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccmJjUCG.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"soft_i2c.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.Soft_I2CStart,"ax",%progbits
+  18              		.align	1
+  19              		.syntax unified
+  20              		.thumb
+  21              		.thumb_func
+  23              	Soft_I2CStart:
+  24              	.LFB66:
+  25              		.file 1 "User/soft_i2c/soft_i2c.c"
+   1:User/soft_i2c/soft_i2c.c **** 
+   2:User/soft_i2c/soft_i2c.c **** /**--------------------------------------------------------------------------**/
+   3:User/soft_i2c/soft_i2c.c **** /**使用说明：                                                                **/
+   4:User/soft_i2c/soft_i2c.c **** /**    1、声明GPIO模拟I2C对象实体（如：Soft_I2CTypeDef si2c），并调用函数     **
+   5:User/soft_i2c/soft_i2c.c **** /**       Soft_I2C_Init初始化对象实体。初始化时，给定工作频率1-500K  **/
+   6:User/soft_i2c/soft_i2c.c **** /**       以kHz为单位，最小始终周期为2微秒，最大为500k微秒。                 *
+   7:User/soft_i2c/soft_i2c.c **** /**    2、实现形如void f(Soft_I2CPinValue op)的函数，并将其赋值               **/
+   8:User/soft_i2c/soft_i2c.c **** /**       给Soft_I2CTypeDef对象实体的SetSCLPin函数指针。用以操作SCL引脚。     **/
+   9:User/soft_i2c/soft_i2c.c **** /**    3、实现形如void f(Soft_I2CPinValue op)的函数，并将其赋值               **/
+  10:User/soft_i2c/soft_i2c.c **** /**       给Soft_I2CTypeDef对象实体的SetSDAPin函数指针。用以操作SDA引脚。     **/
+  11:User/soft_i2c/soft_i2c.c **** /**    4、实现形如uint8_t f(void)的函数，并将其赋值给Soft_I2CTypeDef对象实体  **
+  12:User/soft_i2c/soft_i2c.c **** /**       的ReadSDAPin函数指针。用以读取SDA引脚。                            **/
+  13:User/soft_i2c/soft_i2c.c **** /**    5、实现形如void f(volatile uint32_t period)的函数，并将其赋值         **/
+  14:User/soft_i2c/soft_i2c.c **** /**       给Soft_I2CTypeDef对象实体的Delayus函数指针。用于周期延时，单位为微�
+  15:User/soft_i2c/soft_i2c.c **** /**    6、调用相应的函数实现需要的操作。                                     **/
+  16:User/soft_i2c/soft_i2c.c **** /**--------------------------------------------------------------------------**/
+  17:User/soft_i2c/soft_i2c.c **** 
+  18:User/soft_i2c/soft_i2c.c **** 
+  19:User/soft_i2c/soft_i2c.c **** #include "stddef.h"
+  20:User/soft_i2c/soft_i2c.c **** #include "soft_i2c.h"
+  21:User/soft_i2c/soft_i2c.c **** 
+  22:User/soft_i2c/soft_i2c.c **** /* 模拟I2C通讯起始操作 */
+  23:User/soft_i2c/soft_i2c.c **** static void Soft_I2CStart();
+  24:User/soft_i2c/soft_i2c.c **** 
+  25:User/soft_i2c/soft_i2c.c **** /* 模拟I2C通讯起始操作 */
+  26:User/soft_i2c/soft_i2c.c **** static void Soft_I2CStop();
+  27:User/soft_i2c/soft_i2c.c **** 
+  28:User/soft_i2c/soft_i2c.c **** /* 模拟I2C等待确认 */
+  29:User/soft_i2c/soft_i2c.c **** static Soft_I2CStatus Soft_I2CWaitAck(uint16_t timeOut);
+  30:User/soft_i2c/soft_i2c.c **** 
+  31:User/soft_i2c/soft_i2c.c **** /* 模拟I2C产生一个应答*/
+  32:User/soft_i2c/soft_i2c.c **** static void IIC_Ack();
+  33:User/soft_i2c/soft_i2c.c **** 
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccmJjUCG.s 			page 2
+
+
+  34:User/soft_i2c/soft_i2c.c **** /* 模拟I2C产生一个非应答 */
+  35:User/soft_i2c/soft_i2c.c **** static void IIC_NAck();
+  36:User/soft_i2c/soft_i2c.c **** 
+  37:User/soft_i2c/soft_i2c.c **** /* 通过模拟I2C发送一个字节 */
+  38:User/soft_i2c/soft_i2c.c **** static void SendByteBySoft_I2C(uint8_t byte);
+  39:User/soft_i2c/soft_i2c.c **** 
+  40:User/soft_i2c/soft_i2c.c **** /* 通过模拟I2C接收一个字节 */
+  41:User/soft_i2c/soft_i2c.c **** static uint8_t RecieveByteBySoft_I2C();
+  42:User/soft_i2c/soft_i2c.c **** 
+  43:User/soft_i2c/soft_i2c.c **** /* GPIO模拟I2C通讯初始化 */
+  44:User/soft_i2c/soft_i2c.c **** void Soft_I2C_Init()
+  45:User/soft_i2c/soft_i2c.c **** {
+  46:User/soft_i2c/soft_i2c.c ****   /*拉高总线，使处于空闲状态*/
+  47:User/soft_i2c/soft_i2c.c ****   SetSCLPin(IIC_SET);
+  48:User/soft_i2c/soft_i2c.c ****   SetSDAPin(IIC_SET);
+  49:User/soft_i2c/soft_i2c.c **** }
+  50:User/soft_i2c/soft_i2c.c **** 
+  51:User/soft_i2c/soft_i2c.c **** /* 模拟I2C通讯起始操作 */
+  52:User/soft_i2c/soft_i2c.c **** static void Soft_I2CStart()
+  53:User/soft_i2c/soft_i2c.c **** {
+  26              		.loc 1 53 1 view -0
+  27              		.cfi_startproc
+  28              		@ args = 0, pretend = 0, frame = 0
+  29              		@ frame_needed = 0, uses_anonymous_args = 0
+  30 0000 08B5     		push	{r3, lr}
+  31              	.LCFI0:
+  32              		.cfi_def_cfa_offset 8
+  33              		.cfi_offset 3, -8
+  34              		.cfi_offset 14, -4
+  54:User/soft_i2c/soft_i2c.c ****   /*拉高总线，使处于空闲状态*/
+  55:User/soft_i2c/soft_i2c.c ****   SetSDAPin(IIC_SET);
+  35              		.loc 1 55 3 view .LVU1
+  36 0002 0120     		movs	r0, #1
+  37 0004 FFF7FEFF 		bl	SetSDAPin
+  38              	.LVL0:
+  56:User/soft_i2c/soft_i2c.c ****   SetSCLPin(IIC_SET);
+  39              		.loc 1 56 3 view .LVU2
+  40 0008 0120     		movs	r0, #1
+  41 000a FFF7FEFF 		bl	SetSCLPin
+  42              	.LVL1:
+  57:User/soft_i2c/soft_i2c.c ****   /*当SCL为高时，SDA一个下降代表开始*/
+  58:User/soft_i2c/soft_i2c.c ****   SetSDAPin(IIC_RESET);
+  43              		.loc 1 58 3 view .LVU3
+  44 000e 0020     		movs	r0, #0
+  45 0010 FFF7FEFF 		bl	SetSDAPin
+  46              	.LVL2:
+  59:User/soft_i2c/soft_i2c.c ****   /*嵌住SCL以便发送数据*/
+  60:User/soft_i2c/soft_i2c.c ****   SetSCLPin(IIC_RESET);
+  47              		.loc 1 60 3 view .LVU4
+  48 0014 0020     		movs	r0, #0
+  49 0016 FFF7FEFF 		bl	SetSCLPin
+  50              	.LVL3:
+  61:User/soft_i2c/soft_i2c.c **** 
+  62:User/soft_i2c/soft_i2c.c **** }
+  51              		.loc 1 62 1 is_stmt 0 view .LVU5
+  52 001a 08BD     		pop	{r3, pc}
+  53              		.cfi_endproc
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccmJjUCG.s 			page 3
+
+
+  54              	.LFE66:
+  56              		.section	.text.SendByteBySoft_I2C,"ax",%progbits
+  57              		.align	1
+  58              		.syntax unified
+  59              		.thumb
+  60              		.thumb_func
+  62              	SendByteBySoft_I2C:
+  63              	.LVL4:
+  64              	.LFB71:
+  63:User/soft_i2c/soft_i2c.c **** 
+  64:User/soft_i2c/soft_i2c.c **** /* 模拟I2C通讯停止操作 */
+  65:User/soft_i2c/soft_i2c.c **** static void Soft_I2CStop()
+  66:User/soft_i2c/soft_i2c.c **** {
+  67:User/soft_i2c/soft_i2c.c ****   SetSCLPin(IIC_RESET);
+  68:User/soft_i2c/soft_i2c.c ****   SetSDAPin(IIC_RESET);
+  69:User/soft_i2c/soft_i2c.c ****   SetSCLPin(IIC_SET);
+  70:User/soft_i2c/soft_i2c.c ****   SetSDAPin(IIC_SET);
+  71:User/soft_i2c/soft_i2c.c **** 
+  72:User/soft_i2c/soft_i2c.c **** }
+  73:User/soft_i2c/soft_i2c.c **** 
+  74:User/soft_i2c/soft_i2c.c **** /* 模拟I2C等待确认 */
+  75:User/soft_i2c/soft_i2c.c **** static Soft_I2CStatus Soft_I2CWaitAck(uint16_t timeOut)
+  76:User/soft_i2c/soft_i2c.c **** {
+  77:User/soft_i2c/soft_i2c.c ****   SetSDAPin(IIC_SET);//拉高SDA
+  78:User/soft_i2c/soft_i2c.c ****   SetSCLPin(IIC_SET);//拉高SCL
+  79:User/soft_i2c/soft_i2c.c ****   while(ReadSDAPin())           //读取数据引脚
+  80:User/soft_i2c/soft_i2c.c ****   {
+  81:User/soft_i2c/soft_i2c.c ****     if(--timeOut)
+  82:User/soft_i2c/soft_i2c.c ****     {
+  83:User/soft_i2c/soft_i2c.c ****       Soft_I2CStop();
+  84:User/soft_i2c/soft_i2c.c ****       return I2C_ERROR;
+  85:User/soft_i2c/soft_i2c.c ****     }
+  86:User/soft_i2c/soft_i2c.c ****   }
+  87:User/soft_i2c/soft_i2c.c ****   SetSCLPin(IIC_RESET);
+  88:User/soft_i2c/soft_i2c.c ****   return I2C_OK;
+  89:User/soft_i2c/soft_i2c.c **** }
+  90:User/soft_i2c/soft_i2c.c **** 
+  91:User/soft_i2c/soft_i2c.c **** /* 模拟I2C产生一个应答*/
+  92:User/soft_i2c/soft_i2c.c **** static void IIC_Ack()
+  93:User/soft_i2c/soft_i2c.c **** {
+  94:User/soft_i2c/soft_i2c.c ****   SetSDAPin(IIC_RESET);
+  95:User/soft_i2c/soft_i2c.c ****   SetSCLPin(IIC_SET);
+  96:User/soft_i2c/soft_i2c.c ****   SetSCLPin(IIC_RESET);
+  97:User/soft_i2c/soft_i2c.c ****   SetSDAPin(IIC_SET);
+  98:User/soft_i2c/soft_i2c.c **** }
+  99:User/soft_i2c/soft_i2c.c **** 
+ 100:User/soft_i2c/soft_i2c.c **** /* 模拟I2C产生一个非应答 */
+ 101:User/soft_i2c/soft_i2c.c **** static void IIC_NAck()
+ 102:User/soft_i2c/soft_i2c.c **** {
+ 103:User/soft_i2c/soft_i2c.c ****   SetSCLPin(IIC_RESET);
+ 104:User/soft_i2c/soft_i2c.c ****   SetSDAPin(IIC_SET);
+ 105:User/soft_i2c/soft_i2c.c ****   SetSCLPin(IIC_SET);
+ 106:User/soft_i2c/soft_i2c.c ****   SetSCLPin(IIC_RESET);
+ 107:User/soft_i2c/soft_i2c.c **** 
+ 108:User/soft_i2c/soft_i2c.c **** }
+ 109:User/soft_i2c/soft_i2c.c **** 
+ 110:User/soft_i2c/soft_i2c.c **** /* 通过模拟I2C发送一个字节 */
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccmJjUCG.s 			page 4
+
+
+ 111:User/soft_i2c/soft_i2c.c **** static void SendByteBySoft_I2C(uint8_t byte)
+ 112:User/soft_i2c/soft_i2c.c **** {
+  65              		.loc 1 112 1 is_stmt 1 view -0
+  66              		.cfi_startproc
+  67              		@ args = 0, pretend = 0, frame = 0
+  68              		@ frame_needed = 0, uses_anonymous_args = 0
+  69              		.loc 1 112 1 is_stmt 0 view .LVU7
+  70 0000 38B5     		push	{r3, r4, r5, lr}
+  71              	.LCFI1:
+  72              		.cfi_def_cfa_offset 16
+  73              		.cfi_offset 3, -16
+  74              		.cfi_offset 4, -12
+  75              		.cfi_offset 5, -8
+  76              		.cfi_offset 14, -4
+  77 0002 0446     		mov	r4, r0
+ 113:User/soft_i2c/soft_i2c.c ****   /*拉低SCL引脚准备数据传输*/
+ 114:User/soft_i2c/soft_i2c.c ****   SetSCLPin(IIC_RESET);
+  78              		.loc 1 114 3 is_stmt 1 view .LVU8
+  79 0004 0020     		movs	r0, #0
+  80              	.LVL5:
+  81              		.loc 1 114 3 is_stmt 0 view .LVU9
+  82 0006 FFF7FEFF 		bl	SetSCLPin
+  83              	.LVL6:
+ 115:User/soft_i2c/soft_i2c.c ****   for(uint8_t count = 0; count < 8; count++)
+  84              		.loc 1 115 3 is_stmt 1 view .LVU10
+  85              	.LBB2:
+  86              		.loc 1 115 7 view .LVU11
+  87              		.loc 1 115 15 is_stmt 0 view .LVU12
+  88 000a 0025     		movs	r5, #0
+  89              		.loc 1 115 3 view .LVU13
+  90 000c 0CE0     		b	.L4
+  91              	.LVL7:
+  92              	.L5:
+ 116:User/soft_i2c/soft_i2c.c ****   {
+ 117:User/soft_i2c/soft_i2c.c ****     if(byte & 0x80)     //每次发送最高位
+ 118:User/soft_i2c/soft_i2c.c ****     {
+ 119:User/soft_i2c/soft_i2c.c ****       SetSDAPin(IIC_SET);
+ 120:User/soft_i2c/soft_i2c.c ****     }
+ 121:User/soft_i2c/soft_i2c.c ****     else
+ 122:User/soft_i2c/soft_i2c.c ****     {
+ 123:User/soft_i2c/soft_i2c.c ****       SetSDAPin(IIC_RESET);
+  93              		.loc 1 123 7 is_stmt 1 view .LVU14
+  94 000e 0020     		movs	r0, #0
+  95 0010 FFF7FEFF 		bl	SetSDAPin
+  96              	.LVL8:
+  97              	.L6:
+ 124:User/soft_i2c/soft_i2c.c ****     }
+ 125:User/soft_i2c/soft_i2c.c ****     byte <<= 1;         //发送一位后，左移一位
+  98              		.loc 1 125 5 discriminator 2 view .LVU15
+  99              		.loc 1 125 10 is_stmt 0 discriminator 2 view .LVU16
+ 100 0014 6400     		lsls	r4, r4, #1
+ 101              	.LVL9:
+ 102              		.loc 1 125 10 discriminator 2 view .LVU17
+ 103 0016 E4B2     		uxtb	r4, r4
+ 104              	.LVL10:
+ 126:User/soft_i2c/soft_i2c.c ****     SetSCLPin(IIC_SET);
+ 105              		.loc 1 126 5 is_stmt 1 discriminator 2 view .LVU18
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccmJjUCG.s 			page 5
+
+
+ 106 0018 0120     		movs	r0, #1
+ 107 001a FFF7FEFF 		bl	SetSCLPin
+ 108              	.LVL11:
+ 127:User/soft_i2c/soft_i2c.c ****     SetSCLPin(IIC_RESET);
+ 109              		.loc 1 127 5 discriminator 2 view .LVU19
+ 110 001e 0020     		movs	r0, #0
+ 111 0020 FFF7FEFF 		bl	SetSCLPin
+ 112              	.LVL12:
+ 115:User/soft_i2c/soft_i2c.c ****   {
+ 113              		.loc 1 115 37 discriminator 2 view .LVU20
+ 115:User/soft_i2c/soft_i2c.c ****   {
+ 114              		.loc 1 115 42 is_stmt 0 discriminator 2 view .LVU21
+ 115 0024 0135     		adds	r5, r5, #1
+ 116              	.LVL13:
+ 115:User/soft_i2c/soft_i2c.c ****   {
+ 117              		.loc 1 115 42 discriminator 2 view .LVU22
+ 118 0026 EDB2     		uxtb	r5, r5
+ 119              	.LVL14:
+ 120              	.L4:
+ 115:User/soft_i2c/soft_i2c.c ****   {
+ 121              		.loc 1 115 26 is_stmt 1 discriminator 1 view .LVU23
+ 115:User/soft_i2c/soft_i2c.c ****   {
+ 122              		.loc 1 115 3 is_stmt 0 discriminator 1 view .LVU24
+ 123 0028 072D     		cmp	r5, #7
+ 124 002a 06D8     		bhi	.L9
+ 117:User/soft_i2c/soft_i2c.c ****     {
+ 125              		.loc 1 117 5 is_stmt 1 view .LVU25
+ 117:User/soft_i2c/soft_i2c.c ****     {
+ 126              		.loc 1 117 7 is_stmt 0 view .LVU26
+ 127 002c 14F0800F 		tst	r4, #128
+ 128 0030 EDD0     		beq	.L5
+ 119:User/soft_i2c/soft_i2c.c ****     }
+ 129              		.loc 1 119 7 is_stmt 1 view .LVU27
+ 130 0032 0120     		movs	r0, #1
+ 131 0034 FFF7FEFF 		bl	SetSDAPin
+ 132              	.LVL15:
+ 133 0038 ECE7     		b	.L6
+ 134              	.L9:
+ 135              	.LBE2:
+ 128:User/soft_i2c/soft_i2c.c ****   }
+ 129:User/soft_i2c/soft_i2c.c **** //
+ 130:User/soft_i2c/soft_i2c.c **** //  SetSDAPin(IIC_SET);
+ 131:User/soft_i2c/soft_i2c.c **** }
+ 136              		.loc 1 131 1 is_stmt 0 view .LVU28
+ 137 003a 38BD     		pop	{r3, r4, r5, pc}
+ 138              		.loc 1 131 1 view .LVU29
+ 139              		.cfi_endproc
+ 140              	.LFE71:
+ 142              		.section	.text.Soft_I2CStop,"ax",%progbits
+ 143              		.align	1
+ 144              		.syntax unified
+ 145              		.thumb
+ 146              		.thumb_func
+ 148              	Soft_I2CStop:
+ 149              	.LFB67:
+  66:User/soft_i2c/soft_i2c.c ****   SetSCLPin(IIC_RESET);
+ 150              		.loc 1 66 1 is_stmt 1 view -0
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccmJjUCG.s 			page 6
+
+
+ 151              		.cfi_startproc
+ 152              		@ args = 0, pretend = 0, frame = 0
+ 153              		@ frame_needed = 0, uses_anonymous_args = 0
+ 154 0000 08B5     		push	{r3, lr}
+ 155              	.LCFI2:
+ 156              		.cfi_def_cfa_offset 8
+ 157              		.cfi_offset 3, -8
+ 158              		.cfi_offset 14, -4
+  67:User/soft_i2c/soft_i2c.c ****   SetSDAPin(IIC_RESET);
+ 159              		.loc 1 67 3 view .LVU31
+ 160 0002 0020     		movs	r0, #0
+ 161 0004 FFF7FEFF 		bl	SetSCLPin
+ 162              	.LVL16:
+  68:User/soft_i2c/soft_i2c.c ****   SetSCLPin(IIC_SET);
+ 163              		.loc 1 68 3 view .LVU32
+ 164 0008 0020     		movs	r0, #0
+ 165 000a FFF7FEFF 		bl	SetSDAPin
+ 166              	.LVL17:
+  69:User/soft_i2c/soft_i2c.c ****   SetSDAPin(IIC_SET);
+ 167              		.loc 1 69 3 view .LVU33
+ 168 000e 0120     		movs	r0, #1
+ 169 0010 FFF7FEFF 		bl	SetSCLPin
+ 170              	.LVL18:
+  70:User/soft_i2c/soft_i2c.c **** 
+ 171              		.loc 1 70 3 view .LVU34
+ 172 0014 0120     		movs	r0, #1
+ 173 0016 FFF7FEFF 		bl	SetSDAPin
+ 174              	.LVL19:
+  72:User/soft_i2c/soft_i2c.c **** 
+ 175              		.loc 1 72 1 is_stmt 0 view .LVU35
+ 176 001a 08BD     		pop	{r3, pc}
+ 177              		.cfi_endproc
+ 178              	.LFE67:
+ 180              		.section	.text.IIC_NAck,"ax",%progbits
+ 181              		.align	1
+ 182              		.syntax unified
+ 183              		.thumb
+ 184              		.thumb_func
+ 186              	IIC_NAck:
+ 187              	.LFB70:
+ 102:User/soft_i2c/soft_i2c.c ****   SetSCLPin(IIC_RESET);
+ 188              		.loc 1 102 1 is_stmt 1 view -0
+ 189              		.cfi_startproc
+ 190              		@ args = 0, pretend = 0, frame = 0
+ 191              		@ frame_needed = 0, uses_anonymous_args = 0
+ 192 0000 08B5     		push	{r3, lr}
+ 193              	.LCFI3:
+ 194              		.cfi_def_cfa_offset 8
+ 195              		.cfi_offset 3, -8
+ 196              		.cfi_offset 14, -4
+ 103:User/soft_i2c/soft_i2c.c ****   SetSDAPin(IIC_SET);
+ 197              		.loc 1 103 3 view .LVU37
+ 198 0002 0020     		movs	r0, #0
+ 199 0004 FFF7FEFF 		bl	SetSCLPin
+ 200              	.LVL20:
+ 104:User/soft_i2c/soft_i2c.c ****   SetSCLPin(IIC_SET);
+ 201              		.loc 1 104 3 view .LVU38
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccmJjUCG.s 			page 7
+
+
+ 202 0008 0120     		movs	r0, #1
+ 203 000a FFF7FEFF 		bl	SetSDAPin
+ 204              	.LVL21:
+ 105:User/soft_i2c/soft_i2c.c ****   SetSCLPin(IIC_RESET);
+ 205              		.loc 1 105 3 view .LVU39
+ 206 000e 0120     		movs	r0, #1
+ 207 0010 FFF7FEFF 		bl	SetSCLPin
+ 208              	.LVL22:
+ 106:User/soft_i2c/soft_i2c.c **** 
+ 209              		.loc 1 106 3 view .LVU40
+ 210 0014 0020     		movs	r0, #0
+ 211 0016 FFF7FEFF 		bl	SetSCLPin
+ 212              	.LVL23:
+ 108:User/soft_i2c/soft_i2c.c **** 
+ 213              		.loc 1 108 1 is_stmt 0 view .LVU41
+ 214 001a 08BD     		pop	{r3, pc}
+ 215              		.cfi_endproc
+ 216              	.LFE70:
+ 218              		.section	.text.IIC_Ack,"ax",%progbits
+ 219              		.align	1
+ 220              		.syntax unified
+ 221              		.thumb
+ 222              		.thumb_func
+ 224              	IIC_Ack:
+ 225              	.LFB69:
+  93:User/soft_i2c/soft_i2c.c ****   SetSDAPin(IIC_RESET);
+ 226              		.loc 1 93 1 is_stmt 1 view -0
+ 227              		.cfi_startproc
+ 228              		@ args = 0, pretend = 0, frame = 0
+ 229              		@ frame_needed = 0, uses_anonymous_args = 0
+ 230 0000 08B5     		push	{r3, lr}
+ 231              	.LCFI4:
+ 232              		.cfi_def_cfa_offset 8
+ 233              		.cfi_offset 3, -8
+ 234              		.cfi_offset 14, -4
+  94:User/soft_i2c/soft_i2c.c ****   SetSCLPin(IIC_SET);
+ 235              		.loc 1 94 3 view .LVU43
+ 236 0002 0020     		movs	r0, #0
+ 237 0004 FFF7FEFF 		bl	SetSDAPin
+ 238              	.LVL24:
+  95:User/soft_i2c/soft_i2c.c ****   SetSCLPin(IIC_RESET);
+ 239              		.loc 1 95 3 view .LVU44
+ 240 0008 0120     		movs	r0, #1
+ 241 000a FFF7FEFF 		bl	SetSCLPin
+ 242              	.LVL25:
+  96:User/soft_i2c/soft_i2c.c ****   SetSDAPin(IIC_SET);
+ 243              		.loc 1 96 3 view .LVU45
+ 244 000e 0020     		movs	r0, #0
+ 245 0010 FFF7FEFF 		bl	SetSCLPin
+ 246              	.LVL26:
+  97:User/soft_i2c/soft_i2c.c **** }
+ 247              		.loc 1 97 3 view .LVU46
+ 248 0014 0120     		movs	r0, #1
+ 249 0016 FFF7FEFF 		bl	SetSDAPin
+ 250              	.LVL27:
+  98:User/soft_i2c/soft_i2c.c **** 
+ 251              		.loc 1 98 1 is_stmt 0 view .LVU47
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccmJjUCG.s 			page 8
+
+
+ 252 001a 08BD     		pop	{r3, pc}
+ 253              		.cfi_endproc
+ 254              	.LFE69:
+ 256              		.section	.text.Soft_I2CWaitAck,"ax",%progbits
+ 257              		.align	1
+ 258              		.syntax unified
+ 259              		.thumb
+ 260              		.thumb_func
+ 262              	Soft_I2CWaitAck:
+ 263              	.LVL28:
+ 264              	.LFB68:
+  76:User/soft_i2c/soft_i2c.c ****   SetSDAPin(IIC_SET);//拉高SDA
+ 265              		.loc 1 76 1 is_stmt 1 view -0
+ 266              		.cfi_startproc
+ 267              		@ args = 0, pretend = 0, frame = 0
+ 268              		@ frame_needed = 0, uses_anonymous_args = 0
+  76:User/soft_i2c/soft_i2c.c ****   SetSDAPin(IIC_SET);//拉高SDA
+ 269              		.loc 1 76 1 is_stmt 0 view .LVU49
+ 270 0000 38B5     		push	{r3, r4, r5, lr}
+ 271              	.LCFI5:
+ 272              		.cfi_def_cfa_offset 16
+ 273              		.cfi_offset 3, -16
+ 274              		.cfi_offset 4, -12
+ 275              		.cfi_offset 5, -8
+ 276              		.cfi_offset 14, -4
+ 277 0002 0446     		mov	r4, r0
+  77:User/soft_i2c/soft_i2c.c ****   SetSCLPin(IIC_SET);//拉高SCL
+ 278              		.loc 1 77 3 is_stmt 1 view .LVU50
+ 279 0004 0120     		movs	r0, #1
+ 280              	.LVL29:
+  77:User/soft_i2c/soft_i2c.c ****   SetSCLPin(IIC_SET);//拉高SCL
+ 281              		.loc 1 77 3 is_stmt 0 view .LVU51
+ 282 0006 FFF7FEFF 		bl	SetSDAPin
+ 283              	.LVL30:
+  78:User/soft_i2c/soft_i2c.c ****   while(ReadSDAPin())           //读取数据引脚
+ 284              		.loc 1 78 3 is_stmt 1 view .LVU52
+ 285 000a 0120     		movs	r0, #1
+ 286 000c FFF7FEFF 		bl	SetSCLPin
+ 287              	.LVL31:
+  79:User/soft_i2c/soft_i2c.c ****   {
+ 288              		.loc 1 79 3 view .LVU53
+ 289              	.L17:
+  79:User/soft_i2c/soft_i2c.c ****   {
+ 290              		.loc 1 79 8 view .LVU54
+  79:User/soft_i2c/soft_i2c.c ****   {
+ 291              		.loc 1 79 9 is_stmt 0 view .LVU55
+ 292 0010 FFF7FEFF 		bl	ReadSDAPin
+ 293              	.LVL32:
+  79:User/soft_i2c/soft_i2c.c ****   {
+ 294              		.loc 1 79 8 view .LVU56
+ 295 0014 0546     		mov	r5, r0
+ 296 0016 38B1     		cbz	r0, .L21
+  81:User/soft_i2c/soft_i2c.c ****     {
+ 297              		.loc 1 81 5 is_stmt 1 view .LVU57
+  81:User/soft_i2c/soft_i2c.c ****     {
+ 298              		.loc 1 81 7 is_stmt 0 view .LVU58
+ 299 0018 013C     		subs	r4, r4, #1
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccmJjUCG.s 			page 9
+
+
+ 300              	.LVL33:
+  81:User/soft_i2c/soft_i2c.c ****     {
+ 301              		.loc 1 81 7 view .LVU59
+ 302 001a A4B2     		uxth	r4, r4
+ 303              	.LVL34:
+  81:User/soft_i2c/soft_i2c.c ****     {
+ 304              		.loc 1 81 7 view .LVU60
+ 305 001c 002C     		cmp	r4, #0
+ 306 001e F7D0     		beq	.L17
+  83:User/soft_i2c/soft_i2c.c ****       return I2C_ERROR;
+ 307              		.loc 1 83 7 is_stmt 1 view .LVU61
+ 308 0020 FFF7FEFF 		bl	Soft_I2CStop
+ 309              	.LVL35:
+  84:User/soft_i2c/soft_i2c.c ****     }
+ 310              		.loc 1 84 7 view .LVU62
+  84:User/soft_i2c/soft_i2c.c ****     }
+ 311              		.loc 1 84 14 is_stmt 0 view .LVU63
+ 312 0024 0125     		movs	r5, #1
+ 313 0026 01E0     		b	.L18
+ 314              	.L21:
+  87:User/soft_i2c/soft_i2c.c ****   return I2C_OK;
+ 315              		.loc 1 87 3 is_stmt 1 view .LVU64
+ 316 0028 FFF7FEFF 		bl	SetSCLPin
+ 317              	.LVL36:
+  88:User/soft_i2c/soft_i2c.c **** }
+ 318              		.loc 1 88 3 view .LVU65
+ 319              	.L18:
+  89:User/soft_i2c/soft_i2c.c **** 
+ 320              		.loc 1 89 1 is_stmt 0 view .LVU66
+ 321 002c 2846     		mov	r0, r5
+ 322 002e 38BD     		pop	{r3, r4, r5, pc}
+  89:User/soft_i2c/soft_i2c.c **** 
+ 323              		.loc 1 89 1 view .LVU67
+ 324              		.cfi_endproc
+ 325              	.LFE68:
+ 327              		.section	.text.RecieveByteBySoft_I2C,"ax",%progbits
+ 328              		.align	1
+ 329              		.syntax unified
+ 330              		.thumb
+ 331              		.thumb_func
+ 333              	RecieveByteBySoft_I2C:
+ 334              	.LFB72:
+ 132:User/soft_i2c/soft_i2c.c **** 
+ 133:User/soft_i2c/soft_i2c.c **** /* 通过模拟I2C接收一个字节 */
+ 134:User/soft_i2c/soft_i2c.c **** static uint8_t RecieveByteBySoft_I2C()
+ 135:User/soft_i2c/soft_i2c.c **** {
+ 335              		.loc 1 135 1 is_stmt 1 view -0
+ 336              		.cfi_startproc
+ 337              		@ args = 0, pretend = 0, frame = 0
+ 338              		@ frame_needed = 0, uses_anonymous_args = 0
+ 339 0000 38B5     		push	{r3, r4, r5, lr}
+ 340              	.LCFI6:
+ 341              		.cfi_def_cfa_offset 16
+ 342              		.cfi_offset 3, -16
+ 343              		.cfi_offset 4, -12
+ 344              		.cfi_offset 5, -8
+ 345              		.cfi_offset 14, -4
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccmJjUCG.s 			page 10
+
+
+ 136:User/soft_i2c/soft_i2c.c ****   uint8_t receive = 0;
+ 346              		.loc 1 136 3 view .LVU69
+ 347              	.LVL37:
+ 137:User/soft_i2c/soft_i2c.c ****   SetSDAPin(IIC_SET);//引脚配置为开漏输出时，需要置高才能读取数据
+ 348              		.loc 1 137 3 view .LVU70
+ 349 0002 0120     		movs	r0, #1
+ 350 0004 FFF7FEFF 		bl	SetSDAPin
+ 351              	.LVL38:
+ 138:User/soft_i2c/soft_i2c.c ****   for(uint8_t count = 0; count < 8; count++ )
+ 352              		.loc 1 138 3 view .LVU71
+ 353              	.LBB3:
+ 354              		.loc 1 138 7 view .LVU72
+ 355              		.loc 1 138 15 is_stmt 0 view .LVU73
+ 356 0008 0025     		movs	r5, #0
+ 357              	.LBE3:
+ 136:User/soft_i2c/soft_i2c.c ****   uint8_t receive = 0;
+ 358              		.loc 1 136 11 view .LVU74
+ 359 000a 2C46     		mov	r4, r5
+ 360              	.LBB4:
+ 361              		.loc 1 138 3 view .LVU75
+ 362 000c 04E0     		b	.L23
+ 363              	.LVL39:
+ 364              	.L24:
+ 139:User/soft_i2c/soft_i2c.c ****   {
+ 140:User/soft_i2c/soft_i2c.c **** //    SetSCLPin(IIC_RESET);
+ 141:User/soft_i2c/soft_i2c.c **** //
+ 142:User/soft_i2c/soft_i2c.c ****     SetSCLPin(IIC_SET);
+ 143:User/soft_i2c/soft_i2c.c ****     receive <<= 1;
+ 144:User/soft_i2c/soft_i2c.c ****     if(ReadSDAPin())
+ 145:User/soft_i2c/soft_i2c.c ****     {
+ 146:User/soft_i2c/soft_i2c.c ****       receive++;
+ 147:User/soft_i2c/soft_i2c.c ****     }
+ 148:User/soft_i2c/soft_i2c.c ****     SetSCLPin(IIC_RESET);
+ 365              		.loc 1 148 5 is_stmt 1 discriminator 2 view .LVU76
+ 366 000e 0020     		movs	r0, #0
+ 367 0010 FFF7FEFF 		bl	SetSCLPin
+ 368              	.LVL40:
+ 138:User/soft_i2c/soft_i2c.c ****   for(uint8_t count = 0; count < 8; count++ )
+ 369              		.loc 1 138 37 discriminator 2 view .LVU77
+ 138:User/soft_i2c/soft_i2c.c ****   for(uint8_t count = 0; count < 8; count++ )
+ 370              		.loc 1 138 42 is_stmt 0 discriminator 2 view .LVU78
+ 371 0014 0135     		adds	r5, r5, #1
+ 372              	.LVL41:
+ 138:User/soft_i2c/soft_i2c.c ****   for(uint8_t count = 0; count < 8; count++ )
+ 373              		.loc 1 138 42 discriminator 2 view .LVU79
+ 374 0016 EDB2     		uxtb	r5, r5
+ 375              	.LVL42:
+ 376              	.L23:
+ 138:User/soft_i2c/soft_i2c.c ****   for(uint8_t count = 0; count < 8; count++ )
+ 377              		.loc 1 138 26 is_stmt 1 discriminator 1 view .LVU80
+ 138:User/soft_i2c/soft_i2c.c ****   for(uint8_t count = 0; count < 8; count++ )
+ 378              		.loc 1 138 3 is_stmt 0 discriminator 1 view .LVU81
+ 379 0018 072D     		cmp	r5, #7
+ 380 001a 0BD8     		bhi	.L27
+ 142:User/soft_i2c/soft_i2c.c ****     receive <<= 1;
+ 381              		.loc 1 142 5 is_stmt 1 view .LVU82
+ 382 001c 0120     		movs	r0, #1
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccmJjUCG.s 			page 11
+
+
+ 383 001e FFF7FEFF 		bl	SetSCLPin
+ 384              	.LVL43:
+ 143:User/soft_i2c/soft_i2c.c ****     if(ReadSDAPin())
+ 385              		.loc 1 143 5 view .LVU83
+ 143:User/soft_i2c/soft_i2c.c ****     if(ReadSDAPin())
+ 386              		.loc 1 143 13 is_stmt 0 view .LVU84
+ 387 0022 6400     		lsls	r4, r4, #1
+ 388              	.LVL44:
+ 143:User/soft_i2c/soft_i2c.c ****     if(ReadSDAPin())
+ 389              		.loc 1 143 13 view .LVU85
+ 390 0024 E4B2     		uxtb	r4, r4
+ 391              	.LVL45:
+ 144:User/soft_i2c/soft_i2c.c ****     {
+ 392              		.loc 1 144 5 is_stmt 1 view .LVU86
+ 144:User/soft_i2c/soft_i2c.c ****     {
+ 393              		.loc 1 144 8 is_stmt 0 view .LVU87
+ 394 0026 FFF7FEFF 		bl	ReadSDAPin
+ 395              	.LVL46:
+ 144:User/soft_i2c/soft_i2c.c ****     {
+ 396              		.loc 1 144 7 view .LVU88
+ 397 002a 0028     		cmp	r0, #0
+ 398 002c EFD0     		beq	.L24
+ 146:User/soft_i2c/soft_i2c.c ****     }
+ 399              		.loc 1 146 7 is_stmt 1 view .LVU89
+ 146:User/soft_i2c/soft_i2c.c ****     }
+ 400              		.loc 1 146 14 is_stmt 0 view .LVU90
+ 401 002e 0134     		adds	r4, r4, #1
+ 402              	.LVL47:
+ 146:User/soft_i2c/soft_i2c.c ****     }
+ 403              		.loc 1 146 14 view .LVU91
+ 404 0030 E4B2     		uxtb	r4, r4
+ 405              	.LVL48:
+ 146:User/soft_i2c/soft_i2c.c ****     }
+ 406              		.loc 1 146 14 view .LVU92
+ 407 0032 ECE7     		b	.L24
+ 408              	.L27:
+ 146:User/soft_i2c/soft_i2c.c ****     }
+ 409              		.loc 1 146 14 view .LVU93
+ 410              	.LBE4:
+ 149:User/soft_i2c/soft_i2c.c ****   }
+ 150:User/soft_i2c/soft_i2c.c ****   return receive;
+ 411              		.loc 1 150 3 is_stmt 1 view .LVU94
+ 151:User/soft_i2c/soft_i2c.c **** }
+ 412              		.loc 1 151 1 is_stmt 0 view .LVU95
+ 413 0034 2046     		mov	r0, r4
+ 414 0036 38BD     		pop	{r3, r4, r5, pc}
+ 415              		.loc 1 151 1 view .LVU96
+ 416              		.cfi_endproc
+ 417              	.LFE72:
+ 419              		.section	.text.Soft_I2C_Init,"ax",%progbits
+ 420              		.align	1
+ 421              		.global	Soft_I2C_Init
+ 422              		.syntax unified
+ 423              		.thumb
+ 424              		.thumb_func
+ 426              	Soft_I2C_Init:
+ 427              	.LFB65:
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccmJjUCG.s 			page 12
+
+
+  45:User/soft_i2c/soft_i2c.c ****   /*拉高总线，使处于空闲状态*/
+ 428              		.loc 1 45 1 is_stmt 1 view -0
+ 429              		.cfi_startproc
+ 430              		@ args = 0, pretend = 0, frame = 0
+ 431              		@ frame_needed = 0, uses_anonymous_args = 0
+ 432 0000 08B5     		push	{r3, lr}
+ 433              	.LCFI7:
+ 434              		.cfi_def_cfa_offset 8
+ 435              		.cfi_offset 3, -8
+ 436              		.cfi_offset 14, -4
+  47:User/soft_i2c/soft_i2c.c ****   SetSDAPin(IIC_SET);
+ 437              		.loc 1 47 3 view .LVU98
+ 438 0002 0120     		movs	r0, #1
+ 439 0004 FFF7FEFF 		bl	SetSCLPin
+ 440              	.LVL49:
+  48:User/soft_i2c/soft_i2c.c **** }
+ 441              		.loc 1 48 3 view .LVU99
+ 442 0008 0120     		movs	r0, #1
+ 443 000a FFF7FEFF 		bl	SetSDAPin
+ 444              	.LVL50:
+  49:User/soft_i2c/soft_i2c.c **** 
+ 445              		.loc 1 49 1 is_stmt 0 view .LVU100
+ 446 000e 08BD     		pop	{r3, pc}
+ 447              		.cfi_endproc
+ 448              	.LFE65:
+ 450              		.section	.text.WriteDataBySoft_I2C,"ax",%progbits
+ 451              		.align	1
+ 452              		.global	WriteDataBySoft_I2C
+ 453              		.syntax unified
+ 454              		.thumb
+ 455              		.thumb_func
+ 457              	WriteDataBySoft_I2C:
+ 458              	.LVL51:
+ 459              	.LFB73:
+ 152:User/soft_i2c/soft_i2c.c **** /* 通过模拟I2C向从站写数据 */
+ 153:User/soft_i2c/soft_i2c.c **** Soft_I2CStatus WriteDataBySoft_I2C(uint8_t deviceAddress,uint8_t *wData,uint16_t wSize)
+ 154:User/soft_i2c/soft_i2c.c **** {
+ 460              		.loc 1 154 1 is_stmt 1 view -0
+ 461              		.cfi_startproc
+ 462              		@ args = 0, pretend = 0, frame = 0
+ 463              		@ frame_needed = 0, uses_anonymous_args = 0
+ 464              		.loc 1 154 1 is_stmt 0 view .LVU102
+ 465 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 466              	.LCFI8:
+ 467              		.cfi_def_cfa_offset 24
+ 468              		.cfi_offset 3, -24
+ 469              		.cfi_offset 4, -20
+ 470              		.cfi_offset 5, -16
+ 471              		.cfi_offset 6, -12
+ 472              		.cfi_offset 7, -8
+ 473              		.cfi_offset 14, -4
+ 474 0002 0446     		mov	r4, r0
+ 475 0004 0E46     		mov	r6, r1
+ 476 0006 1546     		mov	r5, r2
+ 155:User/soft_i2c/soft_i2c.c ****   //启动通讯
+ 156:User/soft_i2c/soft_i2c.c ****   Soft_I2CStart();
+ 477              		.loc 1 156 3 is_stmt 1 view .LVU103
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccmJjUCG.s 			page 13
+
+
+ 478 0008 FFF7FEFF 		bl	Soft_I2CStart
+ 479              	.LVL52:
+ 157:User/soft_i2c/soft_i2c.c ****   //发送从站地址（写）
+ 158:User/soft_i2c/soft_i2c.c ****   SendByteBySoft_I2C(deviceAddress);
+ 480              		.loc 1 158 3 view .LVU104
+ 481 000c 2046     		mov	r0, r4
+ 482 000e FFF7FEFF 		bl	SendByteBySoft_I2C
+ 483              	.LVL53:
+ 159:User/soft_i2c/soft_i2c.c ****   if(Soft_I2CWaitAck(5000))
+ 484              		.loc 1 159 3 view .LVU105
+ 485              		.loc 1 159 6 is_stmt 0 view .LVU106
+ 486 0012 41F28830 		movw	r0, #5000
+ 487 0016 FFF7FEFF 		bl	Soft_I2CWaitAck
+ 488              	.LVL54:
+ 489              		.loc 1 159 5 view .LVU107
+ 490 001a 0746     		mov	r7, r0
+ 491 001c 80B9     		cbnz	r0, .L37
+ 492              	.LVL55:
+ 493              	.L32:
+ 160:User/soft_i2c/soft_i2c.c ****   {
+ 161:User/soft_i2c/soft_i2c.c ****     return I2C_ERROR;
+ 162:User/soft_i2c/soft_i2c.c ****   }
+ 163:User/soft_i2c/soft_i2c.c ****   // IIC_Ack(&soft_i2c);
+ 164:User/soft_i2c/soft_i2c.c ****   while(wSize--)
+ 494              		.loc 1 164 8 is_stmt 1 view .LVU108
+ 495              		.loc 1 164 14 is_stmt 0 view .LVU109
+ 496 001e 6B1E     		subs	r3, r5, #1
+ 497 0020 9CB2     		uxth	r4, r3
+ 498              	.LVL56:
+ 499              		.loc 1 164 8 view .LVU110
+ 500 0022 55B1     		cbz	r5, .L38
+ 165:User/soft_i2c/soft_i2c.c ****   {
+ 166:User/soft_i2c/soft_i2c.c ****     SendByteBySoft_I2C(*wData);
+ 501              		.loc 1 166 5 is_stmt 1 view .LVU111
+ 502 0024 3078     		ldrb	r0, [r6]	@ zero_extendqisi2
+ 503 0026 FFF7FEFF 		bl	SendByteBySoft_I2C
+ 504              	.LVL57:
+ 167:User/soft_i2c/soft_i2c.c ****     if(Soft_I2CWaitAck(5000))
+ 505              		.loc 1 167 5 view .LVU112
+ 506              		.loc 1 167 8 is_stmt 0 view .LVU113
+ 507 002a 41F28830 		movw	r0, #5000
+ 508 002e FFF7FEFF 		bl	Soft_I2CWaitAck
+ 509              	.LVL58:
+ 510              		.loc 1 167 7 view .LVU114
+ 511 0032 40B9     		cbnz	r0, .L35
+ 168:User/soft_i2c/soft_i2c.c ****     {
+ 169:User/soft_i2c/soft_i2c.c ****       return I2C_ERROR;
+ 170:User/soft_i2c/soft_i2c.c ****     }
+ 171:User/soft_i2c/soft_i2c.c ****     // IIC_Ack(&soft_i2c);
+ 172:User/soft_i2c/soft_i2c.c ****     wData++;
+ 512              		.loc 1 172 5 is_stmt 1 view .LVU115
+ 513              		.loc 1 172 10 is_stmt 0 view .LVU116
+ 514 0034 0136     		adds	r6, r6, #1
+ 515              	.LVL59:
+ 164:User/soft_i2c/soft_i2c.c ****   {
+ 516              		.loc 1 164 14 view .LVU117
+ 517 0036 2546     		mov	r5, r4
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccmJjUCG.s 			page 14
+
+
+ 518 0038 F1E7     		b	.L32
+ 519              	.L38:
+ 173:User/soft_i2c/soft_i2c.c ****     // ->Delayus(10);
+ 174:User/soft_i2c/soft_i2c.c ****   }
+ 175:User/soft_i2c/soft_i2c.c ****   Soft_I2CStop();
+ 520              		.loc 1 175 3 is_stmt 1 view .LVU118
+ 521 003a FFF7FEFF 		bl	Soft_I2CStop
+ 522              	.LVL60:
+ 176:User/soft_i2c/soft_i2c.c ****   return I2C_OK;
+ 523              		.loc 1 176 3 view .LVU119
+ 524              		.loc 1 176 10 is_stmt 0 view .LVU120
+ 525 003e 00E0     		b	.L31
+ 526              	.LVL61:
+ 527              	.L37:
+ 161:User/soft_i2c/soft_i2c.c ****   }
+ 528              		.loc 1 161 12 view .LVU121
+ 529 0040 0127     		movs	r7, #1
+ 530              	.LVL62:
+ 531              	.L31:
+ 177:User/soft_i2c/soft_i2c.c **** }
+ 532              		.loc 1 177 1 view .LVU122
+ 533 0042 3846     		mov	r0, r7
+ 534 0044 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 535              	.LVL63:
+ 536              	.L35:
+ 169:User/soft_i2c/soft_i2c.c ****     }
+ 537              		.loc 1 169 14 view .LVU123
+ 538 0046 0127     		movs	r7, #1
+ 539 0048 FBE7     		b	.L31
+ 540              		.cfi_endproc
+ 541              	.LFE73:
+ 543              		.section	.text.ReadDataBySoft_I2C,"ax",%progbits
+ 544              		.align	1
+ 545              		.global	ReadDataBySoft_I2C
+ 546              		.syntax unified
+ 547              		.thumb
+ 548              		.thumb_func
+ 550              	ReadDataBySoft_I2C:
+ 551              	.LVL64:
+ 552              	.LFB74:
+ 178:User/soft_i2c/soft_i2c.c **** 
+ 179:User/soft_i2c/soft_i2c.c **** /* 通过模拟I2C自从站读数据 */
+ 180:User/soft_i2c/soft_i2c.c **** Soft_I2CStatus ReadDataBySoft_I2C(uint8_t deviceAddress,uint8_t *rData, uint16_t rSize)
+ 181:User/soft_i2c/soft_i2c.c **** {
+ 553              		.loc 1 181 1 is_stmt 1 view -0
+ 554              		.cfi_startproc
+ 555              		@ args = 0, pretend = 0, frame = 0
+ 556              		@ frame_needed = 0, uses_anonymous_args = 0
+ 557              		.loc 1 181 1 is_stmt 0 view .LVU125
+ 558 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 559              	.LCFI9:
+ 560              		.cfi_def_cfa_offset 24
+ 561              		.cfi_offset 3, -24
+ 562              		.cfi_offset 4, -20
+ 563              		.cfi_offset 5, -16
+ 564              		.cfi_offset 6, -12
+ 565              		.cfi_offset 7, -8
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccmJjUCG.s 			page 15
+
+
+ 566              		.cfi_offset 14, -4
+ 567 0002 0446     		mov	r4, r0
+ 568 0004 0E46     		mov	r6, r1
+ 569 0006 1546     		mov	r5, r2
+ 182:User/soft_i2c/soft_i2c.c ****   //启动通讯
+ 183:User/soft_i2c/soft_i2c.c ****   Soft_I2CStart();
+ 570              		.loc 1 183 3 is_stmt 1 view .LVU126
+ 571 0008 FFF7FEFF 		bl	Soft_I2CStart
+ 572              	.LVL65:
+ 184:User/soft_i2c/soft_i2c.c ****   //发送从站地址（读）
+ 185:User/soft_i2c/soft_i2c.c ****   SendByteBySoft_I2C(deviceAddress+1);
+ 573              		.loc 1 185 3 view .LVU127
+ 574 000c 601C     		adds	r0, r4, #1
+ 575 000e C0B2     		uxtb	r0, r0
+ 576 0010 FFF7FEFF 		bl	SendByteBySoft_I2C
+ 577              	.LVL66:
+ 186:User/soft_i2c/soft_i2c.c ****   if(Soft_I2CWaitAck(5000))
+ 578              		.loc 1 186 3 view .LVU128
+ 579              		.loc 1 186 6 is_stmt 0 view .LVU129
+ 580 0014 41F28830 		movw	r0, #5000
+ 581 0018 FFF7FEFF 		bl	Soft_I2CWaitAck
+ 582              	.LVL67:
+ 583              		.loc 1 186 5 view .LVU130
+ 584 001c 0746     		mov	r7, r0
+ 585 001e 20B1     		cbz	r0, .L41
+ 187:User/soft_i2c/soft_i2c.c ****   {
+ 188:User/soft_i2c/soft_i2c.c ****     return I2C_ERROR;
+ 586              		.loc 1 188 12 view .LVU131
+ 587 0020 0127     		movs	r7, #1
+ 588 0022 10E0     		b	.L40
+ 589              	.LVL68:
+ 590              	.L42:
+ 189:User/soft_i2c/soft_i2c.c ****   }
+ 190:User/soft_i2c/soft_i2c.c ****   while(rSize--)
+ 191:User/soft_i2c/soft_i2c.c ****   {
+ 192:User/soft_i2c/soft_i2c.c ****     *rData=RecieveByteBySoft_I2C();
+ 193:User/soft_i2c/soft_i2c.c ****     rData++;
+ 194:User/soft_i2c/soft_i2c.c ****     if(rData==0)
+ 195:User/soft_i2c/soft_i2c.c ****     {
+ 196:User/soft_i2c/soft_i2c.c ****       IIC_NAck();
+ 197:User/soft_i2c/soft_i2c.c ****     }
+ 198:User/soft_i2c/soft_i2c.c ****     else
+ 199:User/soft_i2c/soft_i2c.c ****     {
+ 200:User/soft_i2c/soft_i2c.c ****       IIC_Ack();
+ 591              		.loc 1 200 7 is_stmt 1 view .LVU132
+ 592 0024 FFF7FEFF 		bl	IIC_Ack
+ 593              	.LVL69:
+ 594              	.L43:
+ 181:User/soft_i2c/soft_i2c.c ****   //启动通讯
+ 595              		.loc 1 181 1 is_stmt 0 view .LVU133
+ 596 0028 2546     		mov	r5, r4
+ 597              	.LVL70:
+ 598              	.L41:
+ 190:User/soft_i2c/soft_i2c.c ****   {
+ 599              		.loc 1 190 8 is_stmt 1 view .LVU134
+ 190:User/soft_i2c/soft_i2c.c ****   {
+ 600              		.loc 1 190 14 is_stmt 0 view .LVU135
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccmJjUCG.s 			page 16
+
+
+ 601 002a 6B1E     		subs	r3, r5, #1
+ 602 002c 9CB2     		uxth	r4, r3
+ 603              	.LVL71:
+ 190:User/soft_i2c/soft_i2c.c ****   {
+ 604              		.loc 1 190 8 view .LVU136
+ 605 002e 45B1     		cbz	r5, .L47
+ 192:User/soft_i2c/soft_i2c.c ****     rData++;
+ 606              		.loc 1 192 5 is_stmt 1 view .LVU137
+ 192:User/soft_i2c/soft_i2c.c ****     rData++;
+ 607              		.loc 1 192 12 is_stmt 0 view .LVU138
+ 608 0030 FFF7FEFF 		bl	RecieveByteBySoft_I2C
+ 609              	.LVL72:
+ 192:User/soft_i2c/soft_i2c.c ****     rData++;
+ 610              		.loc 1 192 11 view .LVU139
+ 611 0034 06F8010B 		strb	r0, [r6], #1
+ 612              	.LVL73:
+ 193:User/soft_i2c/soft_i2c.c ****     if(rData==0)
+ 613              		.loc 1 193 5 is_stmt 1 view .LVU140
+ 194:User/soft_i2c/soft_i2c.c ****     {
+ 614              		.loc 1 194 5 view .LVU141
+ 194:User/soft_i2c/soft_i2c.c ****     {
+ 615              		.loc 1 194 7 is_stmt 0 view .LVU142
+ 616 0038 002E     		cmp	r6, #0
+ 617 003a F3D1     		bne	.L42
+ 196:User/soft_i2c/soft_i2c.c ****     }
+ 618              		.loc 1 196 7 is_stmt 1 view .LVU143
+ 619 003c FFF7FEFF 		bl	IIC_NAck
+ 620              	.LVL74:
+ 621 0040 F2E7     		b	.L43
+ 622              	.L47:
+ 201:User/soft_i2c/soft_i2c.c ****     }
+ 202:User/soft_i2c/soft_i2c.c ****   }
+ 203:User/soft_i2c/soft_i2c.c ****   //结束通讯
+ 204:User/soft_i2c/soft_i2c.c ****   Soft_I2CStop();
+ 623              		.loc 1 204 3 view .LVU144
+ 624 0042 FFF7FEFF 		bl	Soft_I2CStop
+ 625              	.LVL75:
+ 205:User/soft_i2c/soft_i2c.c ****   return I2C_OK;
+ 626              		.loc 1 205 3 view .LVU145
+ 627              	.L40:
+ 206:User/soft_i2c/soft_i2c.c **** }
+ 628              		.loc 1 206 1 is_stmt 0 view .LVU146
+ 629 0046 3846     		mov	r0, r7
+ 630 0048 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 631              		.loc 1 206 1 view .LVU147
+ 632              		.cfi_endproc
+ 633              	.LFE74:
+ 635              		.section	.text.WriteReadDataBySoft_I2C,"ax",%progbits
+ 636              		.align	1
+ 637              		.global	WriteReadDataBySoft_I2C
+ 638              		.syntax unified
+ 639              		.thumb
+ 640              		.thumb_func
+ 642              	WriteReadDataBySoft_I2C:
+ 643              	.LVL76:
+ 644              	.LFB75:
+ 207:User/soft_i2c/soft_i2c.c **** 
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccmJjUCG.s 			page 17
+
+
+ 208:User/soft_i2c/soft_i2c.c **** /* 通过模拟I2C实现对从站先写数据紧接读数据组合操作 */
+ 209:User/soft_i2c/soft_i2c.c **** Soft_I2CStatus WriteReadDataBySoft_I2C(uint8_t deviceAddress, uint8_t *wData,uint16_t wSize,uint8_t
+ 210:User/soft_i2c/soft_i2c.c **** {
+ 645              		.loc 1 210 1 is_stmt 1 view -0
+ 646              		.cfi_startproc
+ 647              		@ args = 4, pretend = 0, frame = 0
+ 648              		@ frame_needed = 0, uses_anonymous_args = 0
+ 649              		.loc 1 210 1 is_stmt 0 view .LVU149
+ 650 0000 2DE9F843 		push	{r3, r4, r5, r6, r7, r8, r9, lr}
+ 651              	.LCFI10:
+ 652              		.cfi_def_cfa_offset 32
+ 653              		.cfi_offset 3, -32
+ 654              		.cfi_offset 4, -28
+ 655              		.cfi_offset 5, -24
+ 656              		.cfi_offset 6, -20
+ 657              		.cfi_offset 7, -16
+ 658              		.cfi_offset 8, -12
+ 659              		.cfi_offset 9, -8
+ 660              		.cfi_offset 14, -4
+ 661 0004 8146     		mov	r9, r0
+ 662 0006 0E46     		mov	r6, r1
+ 663 0008 1546     		mov	r5, r2
+ 664 000a 9846     		mov	r8, r3
+ 665 000c BDF82070 		ldrh	r7, [sp, #32]
+ 211:User/soft_i2c/soft_i2c.c **** 	//启动通讯
+ 212:User/soft_i2c/soft_i2c.c ****   Soft_I2CStart();
+ 666              		.loc 1 212 3 is_stmt 1 view .LVU150
+ 667 0010 FFF7FEFF 		bl	Soft_I2CStart
+ 668              	.LVL77:
+ 213:User/soft_i2c/soft_i2c.c ****   //发送从站地址（写）
+ 214:User/soft_i2c/soft_i2c.c ****   SendByteBySoft_I2C(deviceAddress);
+ 669              		.loc 1 214 3 view .LVU151
+ 670 0014 4846     		mov	r0, r9
+ 671 0016 FFF7FEFF 		bl	SendByteBySoft_I2C
+ 672              	.LVL78:
+ 215:User/soft_i2c/soft_i2c.c ****   if(Soft_I2CWaitAck(5000))
+ 673              		.loc 1 215 3 view .LVU152
+ 674              		.loc 1 215 6 is_stmt 0 view .LVU153
+ 675 001a 41F28830 		movw	r0, #5000
+ 676 001e FFF7FEFF 		bl	Soft_I2CWaitAck
+ 677              	.LVL79:
+ 678              		.loc 1 215 5 view .LVU154
+ 679 0022 80BB     		cbnz	r0, .L60
+ 680              	.LVL80:
+ 681              	.L50:
+ 216:User/soft_i2c/soft_i2c.c ****   {
+ 217:User/soft_i2c/soft_i2c.c ****     return I2C_ERROR;
+ 218:User/soft_i2c/soft_i2c.c ****   }
+ 219:User/soft_i2c/soft_i2c.c ****   while(wSize--)
+ 682              		.loc 1 219 8 is_stmt 1 view .LVU155
+ 683              		.loc 1 219 14 is_stmt 0 view .LVU156
+ 684 0024 05F1FF3C 		add	ip, r5, #-1
+ 685 0028 1FFA8CF4 		uxth	r4, ip
+ 686              	.LVL81:
+ 687              		.loc 1 219 8 view .LVU157
+ 688 002c 55B1     		cbz	r5, .L61
+ 220:User/soft_i2c/soft_i2c.c ****   {
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccmJjUCG.s 			page 18
+
+
+ 221:User/soft_i2c/soft_i2c.c ****     SendByteBySoft_I2C(*wData);
+ 689              		.loc 1 221 5 is_stmt 1 view .LVU158
+ 690 002e 3078     		ldrb	r0, [r6]	@ zero_extendqisi2
+ 691 0030 FFF7FEFF 		bl	SendByteBySoft_I2C
+ 692              	.LVL82:
+ 222:User/soft_i2c/soft_i2c.c ****     if(Soft_I2CWaitAck(5000))
+ 693              		.loc 1 222 5 view .LVU159
+ 694              		.loc 1 222 8 is_stmt 0 view .LVU160
+ 695 0034 41F28830 		movw	r0, #5000
+ 696 0038 FFF7FEFF 		bl	Soft_I2CWaitAck
+ 697              	.LVL83:
+ 698              		.loc 1 222 7 view .LVU161
+ 699 003c 38BB     		cbnz	r0, .L57
+ 223:User/soft_i2c/soft_i2c.c ****     {
+ 224:User/soft_i2c/soft_i2c.c ****       return I2C_ERROR;
+ 225:User/soft_i2c/soft_i2c.c ****     }
+ 226:User/soft_i2c/soft_i2c.c ****     wData++;
+ 700              		.loc 1 226 5 is_stmt 1 view .LVU162
+ 701              		.loc 1 226 10 is_stmt 0 view .LVU163
+ 702 003e 0136     		adds	r6, r6, #1
+ 703              	.LVL84:
+ 219:User/soft_i2c/soft_i2c.c ****   {
+ 704              		.loc 1 219 14 view .LVU164
+ 705 0040 2546     		mov	r5, r4
+ 706 0042 EFE7     		b	.L50
+ 707              	.L61:
+ 227:User/soft_i2c/soft_i2c.c ****   }
+ 228:User/soft_i2c/soft_i2c.c **** 
+ 229:User/soft_i2c/soft_i2c.c **** 	//再启动
+ 230:User/soft_i2c/soft_i2c.c ****   Soft_I2CStart();
+ 708              		.loc 1 230 3 is_stmt 1 view .LVU165
+ 709 0044 FFF7FEFF 		bl	Soft_I2CStart
+ 710              	.LVL85:
+ 231:User/soft_i2c/soft_i2c.c **** 	//发送从站地址（读）
+ 232:User/soft_i2c/soft_i2c.c ****   SendByteBySoft_I2C(deviceAddress+1);
+ 711              		.loc 1 232 3 view .LVU166
+ 712 0048 09F10100 		add	r0, r9, #1
+ 713 004c C0B2     		uxtb	r0, r0
+ 714 004e FFF7FEFF 		bl	SendByteBySoft_I2C
+ 715              	.LVL86:
+ 233:User/soft_i2c/soft_i2c.c ****   if(Soft_I2CWaitAck(5000))
+ 716              		.loc 1 233 3 view .LVU167
+ 717              		.loc 1 233 6 is_stmt 0 view .LVU168
+ 718 0052 41F28830 		movw	r0, #5000
+ 719 0056 FFF7FEFF 		bl	Soft_I2CWaitAck
+ 720              	.LVL87:
+ 721              		.loc 1 233 5 view .LVU169
+ 722 005a 0546     		mov	r5, r0
+ 723 005c 20B1     		cbz	r0, .L52
+ 234:User/soft_i2c/soft_i2c.c ****   {
+ 235:User/soft_i2c/soft_i2c.c ****     return I2C_ERROR;
+ 724              		.loc 1 235 12 view .LVU170
+ 725 005e 0125     		movs	r5, #1
+ 726 0060 12E0     		b	.L49
+ 727              	.LVL88:
+ 728              	.L53:
+ 236:User/soft_i2c/soft_i2c.c ****   }
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccmJjUCG.s 			page 19
+
+
+ 237:User/soft_i2c/soft_i2c.c ****   while(rSize--)
+ 238:User/soft_i2c/soft_i2c.c ****   {
+ 239:User/soft_i2c/soft_i2c.c ****     *rData=RecieveByteBySoft_I2C();
+ 240:User/soft_i2c/soft_i2c.c ****     rData++;
+ 241:User/soft_i2c/soft_i2c.c ****     if(rSize==0)
+ 242:User/soft_i2c/soft_i2c.c ****     {
+ 243:User/soft_i2c/soft_i2c.c ****       IIC_NAck();
+ 244:User/soft_i2c/soft_i2c.c ****     }
+ 245:User/soft_i2c/soft_i2c.c ****     else
+ 246:User/soft_i2c/soft_i2c.c ****     {
+ 247:User/soft_i2c/soft_i2c.c ****       IIC_Ack();
+ 729              		.loc 1 247 7 is_stmt 1 view .LVU171
+ 730 0062 FFF7FEFF 		bl	IIC_Ack
+ 731              	.LVL89:
+ 732              	.L54:
+ 219:User/soft_i2c/soft_i2c.c ****   {
+ 733              		.loc 1 219 14 is_stmt 0 view .LVU172
+ 734 0066 2746     		mov	r7, r4
+ 735              	.LVL90:
+ 736              	.L52:
+ 237:User/soft_i2c/soft_i2c.c ****   {
+ 737              		.loc 1 237 8 is_stmt 1 view .LVU173
+ 237:User/soft_i2c/soft_i2c.c ****   {
+ 738              		.loc 1 237 14 is_stmt 0 view .LVU174
+ 739 0068 7C1E     		subs	r4, r7, #1
+ 740 006a A4B2     		uxth	r4, r4
+ 741              	.LVL91:
+ 237:User/soft_i2c/soft_i2c.c ****   {
+ 742              		.loc 1 237 8 view .LVU175
+ 743 006c 47B1     		cbz	r7, .L62
+ 239:User/soft_i2c/soft_i2c.c ****     rData++;
+ 744              		.loc 1 239 5 is_stmt 1 view .LVU176
+ 239:User/soft_i2c/soft_i2c.c ****     rData++;
+ 745              		.loc 1 239 12 is_stmt 0 view .LVU177
+ 746 006e FFF7FEFF 		bl	RecieveByteBySoft_I2C
+ 747              	.LVL92:
+ 239:User/soft_i2c/soft_i2c.c ****     rData++;
+ 748              		.loc 1 239 11 view .LVU178
+ 749 0072 08F8010B 		strb	r0, [r8], #1
+ 750              	.LVL93:
+ 240:User/soft_i2c/soft_i2c.c ****     if(rSize==0)
+ 751              		.loc 1 240 5 is_stmt 1 view .LVU179
+ 241:User/soft_i2c/soft_i2c.c ****     {
+ 752              		.loc 1 241 5 view .LVU180
+ 241:User/soft_i2c/soft_i2c.c ****     {
+ 753              		.loc 1 241 7 is_stmt 0 view .LVU181
+ 754 0076 002C     		cmp	r4, #0
+ 755 0078 F3D1     		bne	.L53
+ 243:User/soft_i2c/soft_i2c.c ****     }
+ 756              		.loc 1 243 7 is_stmt 1 view .LVU182
+ 757 007a FFF7FEFF 		bl	IIC_NAck
+ 758              	.LVL94:
+ 759 007e F2E7     		b	.L54
+ 760              	.L62:
+ 248:User/soft_i2c/soft_i2c.c ****     }
+ 249:User/soft_i2c/soft_i2c.c ****   }
+ 250:User/soft_i2c/soft_i2c.c **** 	//结束通讯
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccmJjUCG.s 			page 20
+
+
+ 251:User/soft_i2c/soft_i2c.c ****   Soft_I2CStop();
+ 761              		.loc 1 251 3 view .LVU183
+ 762 0080 FFF7FEFF 		bl	Soft_I2CStop
+ 763              	.LVL95:
+ 252:User/soft_i2c/soft_i2c.c ****   return I2C_OK;
+ 764              		.loc 1 252 3 view .LVU184
+ 765              		.loc 1 252 10 is_stmt 0 view .LVU185
+ 766 0084 00E0     		b	.L49
+ 767              	.LVL96:
+ 768              	.L60:
+ 217:User/soft_i2c/soft_i2c.c ****   }
+ 769              		.loc 1 217 12 view .LVU186
+ 770 0086 0125     		movs	r5, #1
+ 771              	.LVL97:
+ 772              	.L49:
+ 253:User/soft_i2c/soft_i2c.c **** }
+ 773              		.loc 1 253 1 view .LVU187
+ 774 0088 2846     		mov	r0, r5
+ 775 008a BDE8F883 		pop	{r3, r4, r5, r6, r7, r8, r9, pc}
+ 776              	.LVL98:
+ 777              	.L57:
+ 224:User/soft_i2c/soft_i2c.c ****     }
+ 778              		.loc 1 224 14 view .LVU188
+ 779 008e 0125     		movs	r5, #1
+ 780 0090 FAE7     		b	.L49
+ 781              		.cfi_endproc
+ 782              	.LFE75:
+ 784              		.text
+ 785              	.Letext0:
+ 786              		.file 2 "c:\\tool\\gcc-arm\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 787              		.file 3 "c:\\tool\\gcc-arm\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 788              		.file 4 "User/soft_i2c/soft_i2c.h"
+ 789              		.file 5 "User/soft_i2c/soft_i2c_stm32.h"
+ARM GAS  C:\Users\GM\AppData\Local\Temp\ccmJjUCG.s 			page 21
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 soft_i2c.c
+C:\Users\GM\AppData\Local\Temp\ccmJjUCG.s:18     .text.Soft_I2CStart:00000000 $t
+C:\Users\GM\AppData\Local\Temp\ccmJjUCG.s:23     .text.Soft_I2CStart:00000000 Soft_I2CStart
+C:\Users\GM\AppData\Local\Temp\ccmJjUCG.s:57     .text.SendByteBySoft_I2C:00000000 $t
+C:\Users\GM\AppData\Local\Temp\ccmJjUCG.s:62     .text.SendByteBySoft_I2C:00000000 SendByteBySoft_I2C
+C:\Users\GM\AppData\Local\Temp\ccmJjUCG.s:143    .text.Soft_I2CStop:00000000 $t
+C:\Users\GM\AppData\Local\Temp\ccmJjUCG.s:148    .text.Soft_I2CStop:00000000 Soft_I2CStop
+C:\Users\GM\AppData\Local\Temp\ccmJjUCG.s:181    .text.IIC_NAck:00000000 $t
+C:\Users\GM\AppData\Local\Temp\ccmJjUCG.s:186    .text.IIC_NAck:00000000 IIC_NAck
+C:\Users\GM\AppData\Local\Temp\ccmJjUCG.s:219    .text.IIC_Ack:00000000 $t
+C:\Users\GM\AppData\Local\Temp\ccmJjUCG.s:224    .text.IIC_Ack:00000000 IIC_Ack
+C:\Users\GM\AppData\Local\Temp\ccmJjUCG.s:257    .text.Soft_I2CWaitAck:00000000 $t
+C:\Users\GM\AppData\Local\Temp\ccmJjUCG.s:262    .text.Soft_I2CWaitAck:00000000 Soft_I2CWaitAck
+C:\Users\GM\AppData\Local\Temp\ccmJjUCG.s:328    .text.RecieveByteBySoft_I2C:00000000 $t
+C:\Users\GM\AppData\Local\Temp\ccmJjUCG.s:333    .text.RecieveByteBySoft_I2C:00000000 RecieveByteBySoft_I2C
+C:\Users\GM\AppData\Local\Temp\ccmJjUCG.s:420    .text.Soft_I2C_Init:00000000 $t
+C:\Users\GM\AppData\Local\Temp\ccmJjUCG.s:426    .text.Soft_I2C_Init:00000000 Soft_I2C_Init
+C:\Users\GM\AppData\Local\Temp\ccmJjUCG.s:451    .text.WriteDataBySoft_I2C:00000000 $t
+C:\Users\GM\AppData\Local\Temp\ccmJjUCG.s:457    .text.WriteDataBySoft_I2C:00000000 WriteDataBySoft_I2C
+C:\Users\GM\AppData\Local\Temp\ccmJjUCG.s:544    .text.ReadDataBySoft_I2C:00000000 $t
+C:\Users\GM\AppData\Local\Temp\ccmJjUCG.s:550    .text.ReadDataBySoft_I2C:00000000 ReadDataBySoft_I2C
+C:\Users\GM\AppData\Local\Temp\ccmJjUCG.s:636    .text.WriteReadDataBySoft_I2C:00000000 $t
+C:\Users\GM\AppData\Local\Temp\ccmJjUCG.s:642    .text.WriteReadDataBySoft_I2C:00000000 WriteReadDataBySoft_I2C
+
+UNDEFINED SYMBOLS
+SetSDAPin
+SetSCLPin
+ReadSDAPin
