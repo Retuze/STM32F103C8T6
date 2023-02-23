@@ -12,6 +12,7 @@
         "oledfont.h": "c",
         "soft_i2c.h": "c",
         "codetab.h": "c",
-        "pwm.h": "c"
+        "pwm.h": "c",
+        "main.h": "c"
     }
 }
